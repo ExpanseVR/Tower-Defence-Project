@@ -7,6 +7,9 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
     private Transform _spawnPoint;
+
+    [SerializeField]
+    private Transform _spawnHeirarchyLocation;
     
     private static SpawnManager _instance;
     public static SpawnManager Instance
@@ -27,6 +30,10 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnEnemy (GameObject enemyToSpawn)
     {
-        Instantiate(enemyToSpawn, _spawnPoint.position, Quaternion.identity);
+        //instantiate enemy
+        GameObject spawnedEnemy = Instantiate(enemyToSpawn, _spawnPoint.position, Quaternion.identity);
+
+        //change parent in Hierarchy to tidy up
+        spawnedEnemy.transform.parent = _spawnHeirarchyLocation;
     }
 }
