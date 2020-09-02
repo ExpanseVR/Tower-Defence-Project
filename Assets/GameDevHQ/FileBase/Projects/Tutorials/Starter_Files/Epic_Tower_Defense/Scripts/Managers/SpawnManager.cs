@@ -23,20 +23,24 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         private Transform _spawnPoint;
 
-        EnemyPoolManager poolManager; //TO REMOVE AFTER CHECKING WITH JON
+        ObjectPool enemyPool;
+        PoolManager poolManager;//TO REMOVE AFTER CHECKING WITH JON
 
         private void Awake()
         {
             _instance = this;
-            poolManager = FindObjectOfType<EnemyPoolManager>();
+
+            //enemyPool = PoolManager.Instance.GetObjectPool("Enemies"); CHECK WITH JON < ---WHY IS THIS NOT WORKING?
+            poolManager = FindObjectOfType<PoolManager>();
+            enemyPool = poolManager.GetObjectPool("Enemies");
         }
 
         public void SpawnEnemy()
         {
             //check if their is a disable enemy in enemy pool
             //if their is retrieve enemy from the pool and set to the start
-            GameObject newEnemy = poolManager.CheckForDisabledGameObject();
-            //GameObject newEnemy = EnemyPoolManager.Instance.CheckForDisabledGameObject(); CHECK WITH JON <--- WHY IS THIS NOT WORKING?
+            GameObject newEnemy = enemyPool.CheckForDisabledGameObject();
+
             if (newEnemy != null)
             {
                 newEnemy.transform.position = _spawnPoint.position;
@@ -45,7 +49,7 @@ namespace GameDevHQ.Scripts.Managers
             else
             {
                 //if not instantiate enemy
-                poolManager.CreateNew(_spawnPoint);
+                enemyPool.CreateNew(_spawnPoint);
             }
         }
     }
