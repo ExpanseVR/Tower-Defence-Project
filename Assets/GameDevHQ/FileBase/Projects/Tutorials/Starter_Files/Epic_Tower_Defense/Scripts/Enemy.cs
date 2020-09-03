@@ -21,12 +21,11 @@ namespace GameDevHQ.Scripts
         private int _warfund;
 
         private Transform _target;
-
         private NavMeshAgent _agent;
 
         private void OnEnable()
         {
-            _target = FindObjectOfType<GameManger>().RequestTarget(); //Change to singleton
+            _target = GameManger.Instance.RequestTarget();
 
             _agent = GetComponent<NavMeshAgent>();
             if (_agent != null)

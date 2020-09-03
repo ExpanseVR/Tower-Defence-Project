@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameDevHQ.Scripts.Managers
 {
-    public class PoolManager : MonoBehaviour
+    public class PoolManager : MonoSingleton<PoolManager>
     {
         [SerializeField]
         private List<ObjectPool> _objectPoolList = new List<ObjectPool>();

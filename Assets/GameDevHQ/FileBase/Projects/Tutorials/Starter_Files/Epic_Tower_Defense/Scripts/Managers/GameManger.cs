@@ -1,11 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
 namespace GameDevHQ.Scripts.Managers
 {
-    public class GameManger : MonoBehaviour
+    public class GameManger : MonoSingleton<GameManger>
     {
         [Range(1, 20)]
         [SerializeField]
