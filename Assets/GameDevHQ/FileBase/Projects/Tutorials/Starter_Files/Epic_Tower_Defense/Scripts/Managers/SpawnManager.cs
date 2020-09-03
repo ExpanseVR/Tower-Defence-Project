@@ -23,34 +23,38 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         private Transform _spawnPoint;
 
-        ObjectPool enemyPool;
-        PoolManager poolManager;//TO REMOVE AFTER CHECKING WITH JON
+        [SerializeField]
+        EnemyManager _enemies;
+
+        [SerializeField]
+        int _enemiesToPool;
+
+        int _poolReference;
+        PoolManager _poolManager;//TO REMOVE AFTER CHECKING WITH JON
 
         private void Awake()
         {
             _instance = this;
 
-            //enemyPool = PoolManager.Instance.GetObjectPool("Enemies"); CHECK WITH JON < ---WHY IS THIS NOT WORKING?
-            poolManager = FindObjectOfType<PoolManager>();
-            enemyPool = poolManager.GetObjectPool("Enemies");
+            //enemyPool = PoolManager.Instance.CreateNewList(); CHECK WITH JON < ---WHY IS THIS NOT WORKING?
+            _poolManager = FindObjectOfType<PoolManager>();
+            _poolReference = _poolManager.CreateNewList(_enemies.EnemyTypes(), _enemiesToPool);
         }
 
         public void SpawnEnemy()
         {
             //check if their is a disable enemy in enemy pool
             //if their is retrieve enemy from the pool and set to the start
-            GameObject newEnemy = enemyPool.CheckForDisabledGameObject();
+            GameObject newEnemy = _poolManager.ReturnPool(_poolReference).CheckForDisabledGameObject();
 
-            if (newEnemy != null)
-            {
-                newEnemy.transform.position = _spawnPoint.position;
-                newEnemy.SetActive(true);
-            }
-            else
-            {
+            if (newEnemy == null)
+            { 
                 //if not instantiate enemy
-                enemyPool.CreateNew(_spawnPoint);
+                newEnemy = _poolManager.AddToExistingList(_poolReference, _enemies.EnemyTypes());
             }
+
+            newEnemy.transform.position = _spawnPoint.position;
+            newEnemy.SetActive(true);
         }
     }
 }

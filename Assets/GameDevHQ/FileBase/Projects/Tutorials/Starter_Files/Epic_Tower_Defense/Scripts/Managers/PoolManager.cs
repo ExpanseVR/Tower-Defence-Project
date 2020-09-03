@@ -7,53 +7,49 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class PoolManager : MonoBehaviour
     {
-        private static PoolManager _instance;
-
-        public static PoolManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    Debug.LogError("PoolManager is null.");
-                }
-
-                return null;
-            }
-        }
-
         [SerializeField]
         private List<ObjectPool> _objectPoolList = new List<ObjectPool>();
 
-        private List<string> _objectPoolDescriptions = new List<string>();
-
-        private void Awake()
+        public int CreateNewList(GameObject[] objectTypes, int initialPoolSize)
         {
-            _instance = this;
+            ObjectPool newPool = new ObjectPool();
+            List<GameObject> tempList = new List<GameObject>();
+
+            for (int i = 0; i < initialPoolSize; i++)
+            {
+                //instantiate gameObject, disable and cleanup by setting child to this gameobject and add to list
+                GameObject newObject = Instantiate(objectTypes[Random.Range(0, objectTypes.Length)]);
+                newObject.SetActive(false);
+                newObject.transform.parent = this.transform;
+                tempList.Add(newObject);
+            }
+
+            _objectPoolList.Add(newPool.CreateNewPool(tempList));
+
+            return _objectPoolList.Count -1;
         }
 
-        private void Start()
+        //return objectpool based on reference
+        public ObjectPool ReturnPool(int poolReference)
         {
-            //for each Object Pool, initialise their pools and store their names for search
-            for (int i = 0; i < _objectPoolList.Count; i++)
+            if (_objectPoolList[poolReference] != null)
+                return _objectPoolList[poolReference];
+            else
             {
-                if (_objectPoolList[i] != null)
-                {
-                    _objectPoolList[i].GenerateObjects();
-                    _objectPoolDescriptions.Add(_objectPoolList[i].GetObjectPoolDescription());
-                }
-            }
-        }
-
-        //Find a specific Object Pool based on its description and return it
-        public ObjectPool GetObjectPool (string objectPoolDescription)
-        {
-            for (int i = 0; i < _objectPoolList.Count; i++)
-            {
-                if (_objectPoolList[i].GetObjectPoolDescription() == objectPoolDescription)
-                    return _objectPoolList[i];
-            }
+                Debug.LogError("Pool reference number for _objectPoolList is out of range.");
                 return null;
+            }
+        }
+
+        //instantiate new object, add to the pool and return the new object
+        public GameObject AddToExistingList(int listReference, GameObject[] objectTypes)
+        {
+            GameObject randomObject = objectTypes[Random.Range(0, objectTypes.Length)];
+            GameObject newObject = Instantiate(randomObject);
+            newObject.transform.parent = this.transform;
+            _objectPoolList[listReference].AddNewObject(newObject);
+
+            return newObject;
         }
     }
 }

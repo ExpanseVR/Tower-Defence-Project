@@ -4,39 +4,17 @@ using UnityEngine;
 
 namespace GameDevHQ.Scripts
 {
-    public class ObjectPool : MonoBehaviour
+    public class ObjectPool
     {
-        [SerializeField]
-        private string _objectPoolDescription;
-
-        [SerializeField]
-        private int _initialPoolSize;
-
-        [SerializeField]
-        private GameObject[] _objectTypes;
-
         private List<GameObject> _objectPool = new List<GameObject>();
 
-
-        //generate a list of enemies to use
-        public void GenerateObjects()
+        //create new pool
+        public ObjectPool CreateNewPool(List<GameObject> objectList)
         {
-            List<GameObject> tempList = new List<GameObject>(); //CHECK WITH JON ON THIS. CANT USE _enemypool
+            this._objectPool = objectList;
 
-            for (int i = 0; i < _initialPoolSize; i++)
-            {
-                //instantiate gameObject, disable and cleanup by setting child to this gameobject and add to list
-                GameObject newObject = Instantiate(_objectTypes[Random.Range(0, _objectTypes.Length)]);
-                newObject.SetActive(false);
-                newObject.transform.parent = this.transform;
-                tempList.Add(newObject);
-                _objectPool.Add(newObject);
-            }
-        }
-
-        public string GetObjectPoolDescription()
-        {
-            return _objectPoolDescription;
+            //return the new pool
+            return this;
         }
 
         //check if their is a disabled object in the list and if so return the first one
@@ -52,12 +30,8 @@ namespace GameDevHQ.Scripts
             return null;
         }
 
-        //add new object to list
-        public void CreateNew(Transform positionToSpawn)
+        public void AddNewObject(GameObject newObject)
         {
-            GameObject randomObject = _objectTypes[Random.Range(0, _objectTypes.Length)];
-            GameObject newObject = Instantiate(randomObject, positionToSpawn.position, Quaternion.identity);
-            newObject.transform.parent = this.transform;
             _objectPool.Add(newObject);
         }
     }

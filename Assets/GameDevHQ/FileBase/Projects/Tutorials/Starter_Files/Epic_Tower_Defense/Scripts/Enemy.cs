@@ -8,6 +8,7 @@ using GameDevHQ.Scripts.Managers;
 namespace GameDevHQ.Scripts
 {
     [RequireComponent(typeof(NavMeshAgent))]
+
     public class Enemy : MonoBehaviour
     {
         [SerializeField]
