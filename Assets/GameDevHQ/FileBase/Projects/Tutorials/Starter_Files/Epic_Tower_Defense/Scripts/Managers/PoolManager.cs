@@ -7,24 +7,12 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class PoolManager : MonoSingleton<PoolManager>
     {
-        [SerializeField]
-        private List<ObjectPool> _objectPoolList = new List<ObjectPool>();
+        public List<ObjectPool> _objectPoolList = new List<ObjectPool>();
 
-        public int CreateNewList(GameObject[] objectTypes, int initialPoolSize)
+        public int CreateNewList()
         {
             ObjectPool newPool = new ObjectPool();
-            List<GameObject> tempList = new List<GameObject>();
-
-            for (int i = 0; i < initialPoolSize; i++)
-            {
-                //instantiate gameObject, disable and cleanup by setting child to this gameobject and add to list
-                GameObject newObject = Instantiate(objectTypes[Random.Range(0, objectTypes.Length)]);
-                newObject.SetActive(false);
-                newObject.transform.parent = this.transform;
-                tempList.Add(newObject);
-            }
-
-            _objectPoolList.Add(newPool.CreateNewPool(tempList));
+            _objectPoolList.Add(newPool);
 
             return _objectPoolList.Count -1;
         }
@@ -42,10 +30,9 @@ namespace GameDevHQ.Scripts.Managers
         }
 
         //instantiate new object, add to the pool and return the new object
-        public GameObject AddToExistingList(int listReference, GameObject[] objectTypes)
+        public GameObject AddToExistingList(int listReference, GameObject objectToAdd)
         {
-            GameObject randomObject = objectTypes[Random.Range(0, objectTypes.Length)];
-            GameObject newObject = Instantiate(randomObject);
+            GameObject newObject = Instantiate(objectToAdd);
             newObject.transform.parent = this.transform;
             _objectPoolList[listReference].AddNewObject(newObject);
 

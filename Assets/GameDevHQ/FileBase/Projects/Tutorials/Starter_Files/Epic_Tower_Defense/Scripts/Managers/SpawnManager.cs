@@ -11,29 +11,23 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         private Transform _spawnPoint;
 
-        [SerializeField]
-        EnemyManager _enemies;
-
-        [SerializeField]
-        int _enemiesToPool;
-
         int _poolReference;
 
-        private void Start()
+        private void OnEnable()
         {
-            _poolReference = PoolManager.Instance.CreateNewList(_enemies.EnemyTypes(), _enemiesToPool);
+            _poolReference = PoolManager.Instance.CreateNewList();
         }
 
-        public void SpawnEnemy()
+        public void SpawnEnemy(GameObject enemyToSpawn)
         {
             //check if there is a disable enemy in enemy pool
             //if their is retrieve enemy from the pool and set to the start
-            GameObject newEnemy = PoolManager.Instance.ReturnPool(_poolReference).CheckForDisabledGameObject();
+            GameObject newEnemy = PoolManager.Instance.ReturnPool(_poolReference).CheckForDisabledGameObject(enemyToSpawn);
 
             if (newEnemy == null)
             { 
                 //if not instantiate enemy
-                newEnemy = PoolManager.Instance.AddToExistingList(_poolReference, _enemies.EnemyTypes());
+                newEnemy = PoolManager.Instance.AddToExistingList(_poolReference, enemyToSpawn);
             }
 
             newEnemy.transform.position = _spawnPoint.position;

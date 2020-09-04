@@ -8,23 +8,17 @@ namespace GameDevHQ.Scripts
     {
         private List<GameObject> _objectPool = new List<GameObject>();
 
-        //create new pool
-        public ObjectPool CreateNewPool(List<GameObject> objectList)
-        {
-            this._objectPool = objectList;
-
-            //return the new pool
-            return this;
-        }
-
-        //check if their is a disabled object in the list and if so return the first one
-        public GameObject CheckForDisabledGameObject()
+        public GameObject CheckForDisabledGameObject(GameObject objectTypeToFind)
         {
             for (int i = 0; i < _objectPool.Count; i++)
             {
-
+                //check if their is a disabled object
                 if (_objectPool[i].activeSelf == false)
-                    return _objectPool[i];
+                {
+                    //check if disable object is of type needed
+                    if (_objectPool[i].gameObject.tag == objectTypeToFind.gameObject.tag)
+                        return _objectPool[i];
+                }
             }
 
             return null;

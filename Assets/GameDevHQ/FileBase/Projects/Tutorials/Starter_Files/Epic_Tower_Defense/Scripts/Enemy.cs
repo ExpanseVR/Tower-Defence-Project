@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 using GameDevHQ.Scripts.Managers;
 
@@ -25,8 +23,10 @@ namespace GameDevHQ.Scripts
 
         private void OnEnable()
         {
+            //get target
             _target = GameManger.Instance.RequestTarget();
 
+            //move to target
             _agent = GetComponent<NavMeshAgent>();
             if (_agent != null)
             {
@@ -35,10 +35,10 @@ namespace GameDevHQ.Scripts
             }
         }
 
-        //TOREMOVE For debug purposes only
-        private void Update()
+        //deactivate enemy when it reaches target
+        private void OnTriggerEnter(Collider other)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (other.gameObject.tag == "Target")
                 this.gameObject.SetActive(false);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -6,51 +7,41 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class GameManger : MonoSingleton<GameManger>
     {
-        [Range(1, 20)]
         [SerializeField]
-        int _waveSize = 10;
-
-        [SerializeField]
-        int _numberOfWaves = 3;
-
-        [SerializeField]
-        float _delayBetweenSpawning = 5f;
+        float _delayBetweenWaves = 5f;
 
         [SerializeField]
         private Transform _targetDestination;
 
-        private int _currentWave = 1;
-        private bool _waveStarted = false;
+        [SerializeField]
+        private List<Wave> _waves = new List<Wave>();
 
-        private void Update()
+        private int _currentWave = 1;
+
+        private void Start()
         {
-            //check if there is a wave going & if the max number of waves is reached
-            if (_currentWave <= _numberOfWaves && _waveStarted == false)
-            {
-                //start wave
-                print("starting wave " + _currentWave); //TO REMOVE
-                _waveStarted = true;
-                StartCoroutine(EnemyWave());
-            }
+            StartCoroutine(StartWaves());
         }
 
-        IEnumerator EnemyWave()
+        IEnumerator StartWaves()
         {
-            int i = 0;
-
-            while (i < (_waveSize * _currentWave)) //wave size to increase per wave
+            //read from the current wave data
+            foreach (var wave in _waves)
             {
-                //spawn the enemy
-                SpawnManager.Instance.SpawnEnemy();
-
-                //have a delay between each enemy spawned 
-                yield return new WaitForSeconds(_delayBetweenSpawning);
-
-                i++;
+                print("starting wave " + _currentWave);
+                //instantiate the wave
+                foreach (var obj in wave.sequenceOfEnemies)
+                    {
+                        //instantiate them
+                        SpawnManager.Instance.SpawnEnemy(obj);
+                        //wait a set amount of time between spawns
+                        yield return new WaitForSeconds(_waves[_currentWave].timeBetweenSpawns);
+                    }
+                //wait between waves
+                yield return new WaitForSeconds(_delayBetweenWaves);
+                _currentWave++;
             }
 
-            _currentWave++;
-            _waveStarted = false;
         }
 
         public Transform RequestTarget()

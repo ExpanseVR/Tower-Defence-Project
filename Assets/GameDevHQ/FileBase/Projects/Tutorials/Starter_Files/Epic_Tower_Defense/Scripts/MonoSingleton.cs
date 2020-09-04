@@ -12,7 +12,6 @@ namespace GameDevHQ.Scripts
             {
                 if (_instance == null)
                 {
-                    _instance = (T)FindObjectOfType(typeof(T)); //JON <--- Need this or they keep coming up NULL.
                     Debug.Log(typeof(T).ToString() + " is NULL");
                 }
 
@@ -20,7 +19,7 @@ namespace GameDevHQ.Scripts
             }
         }
 
-        private void AWAKE()
+        private void Awake()
         {
             _instance = this as T;
         }
