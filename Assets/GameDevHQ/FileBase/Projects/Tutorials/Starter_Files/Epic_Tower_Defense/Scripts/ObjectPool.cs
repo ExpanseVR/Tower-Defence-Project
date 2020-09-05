@@ -16,7 +16,7 @@ namespace GameDevHQ.Scripts
                 if (_objectPool[i].activeSelf == false)
                 {
                     //check if disable object is of type needed
-                    if (_objectPool[i].gameObject.tag == objectTypeToFind.gameObject.tag)
+                    if (_objectPool[i].gameObject.CompareTag(objectTypeToFind.gameObject.tag))
                         return _objectPool[i];
                 }
             }

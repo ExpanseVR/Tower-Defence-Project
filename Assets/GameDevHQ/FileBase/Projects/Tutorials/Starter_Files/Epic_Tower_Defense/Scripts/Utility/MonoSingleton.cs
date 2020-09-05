@@ -1,7 +1,6 @@
-﻿using UnityEditorInternal;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace GameDevHQ.Scripts
+namespace GameDevHQ.Scripts.Utility
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {

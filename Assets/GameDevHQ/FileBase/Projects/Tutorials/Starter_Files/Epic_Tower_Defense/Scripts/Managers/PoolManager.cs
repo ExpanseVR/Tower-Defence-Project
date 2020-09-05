@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using GameDevHQ.Scripts.Utility;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 namespace GameDevHQ.Scripts.Managers

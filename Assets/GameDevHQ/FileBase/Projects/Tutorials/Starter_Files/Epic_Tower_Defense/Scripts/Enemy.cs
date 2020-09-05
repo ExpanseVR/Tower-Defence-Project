@@ -34,12 +34,5 @@ namespace GameDevHQ.Scripts
                 _agent.speed = _speed;
             }
         }
-
-        //deactivate enemy when it reaches target
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.tag == "Target")
-                this.gameObject.SetActive(false);
-        }
     }
 }
