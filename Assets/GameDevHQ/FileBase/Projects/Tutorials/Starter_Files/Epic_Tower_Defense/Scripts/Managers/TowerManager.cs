@@ -23,17 +23,25 @@ namespace GameDevHQ.Scripts.Managers
             //when build option is selected
             if (Input.GetKeyDown(KeyCode.T))
             {
-                //terrain is turned red???
+                //tower appears and follows mouse
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit rayHit;
+                if (Physics.Raycast(ray, out rayHit))
+                {
+                    Debug.Log("Ray Hit");
+                    Instantiate(_towerToPlace, rayHit.transform.position, Quaternion.identity);
+                }
 
+                //area of effect is red when not over predifinedArea
                 //& predefined areas turn green
+                //particle effect at available locactions
                 foreach (GameObject area in _predifinedArea)
                 {
-                    area.SetActive(true);
+                    area.SetActive(true); //change to event system
                 }
             }
-            //particle effect at available locactions
 
-            //turret appears when mouse over predefined area
+            //turret snaps to area when mouse over predefined area
             //left click to place tower
             //if enough warFunds
 
