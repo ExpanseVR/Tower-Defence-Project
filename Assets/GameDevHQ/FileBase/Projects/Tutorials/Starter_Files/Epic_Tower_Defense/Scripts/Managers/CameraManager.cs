@@ -31,7 +31,7 @@ namespace GameDevHQ.Scripts.Managers
 
         private void Start()
         {
-            CameraBounds.CameraBoundsHit += HitCameraBounds;
+            CameraBounds.OnCameraBoundsHit += HitCameraBounds;
         }
 
         private void Update()

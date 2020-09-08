@@ -30,8 +30,8 @@ namespace GameDevHQ.Scripts
             _agent = GetComponent<NavMeshAgent>();
             if (_agent != null)
             {
-                _agent.SetDestination(_target.position);
                 _agent.speed = _speed;
+                _agent.SetDestination(_target.position);
             }
         }
     }
