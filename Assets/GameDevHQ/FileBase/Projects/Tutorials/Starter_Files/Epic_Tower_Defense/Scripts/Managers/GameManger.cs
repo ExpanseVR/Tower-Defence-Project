@@ -8,6 +8,9 @@ namespace GameDevHQ.Scripts.Managers
     public class GameManger : MonoSingleton<GameManger>
     {
         [SerializeField]
+        int _warFunds;
+
+        [SerializeField]
         float _delayBetweenWaves = 5f;
 
         [SerializeField]
@@ -47,6 +50,16 @@ namespace GameDevHQ.Scripts.Managers
         public Transform RequestTarget()
         {
             return _targetDestination;
+        }
+
+        public int GetWarfunds()
+        {
+            return _warFunds;
+        }
+
+        public void SetWarFunds (int adjustment)
+        {
+            _warFunds += adjustment;
         }
     }
 }

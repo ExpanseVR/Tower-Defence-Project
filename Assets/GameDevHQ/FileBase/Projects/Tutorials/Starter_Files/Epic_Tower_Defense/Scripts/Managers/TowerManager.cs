@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using GameDevHQ.FileBase.Gatling_Gun;
 
 namespace GameDevHQ.Scripts.Managers
 {
@@ -11,7 +12,7 @@ namespace GameDevHQ.Scripts.Managers
         public static event Action ActivatePlaceHolders; //Better name?
         public static event Action PlaceTower;
         public static event Action Reset;
-        
+
         [SerializeField]
         GameObject _towerToPlace;
 
@@ -31,7 +32,7 @@ namespace GameDevHQ.Scripts.Managers
             //when build option is selected
             if (Input.GetKeyDown(KeyCode.T))
             {
-                //tower appears 
+                //tower appears
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit rayHit;
                 if (Physics.Raycast(ray, out rayHit))
@@ -63,7 +64,15 @@ namespace GameDevHQ.Scripts.Managers
             //left click to place tower
             if (Input.GetMouseButtonDown(0))
             {
+                int newTowerCost = _towerToPlace.GetComponent<Tower>().GetWarFundCost();
                 //if enough warFunds
+                if (GameManger.Instance.GetWarfunds() > newTowerCost)
+                {
+                    GameManger.Instance.SetWarFunds(-newTowerCost);
+                }
+                else
+                    _canPlaceTower = false;
+
                 if (_heldTowerIsActive == true && _canPlaceTower)
                 {
                     if (PlaceTower != null)
@@ -74,7 +83,6 @@ namespace GameDevHQ.Scripts.Managers
                     }
                 }
             }
-            //support multiple tower types.
 
             //right click cancels placement
             if (Input.GetMouseButtonDown(1))
@@ -121,6 +129,11 @@ namespace GameDevHQ.Scripts.Managers
 
             _heldTowerIsActive = false;
             _canPlaceTower = false;
+        }
+
+        public GameObject GetTower()
+        {
+            return _towerToPlace;
         }
     }
 }

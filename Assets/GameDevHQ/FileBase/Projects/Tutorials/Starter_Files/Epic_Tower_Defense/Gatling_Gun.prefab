@@ -9712,6 +9712,7 @@ GameObject:
   - component: {fileID: 4906241132317730289}
   - component: {fileID: 5012833960327620135}
   - component: {fileID: 4981065378588797719}
+  - component: {fileID: 5475539455784694826}
   m_Layer: 0
   m_Name: Gatling_Gun
   m_TagString: Untagged
@@ -9846,6 +9847,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5475539455784694826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4900793294024811813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6b3c1e1095b904bbf4df34fcc25039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _warFundCost: 150
 --- !u!1 &4900847173935404671
 GameObject:
   m_ObjectHideFlags: 0
