@@ -7,6 +7,8 @@ TagManager:
   - Target
   - CrabMech
   - RunMech
+  - Gatling_Gun_Lvl1
+  - Missile_Launcher_Lvl1
   layers:
   - Default
   - TransparentFX

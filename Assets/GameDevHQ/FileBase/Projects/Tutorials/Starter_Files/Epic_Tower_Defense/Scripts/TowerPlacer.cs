@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UIElements;
 
 namespace GameDevHQ.Scripts
 {
@@ -14,7 +14,7 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         GameObject _particles;
 
-        ObjectPool _towerPool = new ObjectPool();
+        //ObjectPool _towerPool = new ObjectPool();
         GameObject _currentTower;
 
         private bool _isActivated = false;
@@ -30,40 +30,20 @@ namespace GameDevHQ.Scripts
             _particles.SetActive(false);
         }
 
-        //prview towers when mouse is over object
+        //preview towers when mouse is over object
         private void Activate() //Better name?
         {
             _isActivated = true;
             if (!_isTowerPlaced)
             {
-                SetTower();
+                //SetTower();
                 _particles.SetActive(!_particles.activeSelf);
             }
         }
 
-        private void SetTower()
-        {
-            //get current tower being held
-            GameObject towerHeld = TowerManager.Instance.GetTower();
-
-            //check if there is already a tower
-            _currentTower = _towerPool.CheckForDisabledGameObject(towerHeld);
-            if (_currentTower == null)
-            {
-                //if not instantiate it
-                _currentTower = Instantiate(towerHeld, this.transform.position, Quaternion.identity);
-                _currentTower.transform.SetParent(this.transform);
-                _towerPool.AddNewObject(_currentTower);
-            }
-            _currentTower.SetActive(false);
-        }
-
         private void DeActivate()
         {
-            _isActivated = false;
             _particles.SetActive(false);
-            if (!_isTowerPlaced)
-                _currentTower.SetActive(false);
         }
 
         private void OnMouseEnter()
@@ -71,9 +51,11 @@ namespace GameDevHQ.Scripts
             //cant place on existing tower
             if (!_isTowerPlaced && _isActivated)
             {
-                _currentTower.SetActive(true);
-                _isMouseOver = true;
                 MouseOver();
+                _currentTower = TowerManager.Instance.GetTower();
+                _currentTower.transform.position = this.transform.position;
+                _isMouseOver = true;
+
             }
         }
 
@@ -81,7 +63,6 @@ namespace GameDevHQ.Scripts
         {
             if (!_isTowerPlaced && _isActivated)
             {
-                _currentTower.SetActive(false);
                 _isMouseOver = false;
                 MouseOver();
             }
@@ -94,6 +75,7 @@ namespace GameDevHQ.Scripts
                 _isTowerPlaced = true;
                 _particles.SetActive(false);
             }
+            _isActivated = false;
         }
     }
 }

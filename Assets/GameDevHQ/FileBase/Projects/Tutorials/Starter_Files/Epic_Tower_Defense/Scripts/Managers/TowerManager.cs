@@ -16,6 +16,8 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         GameObject _towerToPlace;
 
+        ObjectPool _towerPool = new ObjectPool();
+
         GameObject _towerHolding;
         bool _instantiatedTower = false;
         bool _heldTowerIsActive = false;
@@ -32,21 +34,21 @@ namespace GameDevHQ.Scripts.Managers
             //when build option is selected
             if (Input.GetKeyDown(KeyCode.T))
             {
+                if (_heldTowerIsActive)
+                    return;
                 //tower appears
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit rayHit;
                 if (Physics.Raycast(ray, out rayHit))
                 {
-                    if (_instantiatedTower == false)
+                    _towerHolding = _towerPool.CheckForDisabledGameObject(_towerToPlace);
+                    if (_towerHolding == null)
                     {
-                        _towerHolding = Instantiate(_towerToPlace, rayHit.point, Quaternion.identity);
-                        _instantiatedTower = true;
+                        _towerHolding = Instantiate(_towerToPlace);
+                        _towerPool.AddNewObject(_towerHolding);
                     }
-                    else
-                    {
-                        _towerHolding.transform.position = rayHit.point;
-                        _towerHolding.SetActive(true);
-                    }
+                    _towerHolding.SetActive(true);
+                    _towerHolding.transform.position = this.transform.position;
                     _heldTowerIsActive = true;
                 }
                 //particle effect at available locactions
@@ -73,12 +75,12 @@ namespace GameDevHQ.Scripts.Managers
                 else
                     _canPlaceTower = false;
 
-                if (_heldTowerIsActive == true && _canPlaceTower)
+                if (_canPlaceTower)
                 {
                     if (PlaceTower != null)
                     {
+                        PlacingTower();
                         PlaceTower();
-                        CancelPlacement();
                         _canPlaceTower = false;
                     }
                 }
@@ -111,7 +113,7 @@ namespace GameDevHQ.Scripts.Managers
         {
             if (_towerHolding != null)
             {
-                _towerHolding.SetActive(!_towerHolding.activeSelf);
+                _heldTowerIsActive = !_heldTowerIsActive;
                 _canPlaceTower = !_canPlaceTower;
             }
         }
@@ -122,18 +124,24 @@ namespace GameDevHQ.Scripts.Managers
             if (ActivatePlaceHolders != null)
                 Reset(); //Reset any active available tower placement spots
 
-            if (_instantiatedTower == true)
-            {
-                _towerHolding.SetActive(false); //if there is an instantiated tower deactivate it for later use;
-            }
+            _towerHolding.SetActive(false);
+            _heldTowerIsActive = false;
+            _canPlaceTower = false;
+        }
 
+        private void PlacingTower()
+        {
+            _towerHolding.transform.GetComponent<RangeColour>().SetRange(false);
+
+            if (ActivatePlaceHolders != null)
+                Reset(); //Reset any active available tower placement spots
             _heldTowerIsActive = false;
             _canPlaceTower = false;
         }
 
         public GameObject GetTower()
         {
-            return _towerToPlace;
+            return _towerHolding;
         }
     }
 }
