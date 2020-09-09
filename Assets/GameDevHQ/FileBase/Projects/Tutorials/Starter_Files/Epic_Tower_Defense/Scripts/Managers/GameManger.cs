@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.Scripts.Utility;
+using System;
 
 namespace GameDevHQ.Scripts.Managers
 {
     public class GameManger : MonoSingleton<GameManger>
     {
+        public static event Action WarFundsChanged;
+        public static event Action NewWaveStarted;
+
         [SerializeField]
         int _warFunds;
 
@@ -31,7 +35,7 @@ namespace GameDevHQ.Scripts.Managers
             //read from the current wave data
             foreach (var wave in _waves)
             {
-                print("starting wave " + _currentWave);
+                NewWaveStarted();
                 //instantiate the wave
                 foreach (var obj in wave.sequenceOfEnemies)
                     {
@@ -60,6 +64,17 @@ namespace GameDevHQ.Scripts.Managers
         public void SetWarFunds (int adjustment)
         {
             _warFunds += adjustment;
+            WarFundsChanged();
+        }
+
+        public int GetWaveCount()
+        {
+            return _waves.Count;
+        }
+
+        public int GetCurrentWave()
+        {
+            return _currentWave;
         }
     }
 }

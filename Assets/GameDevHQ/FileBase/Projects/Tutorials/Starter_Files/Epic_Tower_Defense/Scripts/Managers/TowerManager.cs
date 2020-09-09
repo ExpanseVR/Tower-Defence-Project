@@ -1,15 +1,12 @@
 ﻿using GameDevHQ.Scripts.Utility;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-using GameDevHQ.FileBase.Gatling_Gun;
 
 namespace GameDevHQ.Scripts.Managers
 {
     public class TowerManager : MonoSingleton<TowerManager>
     {
-        public static event Action ActivatePlaceHolders; //Better name?
+        public static event Action ActivateTowerZones; //Better name?
         public static event Action PlaceTower;
         public static event Action Reset;
 
@@ -18,14 +15,14 @@ namespace GameDevHQ.Scripts.Managers
 
         ObjectPool _towerPool = new ObjectPool();
 
-        GameObject _towerHolding;
-        bool _instantiatedTower = false;
+        GameObject _activeTowerHeld;
+        //bool _instantiatedTower = false;
         bool _heldTowerIsActive = false;
         bool _canPlaceTower = false;
 
         private void Start()
         {
-            TowerPlacer.MouseOver += CanPlace; 
+            TowerPlacementZone.MouseOver += CanPlace; 
         }
 
         // Update is called once per frame
@@ -41,19 +38,19 @@ namespace GameDevHQ.Scripts.Managers
                 RaycastHit rayHit;
                 if (Physics.Raycast(ray, out rayHit))
                 {
-                    _towerHolding = _towerPool.CheckForDisabledGameObject(_towerToPlace);
-                    if (_towerHolding == null)
+                    _activeTowerHeld = _towerPool.CheckForDisabledGameObject(_towerToPlace);
+                    if (_activeTowerHeld == null)
                     {
-                        _towerHolding = Instantiate(_towerToPlace);
-                        _towerPool.AddNewObject(_towerHolding);
+                        _activeTowerHeld = Instantiate(_towerToPlace);
+                        _towerPool.AddNewObject(_activeTowerHeld);
                     }
-                    _towerHolding.SetActive(true);
-                    _towerHolding.transform.position = this.transform.position;
+                    _activeTowerHeld.SetActive(true);
+                    _activeTowerHeld.transform.position = this.transform.position;
                     _heldTowerIsActive = true;
                 }
                 //particle effect at available locactions
-                if (ActivatePlaceHolders != null)
-                    ActivatePlaceHolders();
+                if (ActivateTowerZones != null)
+                    ActivateTowerZones();
             }
 
             HaveATowerToPlace();
@@ -66,17 +63,15 @@ namespace GameDevHQ.Scripts.Managers
             //left click to place tower
             if (Input.GetMouseButtonDown(0))
             {
-                int newTowerCost = _towerToPlace.GetComponent<Tower>().GetWarFundCost();
-                //if enough warFunds
-                if (GameManger.Instance.GetWarfunds() > newTowerCost)
-                {
-                    GameManger.Instance.SetWarFunds(-newTowerCost);
-                }
-                else
-                    _canPlaceTower = false;
-
                 if (_canPlaceTower)
                 {
+                    int newTowerCost = _towerToPlace.GetComponent<Tower>().GetWarFundCost();
+                    //if enough warFunds
+                    if (GameManger.Instance.GetWarfunds() > newTowerCost)
+                        GameManger.Instance.SetWarFunds(-newTowerCost);
+                    else
+                        return;
+
                     if (PlaceTower != null)
                     {
                         PlacingTower();
@@ -102,7 +97,7 @@ namespace GameDevHQ.Scripts.Managers
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit rayHit;
                 Physics.Raycast(ray, out rayHit);
-                _towerHolding.transform.position = rayHit.point;
+                _activeTowerHeld.transform.position = rayHit.point;
                 //area of effect is red when not over predifinedArea
                 //& predefined areas turn green
             }
@@ -111,7 +106,7 @@ namespace GameDevHQ.Scripts.Managers
         //turret snaps to area when mouse over predefined area
         private void CanPlace()
         {
-            if (_towerHolding != null)
+            if (_activeTowerHeld != null)
             {
                 _heldTowerIsActive = !_heldTowerIsActive;
                 _canPlaceTower = !_canPlaceTower;
@@ -121,19 +116,19 @@ namespace GameDevHQ.Scripts.Managers
 
         private void CancelPlacement()
         {
-            if (ActivatePlaceHolders != null)
+            if (ActivateTowerZones != null)
                 Reset(); //Reset any active available tower placement spots
 
-            _towerHolding.SetActive(false);
+            _activeTowerHeld.SetActive(false);
             _heldTowerIsActive = false;
             _canPlaceTower = false;
         }
 
         private void PlacingTower()
         {
-            _towerHolding.transform.GetComponent<RangeColour>().SetRange(false);
+            _activeTowerHeld.transform.GetComponent<RangeColour>().SetRange(false);
 
-            if (ActivatePlaceHolders != null)
+            if (ActivateTowerZones != null)
                 Reset(); //Reset any active available tower placement spots
             _heldTowerIsActive = false;
             _canPlaceTower = false;
@@ -141,7 +136,7 @@ namespace GameDevHQ.Scripts.Managers
 
         public GameObject GetTower()
         {
-            return _towerHolding;
+            return _activeTowerHeld;
         }
     }
 }

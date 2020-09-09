@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenSpawns: 5
   sequenceOfEnemies:
-  - {fileID: 9175724083240034106, guid: 5dd7fcce56fdd1a49bb357ce14a35ba8, type: 3}
-  - {fileID: 9175724083240034106, guid: 5dd7fcce56fdd1a49bb357ce14a35ba8, type: 3}
-  - {fileID: 4237395731619252991, guid: 4c065d396ced8b94687ec2f11c14b421, type: 3}
-  - {fileID: 4237395731619252991, guid: 4c065d396ced8b94687ec2f11c14b421, type: 3}
-  - {fileID: 4237395731619252991, guid: 4c065d396ced8b94687ec2f11c14b421, type: 3}
-  - {fileID: 9175724083240034106, guid: 5dd7fcce56fdd1a49bb357ce14a35ba8, type: 3}
-  - {fileID: 9175724083240034106, guid: 5dd7fcce56fdd1a49bb357ce14a35ba8, type: 3}
-  - {fileID: 4237395731619252991, guid: 4c065d396ced8b94687ec2f11c14b421, type: 3}
-  - {fileID: 4237395731619252991, guid: 4c065d396ced8b94687ec2f11c14b421, type: 3}
+  - {fileID: 9175724083240034106, guid: 8585184c6405702478bf37dc52f7bb1e, type: 3}
+  - {fileID: 4237395731619252991, guid: c1aa3a649b757d94f8a985b3d942c90d, type: 3}
+  - {fileID: 4237395731619252991, guid: c1aa3a649b757d94f8a985b3d942c90d, type: 3}
+  - {fileID: 9175724083240034106, guid: 8585184c6405702478bf37dc52f7bb1e, type: 3}
+  - {fileID: 9175724083240034106, guid: 8585184c6405702478bf37dc52f7bb1e, type: 3}
+  - {fileID: 9175724083240034106, guid: 8585184c6405702478bf37dc52f7bb1e, type: 3}
+  - {fileID: 4237395731619252991, guid: c1aa3a649b757d94f8a985b3d942c90d, type: 3}
+  - {fileID: 4237395731619252991, guid: c1aa3a649b757d94f8a985b3d942c90d, type: 3}
+  - {fileID: 4237395731619252991, guid: c1aa3a649b757d94f8a985b3d942c90d, type: 3}

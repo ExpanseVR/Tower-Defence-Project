@@ -111,9 +111,12 @@ namespace GameDevHQ.Scripts.Managers
                 //zoom in and out based on scroll
                 Vector3 cameraZoom = cam.transform.forward * mouseScroll * _cameraZoomSpeed * Time.deltaTime;
                 //restrctin zoom in and out levels
+                
                 Vector3 newCameraPos = transform.position + cameraZoom;
                 if (newCameraPos.y > _maxZoomIn && newCameraPos.y < _maxZoomOut)
                     transform.position = newCameraPos;
+                //newCameraPos.y = Mathf.Clamp(newCameraPos.y, _maxZoomIn, _maxZoomOut);
+                //transform.position = newCameraPos;
             }
         }
 

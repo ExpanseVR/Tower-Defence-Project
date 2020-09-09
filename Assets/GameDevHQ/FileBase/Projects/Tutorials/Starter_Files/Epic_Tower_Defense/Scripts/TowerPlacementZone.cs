@@ -1,13 +1,10 @@
 ﻿using GameDevHQ.Scripts.Managers;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace GameDevHQ.Scripts
 {
-    public class TowerPlacer : MonoBehaviour
+    public class TowerPlacementZone : MonoBehaviour
     {
         public static event Action MouseOver;
 
@@ -25,13 +22,14 @@ namespace GameDevHQ.Scripts
         void Start()
         {
             TowerManager.PlaceTower += PlaceTower;
-            TowerManager.ActivatePlaceHolders += Activate;
+            TowerManager.ActivateTowerZones += Activate;
             TowerManager.Reset += DeActivate;
             _particles.SetActive(false);
         }
 
-        //preview towers when mouse is over object
-        private void Activate() //Better name?
+        //available places start particle system
+        //and can have MouseOver interaction
+        private void Activate()
         {
             _isActivated = true;
             if (!_isTowerPlaced)
