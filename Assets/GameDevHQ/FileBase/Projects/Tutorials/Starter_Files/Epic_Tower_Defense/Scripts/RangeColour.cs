@@ -13,9 +13,9 @@ public class RangeColour : MonoBehaviour
 
     bool _isOver = false;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        TowerPlacementZone.MouseOver += SetColour;
+        TowerPlacementZone.onMouseOver += SetColour;
         _material.SetColor("_Color", Color.red);
     }
 
@@ -40,5 +40,10 @@ public class RangeColour : MonoBehaviour
     public void SetRange (bool isActive)
     {
         _range.SetActive(isActive);
+    }
+
+    private void OnDisable()
+    {
+        TowerPlacementZone.onMouseOver -= SetColour;
     }
 }

@@ -13,10 +13,14 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         Text _waveCounterUI;
 
+        private void OnEnable()
+        {
+            GameManger.onWarFundsChanged += UpdateWarFundsUI;
+            GameManger.onNewWaveStarted += UpdateWaveCounterUI;
+        }
+
         private void Start()
         {
-            GameManger.WarFundsChanged += UpdateWarFundsUI;
-            GameManger.NewWaveStarted += UpdateWaveCounterUI;
             _warFundsUI.text = GameManger.Instance.GetWarfunds().ToString();
         }
 
@@ -30,6 +34,12 @@ namespace GameDevHQ.Scripts.Managers
             string waves = GameManger.Instance.GetWaveCount().ToString();
             string currentWaves = GameManger.Instance.GetCurrentWave().ToString();
             _waveCounterUI.text = (currentWaves + " / " + waves);
+        }
+
+        private void OnDisable()
+        {
+            GameManger.onWarFundsChanged -= UpdateWarFundsUI;
+            GameManger.onNewWaveStarted -= UpdateWaveCounterUI;
         }
     }
 }

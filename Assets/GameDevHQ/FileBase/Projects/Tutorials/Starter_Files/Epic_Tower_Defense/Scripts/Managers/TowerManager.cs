@@ -6,9 +6,9 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class TowerManager : MonoSingleton<TowerManager>
     {
-        public static event Action ActivateTowerZones; //Better name?
-        public static event Action PlaceTower;
-        public static event Action Reset;
+        public static event Action onActivateTowerZones; //Better name?
+        public static event Action onPlaceTower;
+        public static event Action onReset;
 
         [SerializeField]
         GameObject _towerToPlace;
@@ -20,9 +20,9 @@ namespace GameDevHQ.Scripts.Managers
         bool _heldTowerIsActive = false;
         bool _canPlaceTower = false;
 
-        private void Start()
+        private void OnEnable()
         {
-            TowerPlacementZone.MouseOver += CanPlace; 
+            TowerPlacementZone.onMouseOver += CanPlace; 
         }
 
         // Update is called once per frame
@@ -42,15 +42,15 @@ namespace GameDevHQ.Scripts.Managers
                     if (_activeTowerHeld == null)
                     {
                         _activeTowerHeld = Instantiate(_towerToPlace);
-                        _towerPool.AddNewObject(_activeTowerHeld);
+                        //_towerPool.AddNewObject(_activeTowerHeld);
                     }
                     _activeTowerHeld.SetActive(true);
-                    _activeTowerHeld.transform.position = this.transform.position;
+                    _activeTowerHeld.transform.position = rayHit.point;
                     _heldTowerIsActive = true;
                 }
                 //particle effect at available locactions
-                if (ActivateTowerZones != null)
-                    ActivateTowerZones();
+                if (onActivateTowerZones != null)
+                    onActivateTowerZones();
             }
 
             HaveATowerToPlace();
@@ -72,10 +72,10 @@ namespace GameDevHQ.Scripts.Managers
                     else
                         return;
 
-                    if (PlaceTower != null)
+                    if (onPlaceTower != null)
                     {
                         PlacingTower();
-                        PlaceTower();
+                        onPlaceTower();
                         _canPlaceTower = false;
                     }
                 }
@@ -116,8 +116,8 @@ namespace GameDevHQ.Scripts.Managers
 
         private void CancelPlacement()
         {
-            if (ActivateTowerZones != null)
-                Reset(); //Reset any active available tower placement spots
+            if (onActivateTowerZones != null)
+                onReset(); //Reset any active available tower placement spots
 
             _activeTowerHeld.SetActive(false);
             _heldTowerIsActive = false;
@@ -128,8 +128,8 @@ namespace GameDevHQ.Scripts.Managers
         {
             _activeTowerHeld.transform.GetComponent<RangeColour>().SetRange(false);
 
-            if (ActivateTowerZones != null)
-                Reset(); //Reset any active available tower placement spots
+            if (onActivateTowerZones != null)
+                onReset(); //Reset any active available tower placement spots
             _heldTowerIsActive = false;
             _canPlaceTower = false;
         }
@@ -137,6 +137,11 @@ namespace GameDevHQ.Scripts.Managers
         public GameObject GetTower()
         {
             return _activeTowerHeld;
+        }
+
+        private void OnDisable()
+        {
+            TowerPlacementZone.onMouseOver -= CanPlace;
         }
     }
 }

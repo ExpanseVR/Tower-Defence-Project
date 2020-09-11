@@ -27,15 +27,5 @@ namespace GameDevHQ.Scripts.Managers
                 return null;
             }
         }
-
-        //instantiate new object, add to the pool and return the new object
-        public GameObject AddToExistingList(int listReference, GameObject objectToAdd)
-        {
-            GameObject newObject = Instantiate(objectToAdd);
-            newObject.transform.parent = this.transform;
-            _objectPoolList[listReference].AddNewObject(newObject);
-
-            return newObject;
-        }
     }
 }

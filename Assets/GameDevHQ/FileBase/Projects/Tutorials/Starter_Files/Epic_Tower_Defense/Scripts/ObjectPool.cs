@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace GameDevHQ.Scripts
         {
             for (int i = 0; i < _objectPool.Count; i++)
             {
-                //check if their is a disabled object
+                //check if there is a disabled object
                 if (_objectPool[i].activeSelf == false)
                 {
                     //check if disable object is of type needed
@@ -20,13 +21,18 @@ namespace GameDevHQ.Scripts
                         return _objectPool[i];
                 }
             }
-
-            return null;
+                        
+            //Instantiate Object if not in Pool, add it to the pool and Return the object
+            GameObject newObject = UnityEngine.Object.Instantiate(objectTypeToFind); //ASK JON <--- simplifying from GameObject does it matter?
+            AddNewObject(newObject);
+            return newObject;
         }
 
-        public void AddNewObject(GameObject newObject)
+        private void AddNewObject(GameObject newObject)
         {
             _objectPool.Add(newObject);
         }
+
+
     }
 }

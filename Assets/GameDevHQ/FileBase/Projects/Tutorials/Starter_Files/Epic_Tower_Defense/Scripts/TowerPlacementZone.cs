@@ -6,7 +6,7 @@ namespace GameDevHQ.Scripts
 {
     public class TowerPlacementZone : MonoBehaviour
     {
-        public static event Action MouseOver;
+        public static event Action onMouseOver;
 
         [SerializeField]
         GameObject _particles;
@@ -18,12 +18,16 @@ namespace GameDevHQ.Scripts
         private bool _isTowerPlaced = false;
         private bool _isMouseOver = false;
 
+        private void OnEnable()
+        {
+            TowerManager.onPlaceTower += PlaceTower;
+            TowerManager.onActivateTowerZones += Activate;
+            TowerManager.onReset += DeActivate;
+        }
+
         // Start is called before the first frame update
         void Start()
         {
-            TowerManager.PlaceTower += PlaceTower;
-            TowerManager.ActivateTowerZones += Activate;
-            TowerManager.Reset += DeActivate;
             _particles.SetActive(false);
         }
 
@@ -49,7 +53,7 @@ namespace GameDevHQ.Scripts
             //cant place on existing tower
             if (!_isTowerPlaced && _isActivated)
             {
-                MouseOver();
+                onMouseOver();
                 _currentTower = TowerManager.Instance.GetTower();
                 _currentTower.transform.position = this.transform.position;
                 _isMouseOver = true;
@@ -62,7 +66,7 @@ namespace GameDevHQ.Scripts
             if (!_isTowerPlaced && _isActivated)
             {
                 _isMouseOver = false;
-                MouseOver();
+                onMouseOver();
             }
         }
 
@@ -74,6 +78,13 @@ namespace GameDevHQ.Scripts
                 _particles.SetActive(false);
             }
             _isActivated = false;
+        }
+
+        private void OnDisable()
+        {
+            TowerManager.onPlaceTower -= PlaceTower;
+            TowerManager.onActivateTowerZones -= Activate;
+            TowerManager.onReset -= DeActivate;
         }
     }
 }

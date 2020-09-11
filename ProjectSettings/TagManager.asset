@@ -9,6 +9,7 @@ TagManager:
   - RunMech
   - Gatling_Gun_Lvl1
   - Missile_Launcher_Lvl1
+  - CameraRig
   layers:
   - Default
   - TransparentFX

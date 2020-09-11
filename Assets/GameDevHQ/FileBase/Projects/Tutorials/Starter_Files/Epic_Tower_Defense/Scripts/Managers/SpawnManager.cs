@@ -13,20 +13,14 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnEnable()
         {
+            //Creat a list to store the spawned mechs.
             _poolReference = PoolManager.Instance.CreateNewList();
         }
 
         public void SpawnEnemy(GameObject enemyToSpawn)
         {
-            //check if there is a disable enemy in enemy pool
-            //if their is retrieve enemy from the pool and set to the start
+            //Spawn enemy from the pool, set position to the spawn point and make sure it is active after coming out of the pool.
             GameObject newEnemy = PoolManager.Instance.ReturnPool(_poolReference).CheckForDisabledGameObject(enemyToSpawn);
-
-            if (newEnemy == null)
-            { 
-                //if not instantiate enemy
-                newEnemy = PoolManager.Instance.AddToExistingList(_poolReference, enemyToSpawn);
-            }
 
             newEnemy.transform.position = _spawnPoint.position;
             newEnemy.SetActive(true);

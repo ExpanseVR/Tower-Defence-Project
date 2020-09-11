@@ -8,15 +8,15 @@ namespace GameDevHQ.Scripts
 {
     public class CameraBounds : MonoBehaviour
     {
-        public static event Action OnCameraBoundsHit;
+        public static event Action onCameraBoundsHit;
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.GetComponent<CameraManager>() != null)
+            if (other.gameObject.tag == "CameraRig")
             {
                 Debug.Log("CameraBounds :: OnTriggerEnter");
-                if (OnCameraBoundsHit != null)
+                if (onCameraBoundsHit != null)
                 {
-                    OnCameraBoundsHit();
+                    onCameraBoundsHit();
                 }
             }
         }

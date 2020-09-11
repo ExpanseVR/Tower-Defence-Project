@@ -29,9 +29,9 @@ namespace GameDevHQ.Scripts.Managers
         private Vector3 _lastFrameDir;
         private bool _cameraBounds = false;
 
-        private void Start()
+        private void OnEnable()
         {
-            CameraBounds.OnCameraBoundsHit += HitCameraBounds;
+            CameraBounds.onCameraBoundsHit += HitCameraBounds;
         }
 
         private void Update()
@@ -123,6 +123,11 @@ namespace GameDevHQ.Scripts.Managers
         private void HitCameraBounds ()
         {
             _cameraBounds = !_cameraBounds;
+        }
+
+        private void OnDisable()
+        {
+            CameraBounds.onCameraBoundsHit -= HitCameraBounds;
         }
     }
 }

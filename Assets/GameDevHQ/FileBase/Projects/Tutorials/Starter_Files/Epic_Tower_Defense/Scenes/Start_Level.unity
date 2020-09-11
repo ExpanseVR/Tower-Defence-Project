@@ -510,7 +510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &52347284
 Transform:
   m_ObjectHideFlags: 0
@@ -902,7 +902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8847389c36922343ad6525f7a7fd9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _towerToPlace: {fileID: 4900793294024811813, guid: fcbfc49cb18734e408795c764229068f,
+  _towerToPlace: {fileID: 149147958091382328, guid: 24135638b14c6184196580737e0a9865,
     type: 3}
 --- !u!1001 &102890177
 PrefabInstance:
@@ -6167,7 +6167,7 @@ GameObject:
   - component: {fileID: 983644535}
   m_Layer: 0
   m_Name: CameraManager
-  m_TagString: Untagged
+  m_TagString: CameraRig
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6213,7 +6213,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 983644532}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}

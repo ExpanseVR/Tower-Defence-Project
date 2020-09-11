@@ -8,8 +8,8 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class GameManger : MonoSingleton<GameManger>
     {
-        public static event Action WarFundsChanged;
-        public static event Action NewWaveStarted;
+        public static event Action onWarFundsChanged;
+        public static event Action onNewWaveStarted;
 
         [SerializeField]
         int _warFunds;
@@ -35,7 +35,7 @@ namespace GameDevHQ.Scripts.Managers
             //read from the current wave data
             foreach (var wave in _waves)
             {
-                NewWaveStarted();
+                onNewWaveStarted();
                 //instantiate the wave
                 foreach (var obj in wave.sequenceOfEnemies)
                     {
@@ -64,7 +64,7 @@ namespace GameDevHQ.Scripts.Managers
         public void SetWarFunds (int adjustment)
         {
             _warFunds += adjustment;
-            WarFundsChanged();
+            onWarFundsChanged();
         }
 
         public int GetWaveCount()
