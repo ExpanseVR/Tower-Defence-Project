@@ -10,49 +10,21 @@ namespace GameDevHQ.Scripts.Managers
         public static event Action onPlaceTower;
         public static event Action onReset;
 
-        [SerializeField]
-        GameObject _towerToPlace;
-
         ObjectPool _towerPool = new ObjectPool();
 
-        GameObject _activeTowerHeld;
-        //bool _instantiatedTower = false;
+        GameObject _towerSelected;
         bool _heldTowerIsActive = false;
         bool _canPlaceTower = false;
 
         private void OnEnable()
         {
-            TowerPlacementZone.onMouseOver += CanPlace; 
+            TowerPlacementZone.onMouseOver += CanPlace;
+            UIManager.onArmorySelect += TowerSelected;
         }
 
         // Update is called once per frame
         void Update()
         {
-            //when build option is selected
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                if (_heldTowerIsActive)
-                    return;
-                //tower appears
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit rayHit;
-                if (Physics.Raycast(ray, out rayHit))
-                {
-                    _activeTowerHeld = _towerPool.CheckForDisabledGameObject(_towerToPlace);
-                    if (_activeTowerHeld == null)
-                    {
-                        _activeTowerHeld = Instantiate(_towerToPlace);
-                        //_towerPool.AddNewObject(_activeTowerHeld);
-                    }
-                    _activeTowerHeld.SetActive(true);
-                    _activeTowerHeld.transform.position = rayHit.point;
-                    _heldTowerIsActive = true;
-                }
-                //particle effect at available locactions
-                if (onActivateTowerZones != null)
-                    onActivateTowerZones();
-            }
-
             HaveATowerToPlace();
             
             MouseInput();
@@ -65,7 +37,8 @@ namespace GameDevHQ.Scripts.Managers
             {
                 if (_canPlaceTower)
                 {
-                    int newTowerCost = _towerToPlace.GetComponent<Tower>().GetWarFundCost();
+                    int newTowerCost = _towerSelected.GetComponent<ITower>().WarFundsRequired;
+
                     //if enough warFunds
                     if (GameManger.Instance.GetWarfunds() > newTowerCost)
                         GameManger.Instance.SetWarFunds(-newTowerCost);
@@ -97,7 +70,7 @@ namespace GameDevHQ.Scripts.Managers
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit rayHit;
                 Physics.Raycast(ray, out rayHit);
-                _activeTowerHeld.transform.position = rayHit.point;
+                _towerSelected.transform.position = rayHit.point;
                 //area of effect is red when not over predifinedArea
                 //& predefined areas turn green
             }
@@ -106,7 +79,7 @@ namespace GameDevHQ.Scripts.Managers
         //turret snaps to area when mouse over predefined area
         private void CanPlace()
         {
-            if (_activeTowerHeld != null)
+            if (_towerSelected != null)
             {
                 _heldTowerIsActive = !_heldTowerIsActive;
                 _canPlaceTower = !_canPlaceTower;
@@ -119,14 +92,14 @@ namespace GameDevHQ.Scripts.Managers
             if (onActivateTowerZones != null)
                 onReset(); //Reset any active available tower placement spots
 
-            _activeTowerHeld.SetActive(false);
+            _towerSelected.SetActive(false);
             _heldTowerIsActive = false;
             _canPlaceTower = false;
         }
 
         private void PlacingTower()
         {
-            _activeTowerHeld.transform.GetComponent<RangeColour>().SetRange(false);
+            _towerSelected.transform.GetComponent<RangeColour>().SetRange(false);
 
             if (onActivateTowerZones != null)
                 onReset(); //Reset any active available tower placement spots
@@ -134,14 +107,35 @@ namespace GameDevHQ.Scripts.Managers
             _canPlaceTower = false;
         }
 
+        public void TowerSelected(GameObject selectedTower)
+        {
+            if (_heldTowerIsActive)
+                return;
+            //tower appears
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
+            if (Physics.Raycast(ray, out rayHit))
+            {
+                _towerSelected = _towerPool.GetGameObjectFromPool(selectedTower);
+                _towerSelected.transform.parent = this.transform;
+                _towerSelected.transform.position = rayHit.point;
+                _towerSelected.SetActive(true);
+                _heldTowerIsActive = true;
+            }
+            //particle effect at available locactions
+            if (onActivateTowerZones != null)
+                onActivateTowerZones();
+        }
+        
         public GameObject GetTower()
         {
-            return _activeTowerHeld;
+            return _towerSelected;
         }
 
         private void OnDisable()
         {
             TowerPlacementZone.onMouseOver -= CanPlace;
+            UIManager.onArmorySelect -= TowerSelected;
         }
     }
 }

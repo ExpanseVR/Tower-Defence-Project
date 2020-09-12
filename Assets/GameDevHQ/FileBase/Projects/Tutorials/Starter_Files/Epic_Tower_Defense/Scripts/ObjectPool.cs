@@ -9,7 +9,7 @@ namespace GameDevHQ.Scripts
     {
         private List<GameObject> _objectPool = new List<GameObject>();
 
-        public GameObject CheckForDisabledGameObject(GameObject objectTypeToFind)
+        public GameObject GetGameObjectFromPool(GameObject objectTypeToFind)
         {
             for (int i = 0; i < _objectPool.Count; i++)
             {

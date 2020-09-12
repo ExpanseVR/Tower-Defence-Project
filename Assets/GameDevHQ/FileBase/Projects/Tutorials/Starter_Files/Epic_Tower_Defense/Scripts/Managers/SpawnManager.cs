@@ -20,9 +20,10 @@ namespace GameDevHQ.Scripts.Managers
         public void SpawnEnemy(GameObject enemyToSpawn)
         {
             //Spawn enemy from the pool, set position to the spawn point and make sure it is active after coming out of the pool.
-            GameObject newEnemy = PoolManager.Instance.ReturnPool(_poolReference).CheckForDisabledGameObject(enemyToSpawn);
+            GameObject newEnemy = PoolManager.Instance.ReturnPool(_poolReference).GetGameObjectFromPool(enemyToSpawn);
 
             newEnemy.transform.position = _spawnPoint.position;
+            newEnemy.transform.parent = this.transform;
             newEnemy.SetActive(true);
         }
     }

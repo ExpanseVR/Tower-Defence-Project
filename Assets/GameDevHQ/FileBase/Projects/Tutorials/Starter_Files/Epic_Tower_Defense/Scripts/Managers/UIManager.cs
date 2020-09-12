@@ -1,12 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameDevHQ.Scripts.Utility;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameDevHQ.Scripts.Managers
 {
-    public class UIManager : MonoBehaviour
+    public class UIManager : MonoSingleton<UIManager>
     {
+        public static event Action<GameObject> onArmorySelect;
+        
         [SerializeField]
         Text _warFundsUI;
 
@@ -34,6 +36,11 @@ namespace GameDevHQ.Scripts.Managers
             string waves = GameManger.Instance.GetWaveCount().ToString();
             string currentWaves = GameManger.Instance.GetCurrentWave().ToString();
             _waveCounterUI.text = (currentWaves + " / " + waves);
+        }
+
+        public void ArmorButton(GameObject armorSelected)
+        {
+            onArmorySelect(armorSelected);
         }
 
         private void OnDisable()

@@ -70,7 +70,6 @@ namespace GameDevHQ.Scripts.Managers
             //move camera in direction of bound
             if (cameraDirection != Vector3.zero)
             {
-
                 MoveCamera(cameraDirection);
             }
         }

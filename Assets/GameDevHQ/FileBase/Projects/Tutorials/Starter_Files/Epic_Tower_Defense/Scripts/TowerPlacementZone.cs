@@ -11,7 +11,6 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         GameObject _particles;
 
-        //ObjectPool _towerPool = new ObjectPool();
         GameObject _currentTower;
 
         private bool _isActivated = false;
@@ -75,6 +74,7 @@ namespace GameDevHQ.Scripts
             if (_isTowerPlaced == false && _isMouseOver)
             {
                 _isTowerPlaced = true;
+                _currentTower.transform.parent = this.transform;
                 _particles.SetActive(false);
             }
             _isActivated = false;

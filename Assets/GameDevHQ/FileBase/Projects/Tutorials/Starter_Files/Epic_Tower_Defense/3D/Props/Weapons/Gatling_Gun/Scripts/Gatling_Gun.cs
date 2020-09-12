@@ -21,6 +21,9 @@ namespace GameDevHQ.FileBase.Gatling_Gun
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
     public class Gatling_Gun : MonoBehaviour, ITower
     {
+        [SerializeField]
+        int _warFundsRequired;
+        
         private Transform _gunBarrel; //Reference to hold the gun barrel
         public GameObject Muzzle_Flash; //reference to the muzzle flash effect to play when firing
         public ParticleSystem bulletCasings; //reference to the bullet casing effect to play when firing
@@ -29,7 +32,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private AudioSource _audioSource; //reference to the audio source component
         private bool _startWeaponNoise = true;
 
-        public int WarFundsRequired { get; set; } = 150;
+       public int WarFundsRequired { get; set; }
 
         // Use this for initialization
         void Start()
@@ -40,6 +43,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.playOnAwake = false; //disabling play on awake
             _audioSource.loop = true; //making sure our sound effect loops
             _audioSource.clip = fireSound; //assign the clip to play
+
+            WarFundsRequired = _warFundsRequired; //set Interface variable from Serialized Variable;
         }
 
         // Update is called once per frame
