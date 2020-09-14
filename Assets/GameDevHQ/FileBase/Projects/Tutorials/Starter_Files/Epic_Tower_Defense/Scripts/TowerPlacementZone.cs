@@ -1,4 +1,5 @@
-﻿using GameDevHQ.Scripts.Managers;
+﻿using GameDevHQ.FileBase.Gatling_Gun;
+using GameDevHQ.Scripts.Managers;
 using System;
 using UnityEngine;
 
@@ -52,7 +53,8 @@ namespace GameDevHQ.Scripts
             //cant place on existing tower
             if (!_isTowerPlaced && _isActivated)
             {
-                onMouseOver();
+                if (onMouseOver != null)
+                    onMouseOver();
                 _currentTower = TowerManager.Instance.GetTower();
                 _currentTower.transform.position = this.transform.position;
                 _isMouseOver = true;
@@ -65,7 +67,8 @@ namespace GameDevHQ.Scripts
             if (!_isTowerPlaced && _isActivated)
             {
                 _isMouseOver = false;
-                onMouseOver();
+                if (onMouseOver != null)
+                    onMouseOver();
             }
         }
 
@@ -75,6 +78,7 @@ namespace GameDevHQ.Scripts
             {
                 _isTowerPlaced = true;
                 _currentTower.transform.parent = this.transform;
+                _currentTower.GetComponent<Tower>().EnableCollider();
                 _particles.SetActive(false);
             }
             _isActivated = false;

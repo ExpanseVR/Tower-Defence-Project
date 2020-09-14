@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using GameDevHQ.Scripts;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 
@@ -19,11 +21,12 @@ namespace GameDevHQ.FileBase.Gatling_Gun
     /// </summary>
 
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
-    public class Gatling_Gun : MonoBehaviour, ITower
+    public class Gatling_Gun : Tower
     {
+
         [SerializeField]
-        int _warFundsRequired;
-        
+        GameObject _turret;
+
         private Transform _gunBarrel; //Reference to hold the gun barrel
         public GameObject Muzzle_Flash; //reference to the muzzle flash effect to play when firing
         public ParticleSystem bulletCasings; //reference to the bullet casing effect to play when firing
@@ -32,10 +35,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private AudioSource _audioSource; //reference to the audio source component
         private bool _startWeaponNoise = true;
 
-       public int WarFundsRequired { get; set; }
-
         // Use this for initialization
-        void Start()
+        /*void Start()
         {
             _gunBarrel = GameObject.Find("Barrel_to_Spin").GetComponent<Transform>(); //assigning the transform of the gun barrel to the variable
             Muzzle_Flash.SetActive(false); //setting the initial state of the muzzle flash effect to off
@@ -43,32 +44,35 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.playOnAwake = false; //disabling play on awake
             _audioSource.loop = true; //making sure our sound effect loops
             _audioSource.clip = fireSound; //assign the clip to play
-
-            WarFundsRequired = _warFundsRequired; //set Interface variable from Serialized Variable;
-        }
+        }*/
 
         // Update is called once per frame
-        void Update()
+        /* void Update()
+         {
+             if (Input.GetMouseButton(0)) //Check for left click (held) user input
+             { 
+                 RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
+                 Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
+                 bulletCasings.Emit(1); //Emit the bullet casing particle effect  
+
+                 if (_startWeaponNoise == true) //checking if we need to start the gun sound
+                 {
+                     _audioSource.Play(); //play audio clip attached to audio source
+                     _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+                 }
+
+             }
+             else if (Input.GetMouseButtonUp(0)) //Check for left click (release) user input
+             {      
+                 Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
+                 _audioSource.Stop(); //stop the sound effect from playing
+                 _startWeaponNoise = true; //set the start weapon noise value to true
+             }
+         }*/
+
+        public override void AttackTarget(Vector3 targetDirection)
         {
-            /*if (Input.GetMouseButton(0)) //Check for left click (held) user input
-            { 
-                RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
-                Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
-                bulletCasings.Emit(1); //Emit the bullet casing particle effect  
-
-                if (_startWeaponNoise == true) //checking if we need to start the gun sound
-                {
-                    _audioSource.Play(); //play audio clip attached to audio source
-                    _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
-                }
-
-            }
-            else if (Input.GetMouseButtonUp(0)) //Check for left click (release) user input
-            {      
-                Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
-                _audioSource.Stop(); //stop the sound effect from playing
-                _startWeaponNoise = true; //set the start weapon noise value to true
-            }*/
+            _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
         }
 
         // Method to rotate gun barrel 

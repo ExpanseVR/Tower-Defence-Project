@@ -6,9 +6,11 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class TowerManager : MonoSingleton<TowerManager>
     {
-        public static event Action onActivateTowerZones; //Better name?
-        public static event Action onPlaceTower;
+        public static event Action onActivateTowerZones; //combine both of these and pass bool
         public static event Action onReset;
+
+        public static event Action onPlaceTower;
+
 
         ObjectPool _towerPool = new ObjectPool();
 
@@ -37,10 +39,10 @@ namespace GameDevHQ.Scripts.Managers
             {
                 if (_canPlaceTower)
                 {
-                    int newTowerCost = _towerSelected.GetComponent<ITower>().WarFundsRequired;
+                    int newTowerCost = _towerSelected.GetComponent<Tower>().WarFundsRequired();
 
                     //if enough warFunds
-                    if (GameManger.Instance.GetWarfunds() > newTowerCost)
+                    if (GameManger.Instance.GetWarfunds() >= newTowerCost)
                         GameManger.Instance.SetWarFunds(-newTowerCost);
                     else
                         return;

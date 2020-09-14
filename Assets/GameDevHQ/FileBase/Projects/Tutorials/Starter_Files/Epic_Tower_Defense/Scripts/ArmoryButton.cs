@@ -12,6 +12,13 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         GameObject _towerToSpawn;
 
+        int cost;
+
+        private void Start()
+        {
+            cost = _towerToSpawn.GetComponent<Tower>().WarFundsRequired();
+        }
+
         public void ButtonPressed ()
         {
             UIManager.Instance.ArmorButton(_towerToSpawn);

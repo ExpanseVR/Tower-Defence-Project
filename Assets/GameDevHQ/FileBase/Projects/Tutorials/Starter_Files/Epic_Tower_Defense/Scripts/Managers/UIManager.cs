@@ -40,7 +40,8 @@ namespace GameDevHQ.Scripts.Managers
 
         public void ArmorButton(GameObject armorSelected)
         {
-            onArmorySelect(armorSelected);
+            if (onArmorySelect != null)
+                onArmorySelect(armorSelected);
         }
 
         private void OnDisable()

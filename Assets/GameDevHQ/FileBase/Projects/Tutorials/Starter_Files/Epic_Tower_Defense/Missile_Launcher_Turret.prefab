@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 146258713945553280}
   - component: {fileID: 252237449608684574}
   - component: {fileID: -4561658967222704075}
+  - component: {fileID: 3404396603341732593}
   m_Layer: 0
   m_Name: Missile_Launcher_Turret
   m_TagString: Missile_Launcher_Lvl1
@@ -156,7 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f75a662e08584192823355ae4ac73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _warFundsRequired: 200
+  warFundsCost: 0
+  towerRange: 0
   _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147,
     type: 3}
   _misslePositions:
@@ -186,6 +188,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 0e055faabc67d6542a2ea979eb53d9be, type: 2}
   _range: {fileID: 3525319041397584016}
+--- !u!135 &3404396603341732593
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149147958091382328}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &149155388409997774
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.FileBase.Missle_Launcher.Missle;
+using GameDevHQ.Scripts;
 
 namespace GameDevHQ.FileBase.Missle_Launcher
 {
-    public class Missle_Launcher : MonoBehaviour, ITower
+    public class Missle_Launcher : Tower
     {
-        [SerializeField]
-        int _warFundsRequired;
-
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
         [SerializeField]
@@ -28,13 +26,6 @@ namespace GameDevHQ.FileBase.Missle_Launcher
         private float _destroyTime = 10.0f; //how long till the rockets get cleaned up
         private bool _launched; //bool to check if we launched the rockets
 
-        public int WarFundsRequired { get; set; }
-
-        private void Start()
-        {
-             WarFundsRequired = _warFundsRequired; //set Interface variable from Serialized Variable;
-        }
-
         /*private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space) && _launched == false) //check for space key and if we launched the rockets
@@ -43,6 +34,11 @@ namespace GameDevHQ.FileBase.Missle_Launcher
                 StartCoroutine(FireRocketsRoutine()); //start a coroutine that fires the rockets. 
             }
         }*/
+
+        public override void AttackTarget(Vector3 targetDirection)
+        {
+
+        }
 
         IEnumerator FireRocketsRoutine()
         {
