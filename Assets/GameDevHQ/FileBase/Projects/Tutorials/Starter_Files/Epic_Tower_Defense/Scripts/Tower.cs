@@ -16,7 +16,7 @@ namespace GameDevHQ.Scripts
         protected SphereCollider targetCollider;
 
 
-        protected void Start()
+        public virtual void Start()
         {
             targetCollider = transform.GetComponent<SphereCollider>();
             targetCollider.radius = towerRange;
@@ -32,15 +32,16 @@ namespace GameDevHQ.Scripts
             //if enemy in range
             if (targets.Count > 0)
             {
-                print("attacking");
                 //attack enemy
-                Vector3 currentTarget = targets[targets.Count -1].transform.position;
+                Vector3 currentTarget = targets[0].transform.position;
                 Vector3 targetDirection = (currentTarget - transform.position).normalized;
                 AttackTarget(targetDirection);
             }
         }
 
         public abstract void AttackTarget(Vector3 targetDirection);
+
+        public abstract void StopAttacking();
 
 
         //detect when mechs enter or exit range
@@ -57,11 +58,19 @@ namespace GameDevHQ.Scripts
             var isEnemy = other.transform.GetComponent<Enemy>();
             if (isEnemy != null)
             {
-                foreach (Enemy target in targets)
+                //check for enemy in queue and remove
+                int i = 0;
+                while (i < targets.Count)
                 {
-                    if (target.transform.name == isEnemy.transform.name)
-                        targets.Remove(target);
-                    return;
+                    if (targets[i].GetID() == isEnemy.GetID())
+                    {
+                        targets.Remove(isEnemy);
+                        //check if no more enemies in queue and stop attacking
+                        if (targets.Count == 0)
+                            StopAttacking();
+                        return;
+                    }
+                    i++;
                 }
             }
         }

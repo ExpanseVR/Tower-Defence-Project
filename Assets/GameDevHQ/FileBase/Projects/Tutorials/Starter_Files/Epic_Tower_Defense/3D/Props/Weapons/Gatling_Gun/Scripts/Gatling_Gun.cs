@@ -36,15 +36,16 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private bool _startWeaponNoise = true;
 
         // Use this for initialization
-        /*void Start()
+        public override void Start()
         {
+            base.Start();
             _gunBarrel = GameObject.Find("Barrel_to_Spin").GetComponent<Transform>(); //assigning the transform of the gun barrel to the variable
             Muzzle_Flash.SetActive(false); //setting the initial state of the muzzle flash effect to off
             _audioSource = GetComponent<AudioSource>(); //ssign the Audio Source to the reference variable
             _audioSource.playOnAwake = false; //disabling play on awake
             _audioSource.loop = true; //making sure our sound effect loops
             _audioSource.clip = fireSound; //assign the clip to play
-        }*/
+        }
 
         // Update is called once per frame
         /* void Update()
@@ -73,6 +74,22 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         public override void AttackTarget(Vector3 targetDirection)
         {
             _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
+            Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
+            bulletCasings.Emit(1); //Emit the bullet casing particle effect  
+
+            if (_startWeaponNoise == true) //checking if we need to start the gun sound
+            {
+                _audioSource.Play(); //play audio clip attached to audio source
+                _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+            }
+        }
+
+        public override void StopAttacking()
+        {
+            Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
+            _audioSource.Stop(); //stop the sound effect from playing
+            _startWeaponNoise = true; //set the start weapon noise value to true
         }
 
         // Method to rotate gun barrel 

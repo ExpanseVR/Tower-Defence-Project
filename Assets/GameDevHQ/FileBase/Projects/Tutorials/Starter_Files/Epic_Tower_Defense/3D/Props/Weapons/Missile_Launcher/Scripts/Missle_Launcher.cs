@@ -24,6 +24,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher
         private float _reloadTime; //time in between reloading the rockets
         [SerializeField]
         private float _destroyTime = 10.0f; //how long till the rockets get cleaned up
+        [SerializeField]
+        GameObject _turret; //Part of tower to rotate towards enemy
         private bool _launched; //bool to check if we launched the rockets
 
         /*private void Update()
@@ -36,6 +38,13 @@ namespace GameDevHQ.FileBase.Missle_Launcher
         }*/
 
         public override void AttackTarget(Vector3 targetDirection)
+        {
+            _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            _launched = true; //set the launch bool to true
+            StartCoroutine(FireRocketsRoutine());
+        }
+
+        public override void StopAttacking()
         {
 
         }

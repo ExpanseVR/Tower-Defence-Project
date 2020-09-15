@@ -21,6 +21,8 @@ namespace GameDevHQ.Scripts
         private Transform _target;
         private NavMeshAgent _agent;
 
+        private int _ID;
+
         private void OnEnable()
         {
             //get target
@@ -33,6 +35,16 @@ namespace GameDevHQ.Scripts
                 _agent.speed = _speed;
                 _agent.SetDestination(_target.position);
             }
+        }
+
+        public void SetID(int newID)
+        {
+            _ID = newID;
+        }
+
+        public int GetID ()
+        {
+            return _ID;
         }
     }
 }
