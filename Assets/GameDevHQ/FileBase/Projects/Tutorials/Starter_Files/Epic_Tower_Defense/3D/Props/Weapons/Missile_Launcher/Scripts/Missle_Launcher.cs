@@ -28,53 +28,58 @@ namespace GameDevHQ.FileBase.Missle_Launcher
         GameObject _turret; //Part of tower to rotate towards enemy
         private bool _launched; //bool to check if we launched the rockets
 
-        /*private void Update()
+        private int _missilePosCount;
+        GameObject[] _missilePool;
+        //TODO: Switch _missilePool to ObjectPool
+
+        private void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.Space) && _launched == false) //check for space key and if we launched the rockets
-            {
-                _launched = true; //set the launch bool to true
-                StartCoroutine(FireRocketsRoutine()); //start a coroutine that fires the rockets. 
-            }
-        }*/
+            _missilePosCount = 6;
+            _missilePool = new GameObject[_misslePositions.Length];
+        }
 
         protected override void AttackTarget(Vector3 targetDirection)
         {
             _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-            _launched = true; //set the launch bool to true
-            StartCoroutine(FireRocketsRoutine());
+            if (_launched == false)
+            {
+                _launched = true; //set the launch bool to true
+                StartCoroutine(FireRocketsRoutine());
+            }
         }
 
         protected override void StopAttacking()
         {
+            
+        }
 
+        private void MissileLocationCycle()
+        {
+            _missilePosCount++;
+            if (_missilePosCount >= _misslePositions.Length)
+                _missilePosCount = 0;
         }
 
         IEnumerator FireRocketsRoutine()
         {
-            for (int i = 0; i < _misslePositions.Length; i++) //for loop to iterate through each missle position
-            {
-                GameObject rocket = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
-
-                rocket.transform.parent = _misslePositions[i].transform; //set the rockets parent to the missle launch position 
-                rocket.transform.localPosition = Vector3.zero; //set the rocket position values to zero
-                rocket.transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
-                rocket.transform.parent = null; //set the rocket parent to null
-
-                rocket.GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_launchSpeed, _power, _fuseDelay, _destroyTime); //assign missle properties 
-
-                _misslePositions[i].SetActive(false); //turn off the rocket sitting in the turret to make it look like it fired
-
-                yield return new WaitForSeconds(_fireDelay); //wait for the firedelay
-            }
-
-            for (int i = 0; i < _misslePositions.Length; i++) //itterate through missle positions
-            {
-                yield return new WaitForSeconds(_reloadTime); //wait for reload time
-                _misslePositions[i].SetActive(true); //enable fake rocket to show ready to fire
-            }
+            MissileLocationCycle();
+            LoadRocket(_missilePosCount);        
+            yield return new WaitForSeconds(_fireDelay); //wait for the firedelay
+            _misslePositions[_missilePosCount].SetActive(true);
 
             _launched = false; //set launch bool to false
         }
+
+        private void LoadRocket(int rocketLocation)
+        {
+            GameObject newMissile = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
+            newMissile.transform.parent = _misslePositions[rocketLocation].transform; //set the rockets parent to the missle launch position
+             
+            newMissile.transform.localPosition = Vector3.zero; //set the rocket position values to zero
+            newMissile.transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
+            newMissile.GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_launchSpeed, _power, _fuseDelay, _destroyTime, targets[0]);
+            _missilePool[rocketLocation] = newMissile;
+            //_misslePositions[rocketLocation].SetActive(false); //hide missile in place to look like it shoots;
+        }
     }
 }
-

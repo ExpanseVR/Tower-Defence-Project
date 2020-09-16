@@ -12,8 +12,7 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         protected int towerRange;
 
-        //protected List<Enemy> targets = new List<Enemy>();
-        protected List<GameObject> _targets = new List<GameObject>();
+        protected List<GameObject> targets = new List<GameObject>();
         protected SphereCollider targetCollider;
 
 
@@ -34,14 +33,14 @@ namespace GameDevHQ.Scripts
         {
             if (other.tag == "CrabMech" || other.CompareTag("RunMech")) //Ask Jon any difference?
             {
-                _targets.Add(other.gameObject);
+                targets.Add(other.gameObject);
             }
         }
 
         protected void OnTriggerStay(Collider other)
         {
             //if enemy in range
-            if (_targets.Count > 0)
+            if (targets.Count > 0)
             {
                 //Attack enemy
                 AcquireTarget();
@@ -52,15 +51,15 @@ namespace GameDevHQ.Scripts
         {
             if (other.tag == "CrabMech" || other.CompareTag("RunMech"))
             {
-                _targets.Remove(other.gameObject);
-                if (_targets.Count == 0)
+                targets.Remove(other.gameObject);
+                if (targets.Count == 0)
                     StopAttacking();
             }
         }
 
         protected void AcquireTarget()
         {
-            Vector3 currentTarget = _targets[0].transform.position;
+            Vector3 currentTarget = targets[0].transform.position;
             Vector3 targetDirection = (currentTarget - transform.position).normalized;
             AttackTarget(targetDirection);
         }

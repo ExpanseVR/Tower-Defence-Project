@@ -172,7 +172,7 @@ MonoBehaviour:
   _fireDelay: 2
   _launchSpeed: 10
   _power: 20
-  _fuseDelay: 0
+  _fuseDelay: 1
   _reloadTime: 0
   _destroyTime: 10
   _turret: {fileID: 149453069388701646}

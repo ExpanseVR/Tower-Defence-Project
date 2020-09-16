@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace GameDevHQ.FileBase.Missle_Launcher.Missle
 {
@@ -27,6 +28,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
 
         private bool _fuseOut = false; //bool for if the rocket fuse
         private bool _trackRotation = false; //bool to track rotation of the rocket
+
+        private GameObject _target;
 
 
         // Use this for initialization
@@ -68,7 +71,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
             if (_thrust == true) //if thrust is true
             {
                 _rigidbody.useGravity = true; //enable gravity 
-                _rigidbody.velocity = transform.forward * _power; //set velocity multiplied by the power variable
+                _rigidbody.velocity = GetTargetDirection() * _power; //set velocity multiplied by the power variable
                 _thrust = false; //set thrust bool to false
                 _trackRotation = true; //track rotation bool set to true
             }
@@ -81,15 +84,25 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
 
         }
 
+        private Vector3 GetTargetDirection ()
+        {
+            //Get direction of target enemy relative to this missile;
+            Vector3 newDirection = _target.transform.position - this.transform.position;
+            return newDirection;
+        }
+
+
+
         /// <summary>
         /// This method is used to assign traits to our missle assigned from the launcher.
         /// </summary>
-        public void AssignMissleRules(float launchSpeed, float power, float fuseDelay, float destroyTimer)
+        public void AssignMissleRules(float launchSpeed, float power, float fuseDelay, float destroyTimer, GameObject target)
         {
             _launchSpeed = launchSpeed; //set the launch speed
             _power = power; //set the power
             _fuseDelay = fuseDelay; //set the fuse delay
             Destroy(this.gameObject, destroyTimer); //destroy the rocket after destroyTimer 
+            _target = target; //set rocket target
         }
     }
 }
