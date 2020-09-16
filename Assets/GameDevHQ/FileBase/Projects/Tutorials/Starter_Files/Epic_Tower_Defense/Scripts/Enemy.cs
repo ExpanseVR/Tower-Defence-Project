@@ -37,9 +37,9 @@ namespace GameDevHQ.Scripts
             }
         }
 
-        public void SetID(int newID)
+        private void Start()
         {
-            _ID = newID;
+            _ID = SpawnManager.Instance.GetNextID();
         }
 
         public int GetID ()

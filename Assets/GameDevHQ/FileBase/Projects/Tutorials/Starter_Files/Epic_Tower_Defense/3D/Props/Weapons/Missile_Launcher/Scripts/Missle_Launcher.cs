@@ -37,14 +37,14 @@ namespace GameDevHQ.FileBase.Missle_Launcher
             }
         }*/
 
-        public override void AttackTarget(Vector3 targetDirection)
+        protected override void AttackTarget(Vector3 targetDirection)
         {
             _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
             _launched = true; //set the launch bool to true
             StartCoroutine(FireRocketsRoutine());
         }
 
-        public override void StopAttacking()
+        protected override void StopAttacking()
         {
 
         }

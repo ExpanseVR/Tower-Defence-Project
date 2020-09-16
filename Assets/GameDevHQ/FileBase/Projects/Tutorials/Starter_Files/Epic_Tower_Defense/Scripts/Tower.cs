@@ -12,67 +12,57 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         protected int towerRange;
 
-        protected List<Enemy> targets = new List<Enemy>();
+        //protected List<Enemy> targets = new List<Enemy>();
+        protected List<GameObject> _targets = new List<GameObject>();
         protected SphereCollider targetCollider;
 
 
-        public virtual void Start()
+        protected virtual void Start()
         {
             targetCollider = transform.GetComponent<SphereCollider>();
             targetCollider.radius = towerRange;
         }
 
-        protected void Update()
-        {
-            AcquireTarget();
-        }
+        protected abstract void AttackTarget(Vector3 targetDirection);
 
-        private void AcquireTarget()
-        {
-            //if enemy in range
-            if (targets.Count > 0)
-            {
-                //attack enemy
-                Vector3 currentTarget = targets[0].transform.position;
-                Vector3 targetDirection = (currentTarget - transform.position).normalized;
-                AttackTarget(targetDirection);
-            }
-        }
-
-        public abstract void AttackTarget(Vector3 targetDirection);
-
-        public abstract void StopAttacking();
+        protected abstract void StopAttacking();
 
 
         //detect when mechs enter or exit range
 
         protected void OnTriggerEnter(Collider other)
         {
-            var isEnemy = other.transform.GetComponent<Enemy>();
-            if (isEnemy != null)
-                targets.Add(isEnemy);
+            if (other.tag == "CrabMech" || other.CompareTag("RunMech")) //Ask Jon any difference?
+            {
+                _targets.Add(other.gameObject);
+            }
         }
-  
+
+        protected void OnTriggerStay(Collider other)
+        {
+            //if enemy in range
+            if (_targets.Count > 0)
+            {
+                //Attack enemy
+                AcquireTarget();
+            }
+        }
+
         protected void OnTriggerExit(Collider other)
         {
-            var isEnemy = other.transform.GetComponent<Enemy>();
-            if (isEnemy != null)
+            if (other.tag == "CrabMech" || other.CompareTag("RunMech"))
             {
-                //check for enemy in queue and remove
-                int i = 0;
-                while (i < targets.Count)
-                {
-                    if (targets[i].GetID() == isEnemy.GetID())
-                    {
-                        targets.Remove(isEnemy);
-                        //check if no more enemies in queue and stop attacking
-                        if (targets.Count == 0)
-                            StopAttacking();
-                        return;
-                    }
-                    i++;
-                }
+                _targets.Remove(other.gameObject);
+                if (_targets.Count == 0)
+                    StopAttacking();
             }
+        }
+
+        protected void AcquireTarget()
+        {
+            Vector3 currentTarget = _targets[0].transform.position;
+            Vector3 targetDirection = (currentTarget - transform.position).normalized;
+            AttackTarget(targetDirection);
         }
 
         public void EnableCollider()

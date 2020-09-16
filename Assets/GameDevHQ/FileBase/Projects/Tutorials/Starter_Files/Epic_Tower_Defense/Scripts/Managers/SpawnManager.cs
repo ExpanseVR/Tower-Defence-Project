@@ -22,11 +22,15 @@ namespace GameDevHQ.Scripts.Managers
         {
             //Spawn enemy from the pool, set position to the spawn point and make sure it is active after coming out of the pool.
             GameObject newEnemy = PoolManager.Instance.ReturnPool(_poolReference).GetGameObjectFromPool(enemyToSpawn);
-            newEnemy.GetComponent<Enemy>().SetID(_spawncount++);
 
             newEnemy.transform.position = _spawnPoint.position;
             newEnemy.transform.parent = this.transform;
             newEnemy.SetActive(true);
+        }
+
+        public int GetNextID()
+        {
+            return _spawncount++;
         }
     }
 }
