@@ -44,8 +44,9 @@ namespace GameDevHQ.Scripts
         {
             //reset mech
             _isAlive = true;
-            _animator.SetTrigger("Alive");
-            _currentHealth = Health;
+            //_animator.SetTrigger("Alive");
+            _animator.SetBool("IsAlive", true);
+            _currentHealth = _health;
 
             //get target
             _target = GameManger.Instance.RequestTarget();
@@ -74,6 +75,7 @@ namespace GameDevHQ.Scripts
         public void TakeDamage(int damage)
         {
             //take damage
+            print("taking damage");
             _currentHealth -= damage;
             //play damage FX
             if (_damageFX != null)
@@ -93,7 +95,8 @@ namespace GameDevHQ.Scripts
                 //stop movement
                 _agent.isStopped = true;
                 //play death animation
-                _animator.SetTrigger("Death");
+                //_animator.SetTrigger("Death");
+                _animator.SetBool("IsAlive", false);
                 //and disable after x seconds
                 StartCoroutine(Disabled());
             }

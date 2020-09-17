@@ -89,5 +89,10 @@ namespace GameDevHQ.Scripts
         {
             return warFundsCost;
         }
+
+        public void RemoveFromPool (GameObject toRemove)
+        {
+            targets.Remove(toRemove);
+        }
     }
 }
