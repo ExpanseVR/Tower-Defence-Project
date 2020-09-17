@@ -59,7 +59,23 @@ namespace GameDevHQ.Scripts
 
         protected void AcquireTarget()
         {
-            Vector3 currentTarget = targets[0].transform.position;
+            //check target isnt dead
+            int targetCount = 0;
+            GameObject targetToCheck = targets[targetCount];
+            while (targetToCheck.GetComponent<Enemy>().IsAlive() == false && targetCount < targets.Count)
+            {
+                //if dead cycle to next target
+                targetCount++;
+                //unless no more targets
+                if (targetCount >= targets.Count)
+                {
+                    StopAttacking();
+                    return;
+                }
+                targetToCheck = targets[targetCount];
+            }
+
+            Vector3 currentTarget = targetToCheck.transform.position;
             Vector3 targetDirection = (currentTarget - transform.position).normalized;
             AttackTarget(targetDirection);
         }

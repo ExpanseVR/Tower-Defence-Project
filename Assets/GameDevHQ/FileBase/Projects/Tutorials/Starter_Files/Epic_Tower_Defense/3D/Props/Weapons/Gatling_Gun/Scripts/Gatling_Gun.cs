@@ -33,7 +33,14 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         public AudioClip fireSound; //Reference to the audio clip
 
         private AudioSource _audioSource; //reference to the audio source component
+
+        [SerializeField]
+        int _damageAmount;
+
+        [SerializeField]
+        float _damageDelay;
         private bool _startWeaponNoise = true;
+        private bool _canDamage = true;
 
         // Use this for initialization
         protected override void Start()
@@ -50,6 +57,10 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         protected override void AttackTarget(Vector3 targetDirection)
         {
             _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            //damage target at set times
+            if (_canDamage == true)
+                StartCoroutine(DamageTarget());
+
             RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
             Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
             bulletCasings.Emit(1); //Emit the bullet casing particle effect  
@@ -59,6 +70,15 @@ namespace GameDevHQ.FileBase.Gatling_Gun
                 _audioSource.Play(); //play audio clip attached to audio source
                 _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
             }
+        }
+
+        IEnumerator DamageTarget ()
+        {
+            _canDamage = false;
+            targets[0].GetComponent<Enemy>().TakeDamage(_damageAmount);
+            yield return new WaitForSeconds(_damageDelay);
+
+            _canDamage = true;
         }
 
         protected override void StopAttacking()
@@ -72,7 +92,6 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         void RotateBarrel() 
         {
             _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
-
         }
     }
 
