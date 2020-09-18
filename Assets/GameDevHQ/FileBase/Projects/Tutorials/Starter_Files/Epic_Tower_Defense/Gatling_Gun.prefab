@@ -9753,6 +9753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warFundsCost: 150
   towerRange: 4
+  _buttonImage: {fileID: 21300000, guid: 279be0d4fce3d4c999b7898952f03a09, type: 3}
   _turret: {fileID: 4900519208302305469}
   Muzzle_Flash: {fileID: 4900137742611831235}
   bulletCasings: {fileID: 5099842335264795073}

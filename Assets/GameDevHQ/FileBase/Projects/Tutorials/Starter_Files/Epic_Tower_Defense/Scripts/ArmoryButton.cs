@@ -9,19 +9,53 @@ namespace GameDevHQ.Scripts
 {
     public class ArmoryButton : MonoBehaviour
     {
-        [SerializeField]
-        GameObject _towerToSpawn;
+        public enum TowerType
+        {
+            GattlingGun,
+            MissileLauncher
+        }
 
-        int cost;
+        [SerializeField]
+        TowerType _towerType;
+
+        private int _towerID;
+        Tower _towerToSpawn;
+
+        [SerializeField]
+        Text _costText;
+        int _cost;
+
+        [SerializeField]
+        Image _towerButton;
+        Sprite _towerImage;
 
         private void Start()
         {
-            cost = _towerToSpawn.GetComponent<Tower>().WarFundsRequired();
+            switch (_towerType)
+            {
+                case TowerType.GattlingGun:
+                    _towerID = 0;
+                    break;
+                case TowerType.MissileLauncher:
+                    _towerID = 1;
+                    break;
+                default:
+                    Debug.Log("No tower selected :: ArmoryButton");
+                    break;
+            }
+
+            _towerToSpawn = GameManger.Instance.GetTowerType(_towerID);
+
+            _cost = _towerToSpawn.GetWarFundsRequired();
+            _costText.text = "$ " + _cost.ToString();
+
+            _towerImage = _towerToSpawn.GetButtonImage();
+            _towerButton.sprite = _towerImage;
         }
 
         public void ButtonPressed ()
         {
-            UIManager.Instance.ArmorButton(_towerToSpawn);
+            UIManager.Instance.ArmorButton(_towerToSpawn.gameObject);
         }
     }
 }

@@ -15,6 +15,9 @@ namespace GameDevHQ.Scripts.Managers
         int _warFunds;
 
         [SerializeField]
+        Tower[] _towersInArmoury = new Tower[2];
+
+        [SerializeField]
         float _delayBetweenWaves = 5f;
 
         [SerializeField]
@@ -75,6 +78,11 @@ namespace GameDevHQ.Scripts.Managers
         public int GetCurrentWave()
         {
             return _currentWave;
+        }
+
+        public Tower GetTowerType (int buttonID)
+        {
+            return _towersInArmoury[buttonID];
         }
     }
 }

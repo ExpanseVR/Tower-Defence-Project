@@ -1,7 +1,6 @@
-﻿using GameDevHQ.Scripts.Managers;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameDevHQ.Scripts
 {
@@ -12,6 +11,8 @@ namespace GameDevHQ.Scripts
         protected int warFundsCost;
         [SerializeField]
         protected int towerRange;
+        [SerializeField]
+        Sprite _buttonImage;
 
         //protected List<GameObject> targets = new List<GameObject>();
         protected List<Enemy> targets = new List<Enemy>();
@@ -85,9 +86,14 @@ namespace GameDevHQ.Scripts
             targetCollider.enabled = true;
         }
 
-        public int WarFundsRequired()
+        public int GetWarFundsRequired()
         {
             return warFundsCost;
+        }
+
+        public Sprite GetButtonImage()
+        {
+            return _buttonImage;
         }
     }
 }

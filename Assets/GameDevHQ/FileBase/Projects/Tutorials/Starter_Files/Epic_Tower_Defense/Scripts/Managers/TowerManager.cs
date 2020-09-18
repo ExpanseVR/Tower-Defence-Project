@@ -36,7 +36,7 @@ namespace GameDevHQ.Scripts.Managers
             {
                 if (_canPlaceTower)
                 {
-                    int newTowerCost = _towerSelected.GetComponent<Tower>().WarFundsRequired();
+                    int newTowerCost = _towerSelected.GetComponent<Tower>().GetWarFundsRequired();
 
                     //if enough warFunds
                     if (GameManger.Instance.GetWarfunds() >= newTowerCost)

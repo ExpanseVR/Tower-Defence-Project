@@ -160,6 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warFundsCost: 250
   towerRange: 5
+  _buttonImage: {fileID: 21300000, guid: 24d619bf31f654083b8f57e81027c9cc, type: 3}
   _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147,
     type: 3}
   _missileType: 1
