@@ -36,33 +36,36 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
         private Transform _target;
 
         private GameObject _explosionFX;
-        [SerializeField]
-        GameObject _rocketModel;
+        private bool _explosionFXSet = false;
         private int _missileDamage;
 
+       
+        private void OnEnable()
+        {
+            print("enabled");
+            StartCoroutine(SetLaunch());
+        }
+
+        IEnumerator SetLaunch()
+        {
+            _fuseOut = true; //set fuseOut to true
+            _launched = true; //set the launch bool to true 
+            _thrust = false; //set thrust bool to false
+
+            yield return new WaitForSeconds(_fuseDelay); //wait for the fuse delay
+
+            _initialLaunchTime = Time.time + 1.0f; //set the initial launch time
+        }
+
         // Use this for initialization
-        IEnumerator Start()
+        void Start()
         {
             _rigidbody = GetComponent<Rigidbody>(); //assign the rigidbody component 
             _audioSource = GetComponent<AudioSource>(); //assign the audiosource component
             _audioSource.pitch = Random.Range(0.7f, 1.9f); //randomize the pitch of the rocket audio
             _particle.Play(); //play the particles of the rocket
             _audioSource.Play(); //play the rocket sound
-
-            yield return new WaitForSeconds(_fuseDelay); //wait for the fuse delay
-
-            _initialLaunchTime = Time.time + 1.0f; //set the initial launch time
-            _fuseOut = true; //set fuseOut to true
-            _launched = true; //set the launch bool to true 
-            _thrust = false; //set thrust bool to false
-
         }
-
-        private void OnEnable()
-        {
-            _rocketModel.SetActive(true);
-        }
-
 
         // Update is called once per frame
         void FixedUpdate()
@@ -120,7 +123,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
             _launchSpeed = launchSpeed; //set the launch speed
             _power = power; //set the power
             _fuseDelay = fuseDelay; //set the fuse delay
-            Destroy(this.gameObject, destroyTimer); //destroy the rocket after destroyTimer 
+            //Destroy(this.gameObject, destroyTimer); //destroy the rocket after destroyTimer 
             _missileDamage = missileDamage;
         }
 
@@ -132,23 +135,18 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
 
                 if (_explosionPrefab != null)
                 {
-                    if (_explosionFX == null)
+                    if (_explosionFXSet == false)
+                    {
                         _explosionFX = Instantiate(_explosionPrefab, transform.position, Quaternion.identity); //instantiate explosion
+                        _explosionFXSet = true;
+                    }
                     else
                     {
-                        _explosionFX.transform.parent = null;
+                        _explosionFX.transform.position = this.transform.position;
                         _explosionFX.SetActive(true);
                     }
                 }
 
-                StartCoroutine(Cleanup());
-            }
-
-            IEnumerator Cleanup()
-            {
-                _rocketModel.SetActive(false);
-                yield return new WaitForSeconds(5f);
-                _explosionFX.transform.parent = this.transform;
                 this.gameObject.SetActive(false); //cleanup the rocket (this)
             }
         }

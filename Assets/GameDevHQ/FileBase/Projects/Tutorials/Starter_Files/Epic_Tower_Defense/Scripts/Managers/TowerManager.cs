@@ -8,13 +8,11 @@ namespace GameDevHQ.Scripts.Managers
     {
         public static event Action onActivateTowerZones; //combine both of these and pass bool
         public static event Action onReset;
-
         public static event Action onPlaceTower;
 
-
         ObjectPool _towerPool = new ObjectPool();
-
         GameObject _towerSelected;
+
         bool _heldTowerIsActive = false;
         bool _canPlaceTower = false;
 
@@ -28,7 +26,6 @@ namespace GameDevHQ.Scripts.Managers
         void Update()
         {
             HaveATowerToPlace();
-            
             MouseInput();
         }
 
@@ -47,12 +44,7 @@ namespace GameDevHQ.Scripts.Managers
                     else
                         return;
 
-                    if (onPlaceTower != null)
-                    {
-                        PlacingTower();
-                        onPlaceTower();
-                        _canPlaceTower = false;
-                    }
+                    PlacingTower();
                 }
             }
 
@@ -73,8 +65,6 @@ namespace GameDevHQ.Scripts.Managers
                 RaycastHit rayHit;
                 Physics.Raycast(ray, out rayHit);
                 _towerSelected.transform.position = rayHit.point;
-                //area of effect is red when not over predifinedArea
-                //& predefined areas turn green
             }
         }
 
@@ -88,11 +78,9 @@ namespace GameDevHQ.Scripts.Managers
             }
         }
 
-
         private void CancelPlacement()
         {
-            if (onActivateTowerZones != null)
-                onReset(); //Reset any active available tower placement spots
+            onReset?.Invoke(); ; //Reset any active available tower placement spots
 
             _towerSelected.SetActive(false);
             _heldTowerIsActive = false;
@@ -101,10 +89,9 @@ namespace GameDevHQ.Scripts.Managers
 
         private void PlacingTower()
         {
-            _towerSelected.transform.GetComponent<RangeColour>().SetRange(false);
+            onPlaceTower?.Invoke(); //Call onPlaceTower event if not null.
+            onReset?.Invoke(); //Reset any active available tower placement spots
 
-            if (onActivateTowerZones != null)
-                onReset(); //Reset any active available tower placement spots
             _heldTowerIsActive = false;
             _canPlaceTower = false;
         }
@@ -125,8 +112,7 @@ namespace GameDevHQ.Scripts.Managers
                 _heldTowerIsActive = true;
             }
             //particle effect at available locactions
-            if (onActivateTowerZones != null)
-                onActivateTowerZones();
+            onActivateTowerZones?.Invoke();
         }
         
         public GameObject GetTower()

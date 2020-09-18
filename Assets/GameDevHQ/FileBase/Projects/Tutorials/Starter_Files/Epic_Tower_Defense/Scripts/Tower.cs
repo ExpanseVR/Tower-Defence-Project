@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameDevHQ.Scripts.Managers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,6 @@ namespace GameDevHQ.Scripts
         protected SphereCollider targetCollider;
 
         protected Enemy _currentTarget;
-
 
         protected virtual void Start()
         {
@@ -89,10 +89,5 @@ namespace GameDevHQ.Scripts
         {
             return warFundsCost;
         }
-
-        /*public void RemoveFromPool (GameObject toRemove)
-        {
-            targets.Remove(toRemove);
-        }*/
     }
 }

@@ -85,13 +85,19 @@ namespace GameDevHQ.FileBase.Missle_Launcher
 
         private void LoadRocket(int rocketLocation)
         {
-            GameObject newMissile = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
-            newMissile.transform.parent = _misslePositions[rocketLocation].transform; //set the rockets parent to the missle launch position
-             
-            newMissile.transform.localPosition = Vector3.zero; //set the rocket position values to zero
-            newMissile.transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
-            newMissile.GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
-            _missilePool[rocketLocation] = newMissile;
+            if (_missilePool[rocketLocation] == null)
+            {
+                _missilePool[rocketLocation] = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
+                _missilePool[rocketLocation].transform.parent = _misslePositions[rocketLocation].transform; //set the rockets parent to the missle launch position
+            }
+            else
+            {
+                _missilePool[rocketLocation].transform.position = _misslePositions[rocketLocation].transform.position;
+                _missilePool[rocketLocation].SetActive(true);
+            }
+            _missilePool[rocketLocation].transform.localPosition = Vector3.zero; //set the rocket position values to zero
+            _missilePool[rocketLocation].transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
+            _missilePool[rocketLocation].GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
             //_misslePositions[rocketLocation].SetActive(false); //hide missile in place to look like it shoots;
         }
     }

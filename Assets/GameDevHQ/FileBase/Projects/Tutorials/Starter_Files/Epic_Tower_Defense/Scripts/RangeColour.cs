@@ -1,6 +1,7 @@
 ﻿using GameDevHQ.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using GameDevHQ.Scripts.Managers;
 using UnityEngine;
 
 public class RangeColour : MonoBehaviour
@@ -16,6 +17,7 @@ public class RangeColour : MonoBehaviour
     void OnEnable()
     {
         TowerPlacementZone.onMouseOver += SetColour;
+        TowerManager.onPlaceTower += DisableRangeFX;
         _material.SetColor("_Color", Color.red);
     }
 
@@ -42,8 +44,14 @@ public class RangeColour : MonoBehaviour
         _range.SetActive(isActive);
     }
 
+    void DisableRangeFX()
+    {
+        SetRange(false);
+    }
+
     private void OnDisable()
     {
         TowerPlacementZone.onMouseOver -= SetColour;
+        TowerManager.onPlaceTower -= DisableRangeFX;
     }
 }
