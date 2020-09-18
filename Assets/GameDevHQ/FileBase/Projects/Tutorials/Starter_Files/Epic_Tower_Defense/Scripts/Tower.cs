@@ -12,8 +12,11 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         protected int towerRange;
 
-        protected List<GameObject> targets = new List<GameObject>();
+        //protected List<GameObject> targets = new List<GameObject>();
+        protected List<Enemy> targets = new List<Enemy>();
         protected SphereCollider targetCollider;
+
+        protected Enemy _currentTarget;
 
 
         protected virtual void Start()
@@ -33,7 +36,8 @@ namespace GameDevHQ.Scripts
         {
             if (other.tag == "CrabMech" || other.CompareTag("RunMech")) //Ask Jon any difference?
             {
-                targets.Add(other.gameObject);
+                targets.Add(other.GetComponent<Enemy>());
+                _currentTarget = other.GetComponent<Enemy>();
             }
         }
 
@@ -51,7 +55,7 @@ namespace GameDevHQ.Scripts
         {
             if (other.tag == "CrabMech" || other.CompareTag("RunMech"))
             {
-                targets.Remove(other.gameObject);
+                targets.Remove(other.GetComponent<Enemy>());
                 if (targets.Count == 0)
                     StopAttacking();
             }
@@ -59,25 +63,21 @@ namespace GameDevHQ.Scripts
 
         protected void AcquireTarget()
         {
-            //check target isnt dead
-            int targetCount = 0;
-            GameObject targetToCheck = targets[targetCount];
-            while (targetToCheck.GetComponent<Enemy>().IsAlive() == false && targetCount < targets.Count)
+            //foreach (Enemy target in targets)
+            for (int i = 0; i < targets.Count; i++)
             {
-                //if dead cycle to next target
-                targetCount++;
-                //unless no more targets
-                if (targetCount >= targets.Count)
-                {
-                    StopAttacking();
-                    return;
-                }
-                targetToCheck = targets[targetCount];
+                if (targets[i].IsAlive() != true)
+                    targets.Remove(targets[i]);
             }
 
-            Vector3 currentTarget = targetToCheck.transform.position;
-            Vector3 targetDirection = (currentTarget - transform.position).normalized;
-            AttackTarget(targetDirection);
+            if (targets.Count == 0)
+                StopAttacking();
+            else
+            {
+                Vector3 currentTarget = targets[0].gameObject.transform.position;
+                Vector3 targetDirection = (currentTarget - transform.position).normalized;
+                AttackTarget(targetDirection);
+            }
         }
 
         public void EnableCollider()
@@ -90,9 +90,9 @@ namespace GameDevHQ.Scripts
             return warFundsCost;
         }
 
-        public void RemoveFromPool (GameObject toRemove)
+        /*public void RemoveFromPool (GameObject toRemove)
         {
             targets.Remove(toRemove);
-        }
+        }*/
     }
 }

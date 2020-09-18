@@ -75,7 +75,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         IEnumerator DamageTarget ()
         {
             _canDamage = false;
-            targets[0].GetComponent<Enemy>().TakeDamage(_damageAmount);
+            if (targets.Count > 0)
+                targets[0].GetComponent<Enemy>().TakeDamage(_damageAmount);
             yield return new WaitForSeconds(_damageDelay);
 
             _canDamage = true;

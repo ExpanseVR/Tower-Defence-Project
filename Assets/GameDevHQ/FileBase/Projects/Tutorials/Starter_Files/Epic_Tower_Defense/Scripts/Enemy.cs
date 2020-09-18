@@ -18,14 +18,13 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         private int _health;
 
+        public int Health { get => _health; set => _health = value; }
+
         [SerializeField]
         ParticleSystem _damageFX;
 
         [SerializeField]
         ParticleSystem _deathFX;
-
-        [SerializeField]
-        public int Health { get; set; }
 
         [SerializeField]
         Animator _animator;
@@ -46,7 +45,7 @@ namespace GameDevHQ.Scripts
             _isAlive = true;
             //_animator.SetTrigger("Alive");
             _animator.SetBool("IsAlive", true);
-            _currentHealth = _health;
+            _currentHealth = Health;
 
             //get target
             _target = GameManger.Instance.RequestTarget();

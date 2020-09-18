@@ -8,8 +8,16 @@ namespace GameDevHQ.FileBase.Missle_Launcher
 {
     public class Missle_Launcher : Tower
     {
+        public enum MissileType
+        {
+            Normal,
+            Homing
+        }
+
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
+        [SerializeField]
+        private MissileType _missileType; //type of missle to be launched
         [SerializeField]
         private GameObject[] _misslePositions; //array to hold the rocket positions on the turret
         [SerializeField]
@@ -30,6 +38,10 @@ namespace GameDevHQ.FileBase.Missle_Launcher
 
         private int _missilePosCount;
         GameObject[] _missilePool;
+
+        [SerializeField]
+        private int _missileDamage;
+
         //TODO: Switch _missilePool to ObjectPool
 
         private void OnEnable()
@@ -40,6 +52,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher
 
         protected override void AttackTarget(Vector3 targetDirection)
         {
+            targetDirection.y = 0;
             _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
             if (_launched == false)
             {
@@ -77,7 +90,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher
              
             newMissile.transform.localPosition = Vector3.zero; //set the rocket position values to zero
             newMissile.transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
-            newMissile.GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_launchSpeed, _power, _fuseDelay, _destroyTime, targets[0]);
+            newMissile.GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
             _missilePool[rocketLocation] = newMissile;
             //_misslePositions[rocketLocation].SetActive(false); //hide missile in place to look like it shoots;
         }
