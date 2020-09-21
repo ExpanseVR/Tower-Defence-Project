@@ -6,10 +6,6 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class TowerManager : MonoSingleton<TowerManager>
     {
-        public static event Action onActivateTowerZones; //combine both of these and pass bool
-        public static event Action onReset;
-        public static event Action onPlaceTower;
-
         ObjectPool _towerPool = new ObjectPool();
         GameObject _towerSelected;
 
@@ -18,8 +14,8 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnEnable()
         {
-            TowerPlacementZone.onMouseOver += CanPlace;
-            UIManager.onArmorySelect += TowerSelected;
+            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), CanPlace);
+            EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
 
         // Update is called once per frame
@@ -80,8 +76,7 @@ namespace GameDevHQ.Scripts.Managers
 
         private void CancelPlacement()
         {
-            onReset?.Invoke(); ; //Reset any active available tower placement spots
-
+            EventManager.Fire(EventManager.Events.ResetTowerZones.ToString());
             _towerSelected.SetActive(false);
             _heldTowerIsActive = false;
             _canPlaceTower = false;
@@ -89,8 +84,8 @@ namespace GameDevHQ.Scripts.Managers
 
         private void PlacingTower()
         {
-            onPlaceTower?.Invoke(); //Call onPlaceTower event if not null.
-            onReset?.Invoke(); //Reset any active available tower placement spots
+            EventManager.Fire(EventManager.Events.PlaceTower.ToString());
+            EventManager.Fire(EventManager.Events.ResetTowerZones.ToString());
 
             _heldTowerIsActive = false;
             _canPlaceTower = false;
@@ -112,7 +107,7 @@ namespace GameDevHQ.Scripts.Managers
                 _heldTowerIsActive = true;
             }
             //particle effect at available locactions
-            onActivateTowerZones?.Invoke();
+            EventManager.Fire(EventManager.Events.ActivateTowerZones.ToString());
         }
         
         public GameObject GetTower()
@@ -122,8 +117,8 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnDisable()
         {
-            TowerPlacementZone.onMouseOver -= CanPlace;
-            UIManager.onArmorySelect -= TowerSelected;
+            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), CanPlace);
+            EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
     }
 }

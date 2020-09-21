@@ -16,8 +16,8 @@ public class RangeColour : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        TowerPlacementZone.onMouseOver += SetColour;
-        TowerManager.onPlaceTower += DisableRangeFX;
+        EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), SetColour);
+        EventManager.Listen(EventManager.Events.PlaceTower.ToString(), DisableRangeFX);
         _material.SetColor("_Color", Color.red);
     }
 
@@ -51,7 +51,7 @@ public class RangeColour : MonoBehaviour
 
     private void OnDisable()
     {
-        TowerPlacementZone.onMouseOver -= SetColour;
-        TowerManager.onPlaceTower -= DisableRangeFX;
+        EventManager.StopListening(EventManager.Events.MouseOverTowerZone.ToString(), SetColour);
+        EventManager.StopListening(EventManager.Events.PlaceTower.ToString(), DisableRangeFX);
     }
 }

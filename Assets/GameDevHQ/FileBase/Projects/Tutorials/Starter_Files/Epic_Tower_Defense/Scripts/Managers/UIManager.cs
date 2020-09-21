@@ -7,8 +7,6 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class UIManager : MonoSingleton<UIManager>
     {
-        public static event Action<GameObject> onArmorySelect;
-        
         [SerializeField]
         Text _warFundsUI;
 
@@ -17,9 +15,9 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnEnable()
         {
-            //GameManger.onWarFundsChanged += UpdateWarFundsUI;
-            EventManager.Listen("WarFundsChanged", UpdateWarFundsUI);
-            EventManager.Listen("NewWaveStarted", UpdateWaveCounterUI);
+            //Subscribe to EventsManger for UI interaction
+            EventManager.Listen(EventManager.Events.WarFundsChanged.ToString(), UpdateWarFundsUI);
+            EventManager.Listen(EventManager.Events.NewWaveStarted.ToString(), UpdateWaveCounterUI);
         }
 
         private void Start()
@@ -41,14 +39,13 @@ namespace GameDevHQ.Scripts.Managers
 
         public void ArmorButton(GameObject armorSelected)
         {
-            if (onArmorySelect != null)
-                onArmorySelect(armorSelected);
+            EventManager.Fire(EventManager.Events.UIArmorySelected.ToString(), armorSelected);
         }
 
         private void OnDisable()
         {
-            EventManager.StopListening("WarFundsChanged");
-            EventManager.StopListening("UpdateWaveCounterUI");
+            EventManager.StopListening(EventManager.Events.WarFundsChanged.ToString(), UpdateWarFundsUI);
+            EventManager.StopListening(EventManager.Events.NewWaveStarted.ToString(), UpdateWaveCounterUI);
         }
     }
 }

@@ -7,8 +7,6 @@ namespace GameDevHQ.Scripts
 {
     public class TowerPlacementZone : MonoBehaviour
     {
-        public static event Action onMouseOver;
-
         [SerializeField]
         GameObject _particles;
 
@@ -20,12 +18,11 @@ namespace GameDevHQ.Scripts
 
         private void OnEnable()
         {
-            TowerManager.onPlaceTower += PlaceTower;
-            TowerManager.onActivateTowerZones += Activate;
-            TowerManager.onReset += DeActivate;
+            EventManager.Listen(EventManager.Events.PlaceTower.ToString(), PlaceTower);
+            EventManager.Listen(EventManager.Events.ActivateTowerZones.ToString(), Activate);
+            EventManager.Listen(EventManager.Events.ResetTowerZones.ToString(), DeActivate);
         }
 
-        // Start is called before the first frame update
         void Start()
         {
             _particles.SetActive(false);
@@ -37,10 +34,7 @@ namespace GameDevHQ.Scripts
         {
             _isActivated = true;
             if (!_isTowerPlaced)
-            {
-                //SetTower();
                 _particles.SetActive(!_particles.activeSelf);
-            }
         }
 
         private void DeActivate()
@@ -50,15 +44,21 @@ namespace GameDevHQ.Scripts
 
         private void OnMouseEnter()
         {
-            //cant place on existing tower
-            if (!_isTowerPlaced && _isActivated)
+            //check if available spot to place tower
+            if (_isActivated)
             {
-                if (onMouseOver != null)
-                    onMouseOver();
-                _currentTower = TowerManager.Instance.GetTower();
-                _currentTower.transform.position = this.transform.position;
-                _isMouseOver = true;
-
+                //check if tower already there
+                if (!_isTowerPlaced)
+                {
+                    EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
+                    _currentTower = TowerManager.Instance.GetTower();
+                    _currentTower.transform.position = this.transform.position;
+                    _isMouseOver = true;
+                }
+                else
+                {
+                    //check if can upgrade
+                }
             }
         }
 
@@ -67,8 +67,7 @@ namespace GameDevHQ.Scripts
             if (!_isTowerPlaced && _isActivated)
             {
                 _isMouseOver = false;
-                if (onMouseOver != null)
-                    onMouseOver();
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
             }
         }
 
@@ -86,9 +85,9 @@ namespace GameDevHQ.Scripts
 
         private void OnDisable()
         {
-            TowerManager.onPlaceTower -= PlaceTower;
-            TowerManager.onActivateTowerZones -= Activate;
-            TowerManager.onReset -= DeActivate;
+            EventManager.StopListening(EventManager.Events.PlaceTower.ToString(), PlaceTower);
+            EventManager.StopListening(EventManager.Events.ActivateTowerZones.ToString(), Activate);
+            EventManager.StopListening(EventManager.Events.ResetTowerZones.ToString(), DeActivate);
         }
     }
 }
