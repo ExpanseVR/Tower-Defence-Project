@@ -27,6 +27,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         [SerializeField]
         GameObject _turret;
 
+        [SerializeField]
         private Transform _gunBarrel; //Reference to hold the gun barrel
         public GameObject Muzzle_Flash; //reference to the muzzle flash effect to play when firing
         public ParticleSystem bulletCasings; //reference to the bullet casing effect to play when firing
@@ -46,12 +47,18 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         protected override void Start()
         {
             base.Start();
-            _gunBarrel = GameObject.Find("Barrel_to_Spin").GetComponent<Transform>(); //assigning the transform of the gun barrel to the variable
+            //_gunBarrel = GameObject.Find("Barrel_to_Spin").GetComponent<Transform>(); //assigning the transform of the gun barrel to the variable
             Muzzle_Flash.SetActive(false); //setting the initial state of the muzzle flash effect to off
             _audioSource = GetComponent<AudioSource>(); //ssign the Audio Source to the reference variable
             _audioSource.playOnAwake = false; //disabling play on awake
             _audioSource.loop = true; //making sure our sound effect loops
             _audioSource.clip = fireSound; //assign the clip to play
+        }
+
+        private void Update()
+        {
+            if (Input.GetKey(KeyCode.Space))
+                RotateBarrel();
         }
 
         protected override void AttackTarget(Vector3 targetDirection)
@@ -92,7 +99,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         // Method to rotate gun barrel 
         void RotateBarrel() 
         {
-            _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
+            _gunBarrel.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
         }
     }
 

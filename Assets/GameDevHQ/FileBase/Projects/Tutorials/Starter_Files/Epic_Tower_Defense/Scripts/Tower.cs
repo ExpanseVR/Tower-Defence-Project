@@ -30,7 +30,6 @@ namespace GameDevHQ.Scripts
 
         protected abstract void StopAttacking();
 
-
         //detect when mechs enter or exit range
 
         protected void OnTriggerEnter(Collider other)

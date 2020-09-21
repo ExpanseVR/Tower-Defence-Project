@@ -48,6 +48,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
 
         IEnumerator SetLaunch()
         {
+            Debug.Log("Couritine Called");
             _fuseOut = true; //set fuseOut to true
             _launched = true; //set the launch bool to true 
             _thrust = false; //set thrust bool to false

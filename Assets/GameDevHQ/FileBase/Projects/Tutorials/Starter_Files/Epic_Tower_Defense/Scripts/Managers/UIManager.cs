@@ -17,8 +17,9 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnEnable()
         {
-            GameManger.onWarFundsChanged += UpdateWarFundsUI;
-            GameManger.onNewWaveStarted += UpdateWaveCounterUI;
+            //GameManger.onWarFundsChanged += UpdateWarFundsUI;
+            EventManager.Listen("WarFundsChanged", UpdateWarFundsUI);
+            EventManager.Listen("NewWaveStarted", UpdateWaveCounterUI);
         }
 
         private void Start()
@@ -46,8 +47,8 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnDisable()
         {
-            GameManger.onWarFundsChanged -= UpdateWarFundsUI;
-            GameManger.onNewWaveStarted -= UpdateWaveCounterUI;
+            EventManager.StopListening("WarFundsChanged");
+            EventManager.StopListening("UpdateWaveCounterUI");
         }
     }
 }

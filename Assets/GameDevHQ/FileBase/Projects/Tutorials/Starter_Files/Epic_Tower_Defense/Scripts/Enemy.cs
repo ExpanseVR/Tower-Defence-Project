@@ -74,7 +74,6 @@ namespace GameDevHQ.Scripts
         public void TakeDamage(int damage)
         {
             //take damage
-            print("taking damage");
             _currentHealth -= damage;
             //play damage FX
             if (_damageFX != null)
