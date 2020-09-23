@@ -29,7 +29,7 @@ namespace GameDevHQ.Scripts
 
         protected Enemy _currentTarget;
 
-        protected virtual void Start()
+        public virtual void OnEnable()
         {
             targetCollider = transform.GetComponent<SphereCollider>();
             targetCollider.radius = towerRange;
@@ -108,6 +108,11 @@ namespace GameDevHQ.Scripts
         {
             image = _upgradeTowerLevelOne.GetButtonImage();
             cost = _upgradeTowerLevelOne.GetWarFundsRequired();
+        }
+
+        public GameObject GetUpgradeTower ()
+        {
+            return _upgradeTowerLevelOne.gameObject;
         }
 
         public void GetSellDetails(out Sprite image, out int refund)

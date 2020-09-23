@@ -10244,7 +10244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b03dc0a8c48f674c8f90d20b671326c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _warFunds: 500
+  _warFunds: 600
   _towersInArmoury:
   - {fileID: 5012833960327620135, guid: fcbfc49cb18734e408795c764229068f, type: 3}
   - {fileID: 252237449608684574, guid: 24135638b14c6184196580737e0a9865, type: 3}
@@ -14348,8 +14348,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: ButtonPressed
+      - m_Target: {fileID: 164876046}
+        m_MethodName: UpgradeTower
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

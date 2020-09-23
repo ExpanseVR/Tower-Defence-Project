@@ -45,8 +45,9 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         private int _missilePosLeftCount;
         GameObject[] _missilePoolLeft;
 
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
             _missilePosRightCount = 6;
             _missilePoolRight = new GameObject[_misslePositionsRight.Length];            
             _missilePosLeftCount = 6;

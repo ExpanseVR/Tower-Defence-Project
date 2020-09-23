@@ -1,6 +1,7 @@
 ﻿using GameDevHQ.Scripts.Utility;
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 
 namespace GameDevHQ.Scripts.Managers
 {
@@ -124,14 +125,21 @@ namespace GameDevHQ.Scripts.Managers
             RaycastHit rayHit;
             if (Physics.Raycast(ray, out rayHit))
             {
-                _towerSelected = _towerPool.GetGameObjectFromPool(selectedTower);
-                _towerSelected.transform.parent = this.transform;
-                _towerSelected.transform.position = rayHit.point;
-                _towerSelected.SetActive(true);
+                _towerSelected = GetNewTower(selectedTower, rayHit.point, this.transform);
                 _heldTowerIsActive = true;
             }
             //particle effect at available locactions
             EventManager.Fire(EventManager.Events.ActivateTowerZones.ToString());
+        }
+
+        public GameObject GetNewTower (GameObject selectedTower, Vector3 startPos, Transform towerParent)
+        {
+            GameObject newTower;
+            newTower = _towerPool.GetGameObjectFromPool(selectedTower);
+            newTower.transform.position = startPos;
+            newTower.transform.parent = towerParent;
+            newTower.SetActive(true);
+            return newTower;
         }
 
         public void TowerPlaced(TowerPlacementZone towerPlacementZone, bool isTowerPlaced)
@@ -140,9 +148,11 @@ namespace GameDevHQ.Scripts.Managers
             towerPlaced = isTowerPlaced;
         }
 
-        public void ResetTower (Tower towerToReset)
+        public void ResetTower (Tower towerToReset, bool placementZoneInUse)
         {
-            _towerPlacementZone.Reset();
+            //reset tower placement zone
+            _towerPlacementZone.Reset(placementZoneInUse);
+            //reset tower collider, activate range FX and deactivate tower (to go back into pool)
             towerToReset.SetCollider(false);
             towerToReset.GetComponent<RangeColour>().SetRange(true); //To refactor GetComponent Call
             towerToReset.gameObject.SetActive(false);

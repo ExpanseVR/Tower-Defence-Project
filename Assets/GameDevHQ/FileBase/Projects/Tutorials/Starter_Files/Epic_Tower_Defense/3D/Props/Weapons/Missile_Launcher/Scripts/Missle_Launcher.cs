@@ -44,8 +44,9 @@ namespace GameDevHQ.FileBase.Missle_Launcher
 
         //TODO: Switch _missilePool to ObjectPool
 
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
             _missilePosCount = 6;
             _missilePool = new GameObject[_misslePositions.Length];
         }

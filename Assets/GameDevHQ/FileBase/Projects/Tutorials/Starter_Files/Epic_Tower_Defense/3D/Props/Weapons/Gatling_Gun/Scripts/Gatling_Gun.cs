@@ -44,10 +44,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private bool _canDamage = true;
 
         // Use this for initialization
-        protected override void Start()
+        void Start()
         {
-            base.Start();
-            //_gunBarrel = GameObject.Find("Barrel_to_Spin").GetComponent<Transform>(); //assigning the transform of the gun barrel to the variable
             Muzzle_Flash.SetActive(false); //setting the initial state of the muzzle flash effect to off
             _audioSource = GetComponent<AudioSource>(); //ssign the Audio Source to the reference variable
             _audioSource.playOnAwake = false; //disabling play on awake

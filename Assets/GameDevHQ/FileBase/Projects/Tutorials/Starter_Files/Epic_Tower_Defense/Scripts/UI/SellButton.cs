@@ -1,4 +1,5 @@
-﻿using GameDevHQ.Scripts;
+﻿using Boo.Lang.Environments;
+using GameDevHQ.Scripts;
 using GameDevHQ.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,20 +16,24 @@ namespace GameDevHQ.UI
         Image _towerButton;
         Sprite _sellImage;
 
-        Tower _towerToUpgrade;
+        Tower _towerToSell;
 
-        public void SetButton(Tower towerToUpgrade)
+        public void SetButton(Tower towerToSell)
         {
-            this._towerToUpgrade = towerToUpgrade;
-            _towerToUpgrade.GetSellDetails(out _sellImage, out _refund);
+            //update button with selected tower sell options
+            this._towerToSell = towerToSell;
+            _towerToSell.GetSellDetails(out _sellImage, out _refund);
             _towerButton.sprite = _sellImage;
             _refundText.text = "+ $" + _refund.ToString();
         }
 
         public void SellTower()
         {
+            //close upgrade UI
             UIManager.Instance.CancelUpgradeUI();
-            TowerManager.Instance.ResetTower(_towerToUpgrade);
+            //reset tower sold
+            TowerManager.Instance.ResetTower(_towerToSell, false);
+            //add refund to warfunds
             GameManger.Instance.SetWarFunds(_refund);
         }
     }

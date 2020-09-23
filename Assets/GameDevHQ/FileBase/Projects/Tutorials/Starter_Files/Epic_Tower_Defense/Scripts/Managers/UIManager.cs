@@ -24,6 +24,7 @@ namespace GameDevHQ.Scripts.Managers
         SellButton _sellButton;
 
         private GameObject _towerToUprade;
+        private TowerPlacementZone _placementZone;
 
         private void OnEnable()
         {
@@ -57,7 +58,7 @@ namespace GameDevHQ.Scripts.Managers
             _upgradeButton.gameObject.SetActive(true);
 
             Tower tower = _towerToUprade.GetComponent<Tower>();
-            _upgradeButton.SetButton(tower);
+            _upgradeButton.SetButton(tower, _placementZone);
             _sellButton.SetButton(tower);
 
             _armoryButtons[0].gameObject.SetActive(false);
@@ -73,8 +74,9 @@ namespace GameDevHQ.Scripts.Managers
         }
 
         //get tower that may be upgraded
-        public void WhichTowerPlaced(GameObject towerPlaced)
+        public void WhichTowerPlaced(GameObject towerPlaced, TowerPlacementZone placementZone)
         {
+            this._placementZone = placementZone;
             _towerToUprade = towerPlaced;
         }
 

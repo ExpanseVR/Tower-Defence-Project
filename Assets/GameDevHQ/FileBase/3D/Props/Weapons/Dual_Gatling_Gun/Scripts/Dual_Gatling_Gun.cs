@@ -45,9 +45,8 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         private bool _canDamage = true;
 
         // Use this for initialization
-        protected override void Start()
+        void Start()
         {
-            base.Start();
             _muzzleFlash[0].SetActive(false); //setting the initial state of the muzzle flash effect to off
             _muzzleFlash[1].SetActive(false); //setting the initial state of the muzzle flash effect to off
             _audioSource = GetComponent<AudioSource>(); //ssign the Audio Source to the reference variable

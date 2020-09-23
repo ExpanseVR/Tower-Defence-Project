@@ -59,12 +59,13 @@ namespace GameDevHQ.Scripts
             //check if available spot to place tower
             if (_isActivated && !_isTowerPlaced)
             {
+
                 _currentTower = TowerManager.Instance.GetTower();
                 _currentTower.transform.position = this.transform.position;
             }
             if(_currentTower != null)
             {
-                UIManager.Instance.WhichTowerPlaced(_currentTower);
+                UIManager.Instance.WhichTowerPlaced(_currentTower, this);
             }
         }
 
@@ -95,11 +96,18 @@ namespace GameDevHQ.Scripts
             _isActivated = false;
         }
 
-        public void Reset()
+        public Tower GetCurrentTower ()
+        {
+            return _currentTower.GetComponent<Tower>(); //to refactor with no GetComponent call;
+        }
+
+        public void Reset(bool stillInUse)
         {
             _isActivated = false;
-            _isTowerPlaced = false;
+            if (!stillInUse)
+                _isTowerPlaced = false;
             _currentTower = null;
+            DeActivate();
         }
 
         private void OnDisable()
