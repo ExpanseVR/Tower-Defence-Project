@@ -12,7 +12,16 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         protected int towerRange;
         [SerializeField]
-        Sprite _buttonImage;
+        Sprite _buttonImageUI;
+
+        [SerializeField]
+        Sprite _sellImageUI;
+
+        [SerializeField]
+        Tower _upgradeTowerLevelOne;
+
+        [SerializeField]
+        Sprite _upgradeTowerLevelOneImageUI;
 
         //protected List<GameObject> targets = new List<GameObject>();
         protected List<Enemy> targets = new List<Enemy>();
@@ -92,7 +101,17 @@ namespace GameDevHQ.Scripts
 
         public Sprite GetButtonImage()
         {
-            return _buttonImage;
+            return _buttonImageUI;
+        }
+
+        public Sprite GetUpgradeButtonImage()
+        {
+            return _upgradeTowerLevelOneImageUI;
+        }
+
+        public Sprite GetSellButtonImage()
+        {
+            return _sellImageUI;
         }
     }
 }

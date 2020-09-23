@@ -43,8 +43,6 @@ namespace GameDevHQ.Scripts
         {
             //reset mech
             _isAlive = true;
-            //_animator.SetTrigger("Alive");
-            _animator.SetBool("IsAlive", true);
             _currentHealth = Health;
 
             //get target
@@ -63,12 +61,6 @@ namespace GameDevHQ.Scripts
         {
             //set ID when instantiated
             _ID = SpawnManager.Instance.GetNextID();
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.T)) //for debugging to remove
-                TakeDamage(25);
         }
 
         public void TakeDamage(int damage)
@@ -93,7 +85,6 @@ namespace GameDevHQ.Scripts
                 //stop movement
                 _agent.isStopped = true;
                 //play death animation
-                //_animator.SetTrigger("Death");
                 _animator.SetBool("IsAlive", false);
                 //and disable after x seconds
                 StartCoroutine(Disabled());
@@ -103,6 +94,8 @@ namespace GameDevHQ.Scripts
         IEnumerator Disabled()
         {
             yield return new WaitForSeconds(_cleanUpDelay);
+            //set back to walking before disabling
+            _animator.WriteDefaultValues();
             this.gameObject.SetActive(false);
         }
 

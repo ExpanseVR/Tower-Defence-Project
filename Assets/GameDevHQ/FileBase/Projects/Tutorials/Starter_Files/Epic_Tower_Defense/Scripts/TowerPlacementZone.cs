@@ -44,31 +44,43 @@ namespace GameDevHQ.Scripts
 
         private void OnMouseEnter()
         {
-            //check if available spot to place tower
-            if (_isActivated)
+            _isMouseOver = true;
+            TowerManager.Instance.TowerPlaced(_isTowerPlaced);
+            EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
+            /*if (_isTowerPlaced)
             {
-                //check if tower already there
-                if (!_isTowerPlaced)
-                {
-                    EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
-                    _currentTower = TowerManager.Instance.GetTower();
-                    _currentTower.transform.position = this.transform.position;
-                    _isMouseOver = true;
-                }
-                else
-                {
-                    //check if can upgrade
-                }
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), true);
+            }
+            else
+            {
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), false);
+            }*/
+
+            //check if available spot to place tower
+            if (_isActivated && !_isTowerPlaced)
+            {
+                _currentTower = TowerManager.Instance.GetTower();
+                _currentTower.transform.position = this.transform.position;
+            }
+            if(_currentTower != null)
+            {
+                UIManager.Instance.WhichTowerPlaced(_currentTower);
             }
         }
 
         private void OnMouseExit()
         {
-            if (!_isTowerPlaced && _isActivated)
+            _isMouseOver = false;
+            TowerManager.Instance.TowerPlaced(_isTowerPlaced);
+            EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
+            /*if (_isTowerPlaced)
             {
-                _isMouseOver = false;
-                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), true);
             }
+            else
+            {
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), false);
+            }*/
         }
 
         private void PlaceTower ()

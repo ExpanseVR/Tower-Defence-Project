@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: -4561658967222704075}
   - component: {fileID: 3404396603341732593}
   - component: {fileID: 3588651050064973251}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Missile_Launcher_Turret
   m_TagString: Missile_Launcher_Lvl1
   m_Icon: {fileID: 0}
@@ -160,7 +160,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warFundsCost: 250
   towerRange: 5
-  _buttonImage: {fileID: 21300000, guid: 24d619bf31f654083b8f57e81027c9cc, type: 3}
+  _buttonImageUI: {fileID: 21300000, guid: 24d619bf31f654083b8f57e81027c9cc, type: 3}
+  _sellImageUI: {fileID: 21300000, guid: 695fad93265b04e44aec21509c7738ce, type: 3}
+  _upgradeTowerLevelOne: {fileID: 0}
+  _upgradeTowerLevelOneImageUI: {fileID: 21300000, guid: 25cba5c2254ddef4ea06545359a6a579,
+    type: 3}
   _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147,
     type: 3}
   _missileType: 1
@@ -174,7 +178,7 @@ MonoBehaviour:
   _fireDelay: 3
   _launchSpeed: 10
   _power: 20
-  _fuseDelay: 0
+  _fuseDelay: 5
   _reloadTime: 0
   _destroyTime: 10
   _turret: {fileID: 149453069388701646}

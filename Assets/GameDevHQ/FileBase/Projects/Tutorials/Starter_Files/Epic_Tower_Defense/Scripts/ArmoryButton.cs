@@ -27,6 +27,7 @@ namespace GameDevHQ.Scripts
 
         [SerializeField]
         Image _towerButton;
+        
         Sprite _towerImage;
 
         private void Start()
@@ -56,6 +57,12 @@ namespace GameDevHQ.Scripts
         public void ButtonPressed ()
         {
             UIManager.Instance.ArmorButton(_towerToSpawn.gameObject);
+        }
+
+        public Sprite GetUpgradeImage()
+        {
+
+            return _towerToSpawn.GetUpgradeButtonImage();
         }
     }
 }

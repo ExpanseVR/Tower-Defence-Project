@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4902667956770684797}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Rotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4902582175159977009}
   - component: {fileID: 4932547118917378133}
   - component: {fileID: 4923602877682693071}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Barrels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 4902699913882435929}
   - component: {fileID: 4931663282937283385}
   - component: {fileID: 4923891311496811965}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mini_Gun_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 65039697392581469}
   - component: {fileID: 8312242735331164433}
   - component: {fileID: 1367928456822744327}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Gatling_Gun
   m_TagString: Gatling_Gun_Lvl1
   m_Icon: {fileID: 0}
@@ -244,7 +244,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warFundsCost: 150
   towerRange: 4
-  _buttonImage: {fileID: 21300000, guid: 279be0d4fce3d4c999b7898952f03a09, type: 3}
+  _buttonImageUI: {fileID: 21300000, guid: 279be0d4fce3d4c999b7898952f03a09, type: 3}
+  _sellImageUI: {fileID: 21300000, guid: 5f2b3fbda1b3bc647b71ce097a6831dd, type: 3}
+  _upgradeTowerLevelOne: {fileID: 7108283341558155395, guid: 7156f125ffadeaf4abd0d0b15f4a5827,
+    type: 3}
+  _upgradeTowerLevelOneImageUI: {fileID: 21300000, guid: c0be346317a53fe47b298e1ee56a6901,
+    type: 3}
   _turret: {fileID: 4900519208302305469}
   _gunBarrel: {fileID: 4906416348440532543}
   Muzzle_Flash: {fileID: 4106964328656420960}
@@ -402,7 +407,7 @@ GameObject:
   - component: {fileID: 4902492931936490479}
   - component: {fileID: 4931933361397944961}
   - component: {fileID: 4924019197489068995}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Turret_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4906416348440532543}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Barrel_to_Spin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -514,7 +519,7 @@ GameObject:
   - component: {fileID: 4906510188483119909}
   - component: {fileID: 4932460476185138057}
   - component: {fileID: 4924048845557816651}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mini_Gun_Braces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,7 +598,7 @@ GameObject:
   - component: {fileID: 4902414186448879235}
   - component: {fileID: 4931878573134825125}
   - component: {fileID: 4923714953056204183}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Barrel_Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,7 +677,7 @@ GameObject:
   - component: {fileID: 4902455819463425781}
   - component: {fileID: 4932478291989304275}
   - component: {fileID: 4923766156086001617}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Turret_Bottom_Of_Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -752,7 +757,7 @@ GameObject:
   - component: {fileID: 4902727052564211757}
   - component: {fileID: 5099842335264795073}
   - component: {fileID: 5098892963145247287}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bullet_Casing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5562,6 +5567,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AreaIndicator
       objectReference: {fileID: 0}
+    - target: {fileID: 8857380986598194489, guid: 6ccb4c28291c7c44e8c21d5beb21d359,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ccb4c28291c7c44e8c21d5beb21d359, type: 3}
 --- !u!1 &7274220436627330620 stripped
@@ -5586,6 +5596,14 @@ PrefabInstance:
     - target: {fileID: 1429037109959098, guid: 462b1704516b7458ca009ff4af76c9dd, type: 3}
       propertyPath: m_Name
       value: Muzzle_Flash
+      objectReference: {fileID: 0}
+    - target: {fileID: 1429037109959098, guid: 462b1704516b7458ca009ff4af76c9dd, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545136169069026, guid: 462b1704516b7458ca009ff4af76c9dd, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4746837767181356, guid: 462b1704516b7458ca009ff4af76c9dd, type: 3}
       propertyPath: m_LocalPosition.x

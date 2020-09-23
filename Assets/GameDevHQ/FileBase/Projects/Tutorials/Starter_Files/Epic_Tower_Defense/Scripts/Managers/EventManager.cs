@@ -15,75 +15,73 @@ namespace GameDevHQ.Scripts.Managers
             ResetTowerZones,
             MouseOverTowerZone,
             PlaceTower,
-            UIArmorySelected
+            UIArmorySelected,
+            UIUpgradeMenu
         }
 
-        private static Dictionary<string, List<dynamic>> _eventDictionary = new Dictionary<string, List<dynamic>>();
+        private static Dictionary<string, dynamic> _eventDictionary = new Dictionary<string, dynamic>();
 
         public static void Listen(string eventName, Action method)
         {
             if (!_eventDictionary.ContainsKey(eventName))
             {
-                //create new key and List
-                _eventDictionary.Add(eventName, new List<dynamic>());
+                //create new key
+                _eventDictionary.Add(eventName, method);
             }
-            //add to list
-            _eventDictionary[eventName].Add(method);
+            else
+            {
+                var currentAction = _eventDictionary[eventName] as Action;
+                currentAction += method;
+                _eventDictionary[eventName] = currentAction;
+            }
         }
 
         public static void Listen<T>(string eventName, Action<T> method)
         {
             if (!_eventDictionary.ContainsKey(eventName))
             {
-                //create new key and List
-                _eventDictionary.Add(eventName, new List<dynamic>());
+                _eventDictionary.Add(eventName, method);
             }
-            //add to list
-            _eventDictionary[eventName].Add(method);
+            else
+            {
+                Action<T> currentAction = _eventDictionary[eventName];
+                currentAction += method;
+                _eventDictionary[eventName] = currentAction;
+            }
         }
 
         public static void Fire(string eventName)
         {
-            if (_eventDictionary.ContainsKey(eventName)) //Jon <--- I think this is needed
-            {
-                int numMethods = _eventDictionary[eventName].Count;
-                int i = 0;
-                while (i < numMethods)
-                {
-                    var eventToRaise = _eventDictionary[eventName][i] as Action;
-                    eventToRaise?.Invoke();
-                    i++;
-                }
-            }
-            else
-            {
-                Debug.LogError("EventManager :: Fire - Dictionary Key for event called doesnt exist");
-            }
+            var eventToRaise = _eventDictionary[eventName] as Action;
+            eventToRaise?.Invoke();
         }
 
-        public static void Fire<T>(string eventName, T Parem)
+        public static void Fire<T>(string eventName, T parem)
         {
-            if (_eventDictionary.ContainsKey(eventName))
-            {
-                int numMethods = _eventDictionary[eventName].Count;
-                int i = 0;
-                while (i < numMethods)
-                {
-                    var eventToRaise = _eventDictionary[eventName][i] as Action<T>;
-                    eventToRaise?.Invoke(Parem);
-                    i++;
-                }
-            }
-            else
-            {
-                Debug.LogError("EventManager :: Fire - Dictionary Key for event called doesnt exist");
-            }
+            print("firing event: " + eventName);
+            Action<T> eventToRaise = _eventDictionary[eventName];
+            print(eventToRaise);
+            eventToRaise?.Invoke(parem);
         }
 
         public static void StopListening(string eventName, Action method)
         {
             if (_eventDictionary.ContainsKey(eventName))
-                _eventDictionary[eventName].Remove(method);
+            {
+                var currentSubrcribers = _eventDictionary[eventName] as Action;
+                currentSubrcribers -= method;
+                _eventDictionary[eventName] = currentSubrcribers;
+            }
+        }
+
+        public static void StopListening<T>(string eventName, Action<T> method)
+        {
+            if (_eventDictionary.ContainsKey(eventName))
+            {
+                var currentSubrcribers = _eventDictionary[eventName] as Action<T>;
+                currentSubrcribers -= method;
+                _eventDictionary[eventName] = currentSubrcribers;
+            }
         }
     }
 }

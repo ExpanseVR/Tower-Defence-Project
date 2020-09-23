@@ -10,11 +10,14 @@ namespace GameDevHQ.Scripts.Managers
         GameObject _towerSelected;
 
         bool _heldTowerIsActive = false;
-        bool _canPlaceTower = false;
+        bool _overTowerPlacementZone = false;
+
+        bool towerPlaced = false; //TOREMOVE
 
         private void OnEnable()
         {
-            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), CanPlace);
+            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
+            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
 
@@ -30,17 +33,22 @@ namespace GameDevHQ.Scripts.Managers
             //left click to place tower
             if (Input.GetMouseButtonDown(0))
             {
-                if (_canPlaceTower)
+                if (_overTowerPlacementZone)
                 {
-                    int newTowerCost = _towerSelected.GetComponent<Tower>().GetWarFundsRequired();
+                    if (towerPlaced == false && _towerSelected != null)
+                    {
+                        int newTowerCost = _towerSelected.GetComponent<Tower>().GetWarFundsRequired();
 
-                    //if enough warFunds
-                    if (GameManger.Instance.GetWarfunds() >= newTowerCost)
-                        GameManger.Instance.SetWarFunds(-newTowerCost);
-                    else
-                        return;
+                        //if enough warFunds
+                        if (GameManger.Instance.GetWarfunds() >= newTowerCost)
+                            GameManger.Instance.SetWarFunds(-newTowerCost);
+                        else
+                            return;
 
-                    PlacingTower();
+                        PlacingTower();
+                    }
+                    else if (towerPlaced == true)
+                        EventManager.Fire(EventManager.Events.UIUpgradeMenu.ToString());
                 }
             }
 
@@ -49,6 +57,7 @@ namespace GameDevHQ.Scripts.Managers
             {
                 if (_heldTowerIsActive)
                     CancelPlacement();
+                UIManager.Instance.CancelUpgradeUI();
             }
         }
 
@@ -65,13 +74,21 @@ namespace GameDevHQ.Scripts.Managers
         }
 
         //turret snaps to area when mouse over predefined area
-        private void CanPlace()
+        /*private void OverTowerPlacementZone(bool towerPlaced)
         {
-            if (_towerSelected != null)
+            print("TowerManager :: OverTowerPlacementZone bool is: " + towerPlaced);
+            if (_towerSelected != null && towerPlaced == false)
             {
                 _heldTowerIsActive = !_heldTowerIsActive;
                 _canPlaceTower = !_canPlaceTower;
             }
+        }*/
+        
+        private void OverTowerPlacementZone()
+        {
+            if (_towerSelected != null && towerPlaced == false)
+                _heldTowerIsActive = !_heldTowerIsActive;
+            _overTowerPlacementZone = !_overTowerPlacementZone;
         }
 
         private void CancelPlacement()
@@ -79,16 +96,17 @@ namespace GameDevHQ.Scripts.Managers
             EventManager.Fire(EventManager.Events.ResetTowerZones.ToString());
             _towerSelected.SetActive(false);
             _heldTowerIsActive = false;
-            _canPlaceTower = false;
+            _overTowerPlacementZone = false;
         }
 
         private void PlacingTower()
         {
+            _heldTowerIsActive = false;
+            //_overTowerPlacementZone = false;
+            _towerSelected = null;
+
             EventManager.Fire(EventManager.Events.PlaceTower.ToString());
             EventManager.Fire(EventManager.Events.ResetTowerZones.ToString());
-
-            _heldTowerIsActive = false;
-            _canPlaceTower = false;
         }
 
         public void TowerSelected(GameObject selectedTower)
@@ -117,8 +135,15 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnDisable()
         {
-            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), CanPlace);
+            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
+            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
+        }
+
+        //TOREMOVE
+        public void TowerPlaced(bool isTowerPlaced)
+        {
+            towerPlaced = isTowerPlaced;
         }
     }
 }
