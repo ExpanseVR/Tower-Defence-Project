@@ -57,8 +57,8 @@ namespace GameDevHQ.Scripts.Managers
             _upgradeButton.gameObject.SetActive(true);
 
             Tower tower = _towerToUprade.GetComponent<Tower>();
-            _upgradeButton.SetButtonImage(tower.GetUpgradeButtonImage());
-            _sellButton.SetButtonImage(tower.GetSellButtonImage());
+            _upgradeButton.SetButton(tower);
+            _sellButton.SetButton(tower);
 
             _armoryButtons[0].gameObject.SetActive(false);
             _armoryButtons[1].gameObject.SetActive(false);

@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle;
+using GameDevHQ.Scripts;
 
 namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 {
-    public class Missle_Launcher : MonoBehaviour
+    public class Missle_Launcher : Tower
     {
+        public enum MissileType
+        {
+            Normal,
+            Homing
+        }
+
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
         [SerializeField]
@@ -27,13 +34,39 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         private float _destroyTime = 10.0f; //how long till the rockets get cleaned up
         private bool _launched; //bool to check if we launched the rockets
 
-        private void Update()
+        [SerializeField]
+        GameObject _turret; //Part of tower to rotate towards enemy
+
+        [SerializeField]
+        private int _missileDamage;
+
+        private int _missilePosRightCount;
+        GameObject[] _missilePoolRight;
+        private int _missilePosLeftCount;
+        GameObject[] _missilePoolLeft;
+
+        private void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.Space) && _launched == false) //check for space key and if we launched the rockets
+            _missilePosRightCount = 6;
+            _missilePoolRight = new GameObject[_misslePositionsRight.Length];            
+            _missilePosLeftCount = 6;
+            _missilePoolLeft = new GameObject[_misslePositionsLeft.Length];
+        }
+
+        protected override void AttackTarget(Vector3 targetDirection)
+        {
+            targetDirection.y = 0;
+            _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            if (_launched == false)
             {
                 _launched = true; //set the launch bool to true
-                StartCoroutine(FireRocketsRoutine()); //start a coroutine that fires the rockets. 
+                StartCoroutine(FireRocketsRoutine());
             }
+        }
+
+        protected override void StopAttacking()
+        {
+
         }
 
         IEnumerator FireRocketsRoutine()

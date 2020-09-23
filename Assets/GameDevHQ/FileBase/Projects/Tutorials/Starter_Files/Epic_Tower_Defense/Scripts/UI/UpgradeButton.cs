@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameDevHQ.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,26 +8,19 @@ namespace GameDevHQ.UI
     {
         [SerializeField]
         Text _costText;
-        int _cost;
+        
+        int cost;
 
         [SerializeField]
         Image _towerButton;
+        
+        Sprite buttonImage;
 
-        // Start is called before the first frame update
-        void OnEnable()
+        public void SetButton (Tower upgradeTower)
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public void SetButtonImage (Sprite buttonImage)
-        {
+            upgradeTower.GetUpgradeDetails(out buttonImage, out cost);
             _towerButton.sprite = buttonImage;
+            _costText.text = "$" + cost.ToString();
         }
     }
 }

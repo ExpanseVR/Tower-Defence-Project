@@ -45,7 +45,7 @@ namespace GameDevHQ.Scripts
         private void OnMouseEnter()
         {
             _isMouseOver = true;
-            TowerManager.Instance.TowerPlaced(_isTowerPlaced);
+            TowerManager.Instance.TowerPlaced(this, _isTowerPlaced);
             EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
             /*if (_isTowerPlaced)
             {
@@ -71,7 +71,7 @@ namespace GameDevHQ.Scripts
         private void OnMouseExit()
         {
             _isMouseOver = false;
-            TowerManager.Instance.TowerPlaced(_isTowerPlaced);
+            TowerManager.Instance.TowerPlaced(this, _isTowerPlaced);
             EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
             /*if (_isTowerPlaced)
             {
@@ -89,10 +89,17 @@ namespace GameDevHQ.Scripts
             {
                 _isTowerPlaced = true;
                 _currentTower.transform.parent = this.transform;
-                _currentTower.GetComponent<Tower>().EnableCollider();
+                _currentTower.GetComponent<Tower>().SetCollider(true);
                 _particles.SetActive(false);
             }
             _isActivated = false;
+        }
+
+        public void Reset()
+        {
+            _isActivated = false;
+            _isTowerPlaced = false;
+            _currentTower = null;
         }
 
         private void OnDisable()

@@ -18,10 +18,10 @@ namespace GameDevHQ.Scripts
         Sprite _sellImageUI;
 
         [SerializeField]
-        Tower _upgradeTowerLevelOne;
+        protected int warFundSellAmount;
 
         [SerializeField]
-        Sprite _upgradeTowerLevelOneImageUI;
+        Tower _upgradeTowerLevelOne;
 
         //protected List<GameObject> targets = new List<GameObject>();
         protected List<Enemy> targets = new List<Enemy>();
@@ -89,9 +89,9 @@ namespace GameDevHQ.Scripts
             }
         }
 
-        public void EnableCollider()
+        public void SetCollider(bool colliderState)
         {
-            targetCollider.enabled = true;
+            targetCollider.enabled = colliderState;
         }
 
         public int GetWarFundsRequired()
@@ -104,14 +104,16 @@ namespace GameDevHQ.Scripts
             return _buttonImageUI;
         }
 
-        public Sprite GetUpgradeButtonImage()
+        public void GetUpgradeDetails(out Sprite image, out int cost)
         {
-            return _upgradeTowerLevelOneImageUI;
+            image = _upgradeTowerLevelOne.GetButtonImage();
+            cost = _upgradeTowerLevelOne.GetWarFundsRequired();
         }
 
-        public Sprite GetSellButtonImage()
+        public void GetSellDetails(out Sprite image, out int refund)
         {
-            return _sellImageUI;
+            image = _sellImageUI;
+            refund = warFundSellAmount;
         }
     }
 }

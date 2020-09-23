@@ -8,6 +8,7 @@ namespace GameDevHQ.Scripts.Managers
     {
         ObjectPool _towerPool = new ObjectPool();
         GameObject _towerSelected;
+        TowerPlacementZone _towerPlacementZone;
 
         bool _heldTowerIsActive = false;
         bool _overTowerPlacementZone = false;
@@ -109,6 +110,11 @@ namespace GameDevHQ.Scripts.Managers
             EventManager.Fire(EventManager.Events.ResetTowerZones.ToString());
         }
 
+        public GameObject GetTower()
+        {
+            return _towerSelected;
+        }
+
         public void TowerSelected(GameObject selectedTower)
         {
             if (_heldTowerIsActive)
@@ -127,11 +133,21 @@ namespace GameDevHQ.Scripts.Managers
             //particle effect at available locactions
             EventManager.Fire(EventManager.Events.ActivateTowerZones.ToString());
         }
-        
-        public GameObject GetTower()
+
+        public void TowerPlaced(TowerPlacementZone towerPlacementZone, bool isTowerPlaced)
         {
-            return _towerSelected;
+            this._towerPlacementZone = towerPlacementZone;
+            towerPlaced = isTowerPlaced;
         }
+
+        public void ResetTower (Tower towerToReset)
+        {
+            _towerPlacementZone.Reset();
+            towerToReset.SetCollider(false);
+            towerToReset.GetComponent<RangeColour>().SetRange(true); //To refactor GetComponent Call
+            towerToReset.gameObject.SetActive(false);
+        }
+
 
         private void OnDisable()
         {
@@ -140,10 +156,5 @@ namespace GameDevHQ.Scripts.Managers
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
 
-        //TOREMOVE
-        public void TowerPlaced(bool isTowerPlaced)
-        {
-            towerPlaced = isTowerPlaced;
-        }
     }
 }

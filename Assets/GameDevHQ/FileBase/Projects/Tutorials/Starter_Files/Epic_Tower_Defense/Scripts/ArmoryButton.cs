@@ -48,7 +48,7 @@ namespace GameDevHQ.Scripts
             _towerToSpawn = GameManger.Instance.GetTowerType(_towerID);
 
             _cost = _towerToSpawn.GetWarFundsRequired();
-            _costText.text = "$ " + _cost.ToString();
+            _costText.text = "$" + _cost.ToString();
 
             _towerImage = _towerToSpawn.GetButtonImage();
             _towerButton.sprite = _towerImage;
@@ -57,12 +57,6 @@ namespace GameDevHQ.Scripts
         public void ButtonPressed ()
         {
             UIManager.Instance.ArmorButton(_towerToSpawn.gameObject);
-        }
-
-        public Sprite GetUpgradeImage()
-        {
-
-            return _towerToSpawn.GetUpgradeButtonImage();
         }
     }
 }

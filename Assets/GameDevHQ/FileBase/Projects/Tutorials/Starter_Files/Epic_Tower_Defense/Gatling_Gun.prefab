@@ -246,9 +246,8 @@ MonoBehaviour:
   towerRange: 4
   _buttonImageUI: {fileID: 21300000, guid: 279be0d4fce3d4c999b7898952f03a09, type: 3}
   _sellImageUI: {fileID: 21300000, guid: 5f2b3fbda1b3bc647b71ce097a6831dd, type: 3}
+  warFundSellAmount: 75
   _upgradeTowerLevelOne: {fileID: 7108283341558155395, guid: 7156f125ffadeaf4abd0d0b15f4a5827,
-    type: 3}
-  _upgradeTowerLevelOneImageUI: {fileID: 21300000, guid: c0be346317a53fe47b298e1ee56a6901,
     type: 3}
   _turret: {fileID: 4900519208302305469}
   _gunBarrel: {fileID: 4906416348440532543}
