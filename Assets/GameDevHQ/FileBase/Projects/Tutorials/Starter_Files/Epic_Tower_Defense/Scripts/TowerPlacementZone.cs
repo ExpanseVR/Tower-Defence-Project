@@ -46,15 +46,14 @@ namespace GameDevHQ.Scripts
         {
             _isMouseOver = true;
             TowerManager.Instance.TowerPlaced(this, _isTowerPlaced);
-            EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
-            /*if (_isTowerPlaced)
+            if (_isTowerPlaced)
             {
-                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), true);
+                EventManager.Fire(EventManager.Events.TestEvent.ToString(), true);
             }
             else
             {
-                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), false);
-            }*/
+                EventManager.Fire(EventManager.Events.TestEvent.ToString(), false);
+            }
 
             //check if available spot to place tower
             if (_isActivated && !_isTowerPlaced)
@@ -73,15 +72,14 @@ namespace GameDevHQ.Scripts
         {
             _isMouseOver = false;
             TowerManager.Instance.TowerPlaced(this, _isTowerPlaced);
-            EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString());
-            /*if (_isTowerPlaced)
+            if (_isTowerPlaced)
             {
-                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), true);
+                EventManager.Fire(EventManager.Events.TestEvent.ToString(), true);
             }
             else
             {
-                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), false);
-            }*/
+                EventManager.Fire(EventManager.Events.TestEvent.ToString(), false);
+            }
         }
 
         private void PlaceTower ()

@@ -13,13 +13,16 @@ namespace GameDevHQ.Scripts.Managers
             NewWaveStarted,
             ActivateTowerZones,
             ResetTowerZones,
-            MouseOverTowerZone,
             PlaceTower,
             UIArmorySelected,
-            UIUpgradeMenu
+            UIUpgradeMenu,
+            TestEvent
         }
 
         private static Dictionary<string, dynamic> _eventDictionary = new Dictionary<string, dynamic>();
+
+
+
 
         public static void Listen(string eventName, Action method)
         {
@@ -58,9 +61,7 @@ namespace GameDevHQ.Scripts.Managers
 
         public static void Fire<T>(string eventName, T parem)
         {
-            print("firing event: " + eventName);
-            Action<T> eventToRaise = _eventDictionary[eventName];
-            print(eventToRaise);
+            Action<T> eventToRaise = _eventDictionary[eventName] as Action<T>;
             eventToRaise?.Invoke(parem);
         }
 

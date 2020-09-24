@@ -18,8 +18,8 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnEnable()
         {
-            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
-            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
+            EventManager.Listen(EventManager.Events.TestEvent.ToString(), (Action<bool>)OverTowerPlacementZone);
+            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
 
@@ -28,6 +28,10 @@ namespace GameDevHQ.Scripts.Managers
         {
             HaveATowerToPlace();
             MouseInput();
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                EventManager.Fire(EventManager.Events.TestEvent.ToString(), true);
+            }
         }
 
         private void MouseInput()
@@ -86,7 +90,7 @@ namespace GameDevHQ.Scripts.Managers
             }
         }*/
         
-        private void OverTowerPlacementZone()
+        private void OverTowerPlacementZone(bool tempBool)
         {
             if (_towerSelected != null && towerPlaced == false)
                 _heldTowerIsActive = !_heldTowerIsActive;
@@ -161,8 +165,8 @@ namespace GameDevHQ.Scripts.Managers
 
         private void OnDisable()
         {
-            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
-            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
+            EventManager.Listen(EventManager.Events.TestEvent.ToString(), (Action<bool>)OverTowerPlacementZone);
+            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
 

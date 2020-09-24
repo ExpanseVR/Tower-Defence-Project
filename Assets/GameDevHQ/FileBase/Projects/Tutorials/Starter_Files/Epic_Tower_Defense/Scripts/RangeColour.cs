@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameDevHQ.Scripts.Managers;
 using UnityEngine;
+using System;
 
 public class RangeColour : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class RangeColour : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), SetColour);
+        EventManager.Listen(EventManager.Events.TestEvent.ToString(), (Action<bool>)SetColour);
         EventManager.Listen(EventManager.Events.PlaceTower.ToString(), DisableRangeFX);
         _material.SetColor("_Color", Color.red);
     }
@@ -30,7 +31,7 @@ public class RangeColour : MonoBehaviour
         }
     }
 
-    public void SetColour ()
+    public void SetColour (bool test)
     {
         _isOver = !_isOver;
         if (_isOver)
@@ -51,7 +52,7 @@ public class RangeColour : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.StopListening(EventManager.Events.MouseOverTowerZone.ToString(), SetColour);
+        EventManager.StopListening(EventManager.Events.TestEvent.ToString(), (Action<bool>)SetColour);
         EventManager.StopListening(EventManager.Events.PlaceTower.ToString(), DisableRangeFX);
     }
 }

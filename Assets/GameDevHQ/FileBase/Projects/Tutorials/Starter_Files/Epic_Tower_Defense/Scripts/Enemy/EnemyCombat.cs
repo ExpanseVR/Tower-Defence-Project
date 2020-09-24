@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.Scripts;
+using GameDevHQ.Scripts.Managers;
 
 namespace GameDevHQ.Enemies
 {
@@ -12,6 +13,9 @@ namespace GameDevHQ.Enemies
 
         [SerializeField]
         Transform _toRotate;
+
+        [SerializeField]
+        private float _rotateSpeed;
 
         private List<Tower> _towers = new List<Tower>();
 
@@ -33,7 +37,6 @@ namespace GameDevHQ.Enemies
                 //rotate towards first tower in list
                 Vector3 currentTarget = _towers[0].gameObject.transform.position;
                 Vector3 targetDirection = (currentTarget - transform.position).normalized;
-                targetDirection.y = 0;
                 _toRotate.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
                 //attack that tower
             }
@@ -41,7 +44,26 @@ namespace GameDevHQ.Enemies
 
         private void OnTriggerExit(Collider other)
         {
-            //remove tower from list   
+            //Detect tower
+            if (other.gameObject.tag == "Gatling_Gun_Lvl1")
+            {
+                //remove tower from list 
+                _towers.Remove(other.GetComponent<Tower>());
+            }
+            if (_towers.Count < 1)
+                StartCoroutine(LerpRotation(_toRotate.rotation, Quaternion.Euler(Vector3.forward)));
+        }
+
+        IEnumerator LerpRotation (Quaternion startRotation, Quaternion finalRotation)
+        {
+            float progress = 0f;
+
+            while (progress < 1f)
+            {
+                _toRotate.rotation = Quaternion.Slerp(startRotation, finalRotation, progress);
+                progress += Time.deltaTime * _rotateSpeed;
+                yield return null;
+            }
         }
     }
 }
