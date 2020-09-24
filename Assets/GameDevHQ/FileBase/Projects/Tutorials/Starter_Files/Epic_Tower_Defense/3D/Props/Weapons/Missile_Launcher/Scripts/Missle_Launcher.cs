@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameDevHQ.FileBase.Missle_Launcher.Missle;
 using GameDevHQ.Scripts;
 
-namespace GameDevHQ.FileBase.Missle_Launcher
+//namespace GameDevHQ.FileBase.Missle_Launcher
+namespace GameDevHQ.Scripts
 {
     public class Missle_Launcher : Tower
     {
@@ -98,7 +98,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher
             }
             _missilePool[rocketLocation].transform.localPosition = Vector3.zero; //set the rocket position values to zero
             _missilePool[rocketLocation].transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
-            _missilePool[rocketLocation].GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
+            _missilePool[rocketLocation].GetComponent<Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
+            //_missilePool[rocketLocation].GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
             //_misslePositions[rocketLocation].SetActive(false); //hide missile in place to look like it shoots;
         }
     }

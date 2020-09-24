@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.Scripts.Managers;
+using GameDevHQ.Scripts;
 using UnityEngine.UI;
 
-namespace GameDevHQ.Scripts
-
+namespace GameDevHQ.UI
 {
     public class ArmoryButton : MonoBehaviour
     {

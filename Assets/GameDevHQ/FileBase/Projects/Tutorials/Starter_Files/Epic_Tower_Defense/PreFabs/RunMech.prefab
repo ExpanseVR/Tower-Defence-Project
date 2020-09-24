@@ -855,6 +855,8 @@ GameObject:
   - component: {fileID: 3970039880565320768}
   - component: {fileID: -757638386490573006}
   - component: {fileID: 927229810540722202}
+  - component: {fileID: 1604563141827576739}
+  - component: {fileID: 8222545563809077582}
   m_Layer: 0
   m_Name: RunMech
   m_TagString: RunMech
@@ -952,6 +954,33 @@ MonoBehaviour:
   _deathFX: {fileID: 6341650750516672748}
   _animator: {fileID: 1346490945065969977}
   _cleanUpDelay: 5
+--- !u!114 &1604563141827576739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237395731619252991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99d0e7eed11bca64693cd88b3db4b098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 10
+  _toRotate: {fileID: 6703680895103490531}
+--- !u!135 &8222545563809077582
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237395731619252991}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 12
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4305986410861285786
 GameObject:
   m_ObjectHideFlags: 0

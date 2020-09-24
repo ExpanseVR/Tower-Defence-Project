@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using GameDevHQ.FileBase.Missle_Launcher;
 using GameDevHQ.Scripts;
 
-namespace GameDevHQ.FileBase.Missle_Launcher.Missle
+//namespace GameDevHQ.FileBase.Missle_Launcher.Missle
+namespace GameDevHQ.Scripts
 {
     [RequireComponent(typeof(Rigidbody))] //require rigidbody
     [RequireComponent(typeof(AudioSource))] //require audiosource
@@ -42,13 +42,11 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
        
         private void OnEnable()
         {
-            print("enabled");
             StartCoroutine(SetLaunch());
         }
 
         IEnumerator SetLaunch()
         {
-            Debug.Log("Couritine Called");
             _fuseOut = true; //set fuseOut to true
             _launched = true; //set the launch bool to true 
             _thrust = false; //set thrust bool to false
