@@ -85,6 +85,7 @@ namespace GameDevHQ.Scripts
                 //stop movement
                 _agent.isStopped = true;
                 //play death animation
+                _animator.SetBool("IsShooting", false);
                 _animator.SetBool("IsAlive", false);
                 //and disable after x seconds
                 StartCoroutine(Disabled());

@@ -2360,9 +2360,9 @@ ParentConstraint:
   - {x: 0, y: 0, z: 0}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
-  m_AffectTranslationX: 1
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 1
+  m_AffectTranslationX: 0
+  m_AffectTranslationY: 0
+  m_AffectTranslationZ: 0
   m_AffectRotationX: 1
   m_AffectRotationY: 1
   m_AffectRotationZ: 1
@@ -3113,6 +3113,8 @@ MonoBehaviour:
   _damage: 15
   _toRotate: {fileID: 6168801882935563255}
   _rotateSpeed: 0
+  _animator: {fileID: 9081028500443481770}
+  _thisEnemy: {fileID: 963026787655983782}
 --- !u!135 &4292392342075525901
 SphereCollider:
   m_ObjectHideFlags: 0

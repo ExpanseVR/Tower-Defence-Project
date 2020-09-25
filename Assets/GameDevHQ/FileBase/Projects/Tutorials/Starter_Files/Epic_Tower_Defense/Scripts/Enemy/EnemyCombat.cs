@@ -17,7 +17,18 @@ namespace GameDevHQ.Enemies
         [SerializeField]
         private float _rotateSpeed;
 
+        [SerializeField]
+        private Animator _animator;
+
+        [SerializeField]
+        Enemy _thisEnemy;
+
         private List<Tower> _towers = new List<Tower>();
+
+        private void OnEnable()
+        {
+            _toRotate.rotation = Quaternion.Euler(Vector3.forward);
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -32,13 +43,14 @@ namespace GameDevHQ.Enemies
         private void OnTriggerStay(Collider other)
         {
             //if there is a tower in range
-            if (_towers.Count > 0)
+            if (_towers.Count > 0 && _thisEnemy.IsAlive())
             {
                 //rotate towards first tower in list
                 Vector3 currentTarget = _towers[0].gameObject.transform.position;
                 Vector3 targetDirection = (currentTarget - transform.position).normalized;
                 _toRotate.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
                 //attack that tower
+                _animator.SetBool("IsShooting", true);
             }
         }
 
@@ -51,7 +63,10 @@ namespace GameDevHQ.Enemies
                 _towers.Remove(other.GetComponent<Tower>());
             }
             if (_towers.Count < 1)
+            {
                 StartCoroutine(LerpRotation(_toRotate.rotation, Quaternion.Euler(Vector3.forward)));
+                _animator.SetBool("IsShooting", false);
+            }
         }
 
         IEnumerator LerpRotation (Quaternion startRotation, Quaternion finalRotation)
