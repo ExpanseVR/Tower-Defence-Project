@@ -35,6 +35,8 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         Renderer[] _renderers;
 
+        private MaterialPropertyBlock _materialPropertyBlock;
+
         [Range(0,1)][SerializeField]
         float _dissolveSpeed;
 
@@ -50,10 +52,10 @@ namespace GameDevHQ.Scripts
             //reset mech
             _isAlive = true;
             _currentHealth = Health;
-            foreach (Renderer renderer in _renderers)
+            /*foreach (Renderer renderer in _renderers)
             {
                 renderer.material.SetFloat("_Dissolve", 0);
-            }
+            }*/
 
             //get target
             _target = GameManger.Instance.RequestTarget();
@@ -69,6 +71,7 @@ namespace GameDevHQ.Scripts
 
         private void Start()
         {
+            _materialPropertyBlock = new MaterialPropertyBlock();
             //set ID when instantiated
             _ID = SpawnManager.Instance.GetNextID();
         }
@@ -111,13 +114,21 @@ namespace GameDevHQ.Scripts
             {
                 foreach (Renderer renderer in _renderers)
                 {
-                    renderer.material.SetFloat("_Dissolve", count * _dissolveSpeed);
+                    renderer.GetPropertyBlock(_materialPropertyBlock);
+                    _materialPropertyBlock.SetFloat("_Dissolve", count * _dissolveSpeed);
+                    renderer.SetPropertyBlock(_materialPropertyBlock);
                 }
                 count += Time.deltaTime;
                 yield return null;
             }
-            //set back to walking before disabling
+            //set back to walking and visible before disabling
             _animator.WriteDefaultValues();
+            foreach (Renderer renderer in _renderers)
+            {
+                renderer.GetPropertyBlock(_materialPropertyBlock);
+                _materialPropertyBlock.SetFloat("_Dissolve", 0);
+                renderer.SetPropertyBlock(_materialPropertyBlock);
+            }
             this.gameObject.SetActive(false);
         }
 
