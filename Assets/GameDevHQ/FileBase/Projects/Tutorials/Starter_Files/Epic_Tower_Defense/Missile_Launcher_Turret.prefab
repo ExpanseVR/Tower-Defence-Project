@@ -158,11 +158,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f75a662e08584192823355ae4ac73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ID: 1
   warFundsCost: 250
   towerRange: 5
   _buttonImageUI: {fileID: 21300000, guid: 24d619bf31f654083b8f57e81027c9cc, type: 3}
   _sellImageUI: {fileID: 21300000, guid: 695fad93265b04e44aec21509c7738ce, type: 3}
-  warFundSellAmount: 150
+  _warFundSellAmount: 175
   _upgradeTowerLevelOne: {fileID: 4308992192639953077, guid: 65eb9bd9278ee4c4496ac27a65751eb1,
     type: 3}
   _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147,

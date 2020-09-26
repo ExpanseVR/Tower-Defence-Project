@@ -45,14 +45,14 @@ namespace GameDevHQ.Scripts
         private void OnMouseEnter()
         {
             _isMouseOver = true;
-            TowerManager.Instance.TowerPlaced(this, _isTowerPlaced);
             if (_isTowerPlaced)
             {
-                EventManager.Fire(EventManager.Events.TestEvent.ToString(), true);
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), true);
+                TowerManager.Instance.TowerPlaced(this); //To add to eventManager
             }
             else
             {
-                EventManager.Fire(EventManager.Events.TestEvent.ToString(), false);
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), false);
             }
 
             //check if available spot to place tower
@@ -71,14 +71,13 @@ namespace GameDevHQ.Scripts
         private void OnMouseExit()
         {
             _isMouseOver = false;
-            TowerManager.Instance.TowerPlaced(this, _isTowerPlaced);
             if (_isTowerPlaced)
             {
-                EventManager.Fire(EventManager.Events.TestEvent.ToString(), true);
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), true);
             }
             else
             {
-                EventManager.Fire(EventManager.Events.TestEvent.ToString(), false);
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), false);
             }
         }
 
@@ -94,6 +93,11 @@ namespace GameDevHQ.Scripts
             _isActivated = false;
         }
 
+        public void SetCurrentTower (GameObject newTower)
+        {
+            _currentTower = newTower;
+        }
+
         public Tower GetCurrentTower ()
         {
             return _currentTower.GetComponent<Tower>(); //to refactor with no GetComponent call;
@@ -103,8 +107,10 @@ namespace GameDevHQ.Scripts
         {
             _isActivated = false;
             if (!stillInUse)
+            {
                 _isTowerPlaced = false;
-            _currentTower = null;
+                _currentTower = null;
+            }
             DeActivate();
         }
 

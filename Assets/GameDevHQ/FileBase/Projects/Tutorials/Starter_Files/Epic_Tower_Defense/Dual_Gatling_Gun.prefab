@@ -14673,11 +14673,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa87186eb31905c4fa207e5970b35579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ID: 2
   warFundsCost: 200
   towerRange: 5
   _buttonImageUI: {fileID: 21300000, guid: c0be346317a53fe47b298e1ee56a6901, type: 3}
   _sellImageUI: {fileID: 21300000, guid: 02736e22504291643831f76ba7b19067, type: 3}
-  warFundSellAmount: 100
+  _warFundSellAmount: 125
   _upgradeTowerLevelOne: {fileID: 0}
   _gunBarrel:
   - {fileID: 7143463311105719913}

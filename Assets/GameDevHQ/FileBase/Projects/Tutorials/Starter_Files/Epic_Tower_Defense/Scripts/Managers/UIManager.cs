@@ -18,13 +18,14 @@ namespace GameDevHQ.Scripts.Managers
         ArmoryButton[] _armoryButtons;
 
         [SerializeField]
-        UpgradeButton _upgradeButton;
+        PopUpMenu _upgradeMenu;
 
         [SerializeField]
-        SellButton _sellButton;
+        PopUpMenu _refundMenu;
 
-        private GameObject _towerToUprade;
+        private GameObject _towerInZone;
         private TowerPlacementZone _placementZone;
+        private bool _popUpOpen = false;
 
         private void OnEnable()
         {
@@ -32,6 +33,7 @@ namespace GameDevHQ.Scripts.Managers
             EventManager.Listen(EventManager.Events.WarFundsChanged.ToString(), UpdateWarFundsUI);
             EventManager.Listen(EventManager.Events.NewWaveStarted.ToString(), UpdateWaveCounterUI);
             EventManager.Listen(EventManager.Events.UIUpgradeMenu.ToString(), UpgradeMenuUI);
+            EventManager.Listen(EventManager.Events.UIPopUpMenuClosed.ToString(), PopUpMenuClosed);
         }
 
         private void Start()
@@ -53,31 +55,38 @@ namespace GameDevHQ.Scripts.Managers
 
         private void UpgradeMenuUI()
         {
-            //change Armory menu to reflect upgrade and sale options
-            _sellButton.gameObject.SetActive(true);
-            _upgradeButton.gameObject.SetActive(true);
+            //check another popup isnt open
+            if (_popUpOpen == true)
+                return;
 
-            Tower tower = _towerToUprade.GetComponent<Tower>();
-            _upgradeButton.SetButton(tower, _placementZone);
-            _sellButton.SetButton(tower);
-
-            _armoryButtons[0].gameObject.SetActive(false);
-            _armoryButtons[1].gameObject.SetActive(false);
+            //check tower can be ugpraded
+            if (_towerInZone.GetComponent<Tower>().GetUpgradeTower() != null)
+            {
+                _popUpOpen = true;
+                _upgradeMenu.EnableMenu(_placementZone);
+            }
         }
 
-        public void CancelUpgradeUI()
+        public void RefundMenuUI()
         {
-            _armoryButtons[0].gameObject.SetActive(true);
-            _armoryButtons[1].gameObject.SetActive(true);
-            _sellButton.gameObject.SetActive(false);
-            _upgradeButton.gameObject.SetActive(false);
+            //check another popup isnt open
+            if (_popUpOpen == true)
+                return;
+            
+            _popUpOpen = true;
+            _refundMenu.EnableMenu(_placementZone);
+        }
+
+        public void PopUpMenuClosed()
+        {
+            _popUpOpen = false;
         }
 
         //get tower that may be upgraded
-        public void WhichTowerPlaced(GameObject towerPlaced, TowerPlacementZone placementZone)
+        public void WhichTowerPlaced(GameObject towerInZone, TowerPlacementZone placementZone)
         {
             this._placementZone = placementZone;
-            _towerToUprade = towerPlaced;
+            this._towerInZone = towerInZone;
         }
 
         public void ArmorButton(GameObject armorSelected)

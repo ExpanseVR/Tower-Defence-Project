@@ -16,7 +16,8 @@ namespace GameDevHQ.Scripts.Managers
             PlaceTower,
             UIArmorySelected,
             UIUpgradeMenu,
-            TestEvent
+            UIPopUpMenuClosed,
+            MouseOverTowerZone
         }
 
         private static Dictionary<string, dynamic> _eventDictionary = new Dictionary<string, dynamic>();

@@ -8,17 +8,19 @@ namespace GameDevHQ.Scripts
     public abstract class Tower : MonoBehaviour
     {
         [SerializeField]
+        int _ID;
+        
+        [SerializeField]
         protected int warFundsCost;
         [SerializeField]
         protected int towerRange;
         [SerializeField]
         Sprite _buttonImageUI;
-
         [SerializeField]
         Sprite _sellImageUI;
 
         [SerializeField]
-        protected int warFundSellAmount;
+        protected int _warFundSellAmount;
 
         [SerializeField]
         Tower _upgradeTowerLevelOne;
@@ -104,21 +106,24 @@ namespace GameDevHQ.Scripts
             return _buttonImageUI;
         }
 
-        public void GetUpgradeDetails(out Sprite image, out int cost)
+        public void GetUpgradeDetails(out int ID, out int cost)
         {
-            image = _upgradeTowerLevelOne.GetButtonImage();
+            ID = this._ID;
             cost = _upgradeTowerLevelOne.GetWarFundsRequired();
         }
 
         public GameObject GetUpgradeTower ()
         {
-            return _upgradeTowerLevelOne.gameObject;
+            if (_upgradeTowerLevelOne != null)
+                return _upgradeTowerLevelOne.gameObject;
+            else
+                return null;
         }
 
-        public void GetSellDetails(out Sprite image, out int refund)
+        public void GetSellDetails(out Sprite sellImage, out int cost)
         {
-            image = _sellImageUI;
-            refund = warFundSellAmount;
+            sellImage = _sellImageUI;
+            cost = _warFundSellAmount;
         }
     }
 }

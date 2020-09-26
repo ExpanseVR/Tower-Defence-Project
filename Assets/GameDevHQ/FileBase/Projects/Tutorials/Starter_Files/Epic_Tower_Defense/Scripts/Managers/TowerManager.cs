@@ -13,13 +13,11 @@ namespace GameDevHQ.Scripts.Managers
 
         bool _heldTowerIsActive = false;
         bool _overTowerPlacementZone = false;
-
-        bool towerPlaced = false; //TOREMOVE
+        bool _canPlaceTower = true;
 
         private void OnEnable()
         {
-            EventManager.Listen(EventManager.Events.TestEvent.ToString(), (Action<bool>)OverTowerPlacementZone);
-            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
+            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
 
@@ -30,7 +28,7 @@ namespace GameDevHQ.Scripts.Managers
             MouseInput();
             if (Input.GetKeyDown(KeyCode.D))
             {
-                EventManager.Fire(EventManager.Events.TestEvent.ToString(), true);
+                EventManager.Fire(EventManager.Events.MouseOverTowerZone.ToString(), true);
             }
         }
 
@@ -41,7 +39,7 @@ namespace GameDevHQ.Scripts.Managers
             {
                 if (_overTowerPlacementZone)
                 {
-                    if (towerPlaced == false && _towerSelected != null)
+                    if (_canPlaceTower && _towerSelected != null)
                     {
                         int newTowerCost = _towerSelected.GetComponent<Tower>().GetWarFundsRequired();
 
@@ -53,7 +51,7 @@ namespace GameDevHQ.Scripts.Managers
 
                         PlacingTower();
                     }
-                    else if (towerPlaced == true)
+                    else if (!_canPlaceTower && _towerSelected == null && _towerPlacementZone.GetCurrentTower() != null)
                         EventManager.Fire(EventManager.Events.UIUpgradeMenu.ToString());
                 }
             }
@@ -63,7 +61,8 @@ namespace GameDevHQ.Scripts.Managers
             {
                 if (_heldTowerIsActive)
                     CancelPlacement();
-                UIManager.Instance.CancelUpgradeUI();
+                if (_overTowerPlacementZone && !_canPlaceTower && _towerSelected == null)
+                    UIManager.Instance.RefundMenuUI();
             }
         }
 
@@ -80,20 +79,17 @@ namespace GameDevHQ.Scripts.Managers
         }
 
         //turret snaps to area when mouse over predefined area
-        /*private void OverTowerPlacementZone(bool towerPlaced)
+       
+        private void OverTowerPlacementZone(bool towerPlaced)
         {
-            print("TowerManager :: OverTowerPlacementZone bool is: " + towerPlaced);
             if (_towerSelected != null && towerPlaced == false)
             {
                 _heldTowerIsActive = !_heldTowerIsActive;
-                _canPlaceTower = !_canPlaceTower;
+                _canPlaceTower = true;
             }
-        }*/
-        
-        private void OverTowerPlacementZone(bool tempBool)
-        {
-            if (_towerSelected != null && towerPlaced == false)
-                _heldTowerIsActive = !_heldTowerIsActive;
+            else
+                _canPlaceTower = false;
+
             _overTowerPlacementZone = !_overTowerPlacementZone;
         }
 
@@ -146,10 +142,9 @@ namespace GameDevHQ.Scripts.Managers
             return newTower;
         }
 
-        public void TowerPlaced(TowerPlacementZone towerPlacementZone, bool isTowerPlaced)
+        public void TowerPlaced(TowerPlacementZone towerPlacementZone)
         {
             this._towerPlacementZone = towerPlacementZone;
-            towerPlaced = isTowerPlaced;
         }
 
         public void ResetTower (Tower towerToReset, bool placementZoneInUse)
@@ -158,15 +153,18 @@ namespace GameDevHQ.Scripts.Managers
             _towerPlacementZone.Reset(placementZoneInUse);
             //reset tower collider, activate range FX and deactivate tower (to go back into pool)
             towerToReset.SetCollider(false);
-            towerToReset.GetComponent<RangeColour>().SetRange(true); //To refactor GetComponent Call
+            
+            RangeColour rangeColour = towerToReset.GetComponent<RangeColour>(); //To refactor GetComponent Call
+            if (rangeColour != null)
+                rangeColour.SetRange(true);
+
             towerToReset.gameObject.SetActive(false);
         }
 
 
         private void OnDisable()
         {
-            EventManager.Listen(EventManager.Events.TestEvent.ToString(), (Action<bool>)OverTowerPlacementZone);
-            //EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), OverTowerPlacementZone);
+            EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
         }
 
