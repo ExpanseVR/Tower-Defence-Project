@@ -32,6 +32,12 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         float _cleanUpDelay;
 
+        [SerializeField]
+        Renderer[] _renderers;
+
+        [Range(0,1)][SerializeField]
+        float _dissolveSpeed;
+
         private Transform _target;
         private NavMeshAgent _agent;
 
@@ -44,6 +50,10 @@ namespace GameDevHQ.Scripts
             //reset mech
             _isAlive = true;
             _currentHealth = Health;
+            foreach (Renderer renderer in _renderers)
+            {
+                renderer.material.SetFloat("_Dissolve", 0);
+            }
 
             //get target
             _target = GameManger.Instance.RequestTarget();
@@ -95,6 +105,17 @@ namespace GameDevHQ.Scripts
         IEnumerator Disabled()
         {
             yield return new WaitForSeconds(_cleanUpDelay);
+            //run dissolve FX from Shader
+            float count = 0;
+            while (count * _dissolveSpeed <= 1)
+            {
+                foreach (Renderer renderer in _renderers)
+                {
+                    renderer.material.SetFloat("_Dissolve", count * _dissolveSpeed);
+                }
+                count += Time.deltaTime;
+                yield return null;
+            }
             //set back to walking before disabling
             _animator.WriteDefaultValues();
             this.gameObject.SetActive(false);
