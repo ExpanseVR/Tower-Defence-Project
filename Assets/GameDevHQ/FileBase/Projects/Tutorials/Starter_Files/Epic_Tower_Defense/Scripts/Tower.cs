@@ -7,6 +7,12 @@ namespace GameDevHQ.Scripts
     [RequireComponent(typeof(SphereCollider))]
     public abstract class Tower : MonoBehaviour
     {
+        public enum MissileType
+        {
+            Normal,
+            Homing
+        }
+
         [SerializeField]
         int _ID;
         

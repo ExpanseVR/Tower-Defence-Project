@@ -419,15 +419,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4202212807435242667}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.5559694e-18, y: -0.018601157, z: -0.009020032}
+  m_LocalRotation: {x: -0.29000017, y: -6.617445e-24, z: 1.323489e-23, w: 0.95702666}
+  m_LocalPosition: {x: 2.3287043e-18, y: -0.009507656, z: -0.056586865}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4199035358648510401}
   - {fileID: 4205117668695256379}
   m_Father: {fileID: 4204959873605339409}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -33.716003, y: 0, z: 0}
 --- !u!1 &4202216931472861823
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,8 +961,9 @@ MonoBehaviour:
   _sellImageUI: {fileID: 21300000, guid: 181406a430620cf4daef7d634a77178c, type: 3}
   _warFundSellAmount: 200
   _upgradeTowerLevelOne: {fileID: 0}
-  _missilePrefab: {fileID: 1909211218276452, guid: 5c6948683bd97124a91ca4af6a7ed8b4,
+  _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147,
     type: 3}
+  _missileType: 1
   _misslePositionsLeft:
   - {fileID: 4202216931472861823}
   - {fileID: 4202540724091420093}
@@ -977,10 +978,10 @@ MonoBehaviour:
   - {fileID: 4202036555279623847}
   - {fileID: 4202363451025802619}
   - {fileID: 4202595091387063971}
-  _fireDelay: 1
+  _fireDelay: 3
   _launchSpeed: 10
   _power: 20
-  _fuseDelay: 0
+  _fuseDelay: 1.5
   _reloadTime: 0
   _destroyTime: 10
   _turret: {fileID: 4202679461972032267}

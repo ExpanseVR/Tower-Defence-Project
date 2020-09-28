@@ -8,11 +8,6 @@ namespace GameDevHQ.Scripts
 {
     public class Missle_Launcher : Tower
     {
-        public enum MissileType
-        {
-            Normal,
-            Homing
-        }
 
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
@@ -30,8 +25,6 @@ namespace GameDevHQ.Scripts
         private float _fuseDelay; //fuse delay before the rocket launches
         [SerializeField]
         private float _reloadTime; //time in between reloading the rockets
-        [SerializeField]
-        private float _destroyTime = 10.0f; //how long till the rockets get cleaned up
         [SerializeField]
         GameObject _turret; //Part of tower to rotate towards enemy
         private bool _launched; //bool to check if we launched the rockets
@@ -67,13 +60,6 @@ namespace GameDevHQ.Scripts
             
         }
 
-        private void MissileLocationCycle()
-        {
-            _missilePosCount++;
-            if (_missilePosCount >= _misslePositions.Length)
-                _missilePosCount = 0;
-        }
-
         IEnumerator FireRocketsRoutine()
         {
             MissileLocationCycle();
@@ -82,6 +68,13 @@ namespace GameDevHQ.Scripts
             _misslePositions[_missilePosCount].SetActive(true);
 
             _launched = false; //set launch bool to false
+        }
+
+        private void MissileLocationCycle()
+        {
+            _missilePosCount++;
+            if (_missilePosCount >= _misslePositions.Length)
+                _missilePosCount = 0;
         }
 
         private void LoadRocket(int rocketLocation)
@@ -98,8 +91,8 @@ namespace GameDevHQ.Scripts
             }
             _missilePool[rocketLocation].transform.localPosition = Vector3.zero; //set the rocket position values to zero
             _missilePool[rocketLocation].transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
-            _missilePool[rocketLocation].GetComponent<Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
-            //_missilePool[rocketLocation].GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _destroyTime, _missileDamage);
+            _missilePool[rocketLocation].GetComponent<Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _missileDamage);
+
             //_misslePositions[rocketLocation].SetActive(false); //hide missile in place to look like it shoots;
         }
     }

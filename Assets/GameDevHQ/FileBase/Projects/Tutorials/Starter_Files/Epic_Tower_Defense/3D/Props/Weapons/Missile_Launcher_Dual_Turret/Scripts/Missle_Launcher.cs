@@ -1,21 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle;
 using GameDevHQ.Scripts;
 
-namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
+namespace GameDevHQ.Towers
 {
     public class Missle_Launcher : Tower
     {
-        public enum MissileType
-        {
-            Normal,
-            Homing
-        }
-
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
+        [SerializeField]
+        private MissileType _missileType; //type of missle to be launched
         [SerializeField]
         private GameObject[] _misslePositionsLeft; //array to hold the rocket positions on the turret
         [SerializeField]
@@ -49,7 +44,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         {
             base.OnEnable();
             _missilePosRightCount = 6;
-            _missilePoolRight = new GameObject[_misslePositionsRight.Length];            
+            _missilePoolRight = new GameObject[_misslePositionsRight.Length];
             _missilePosLeftCount = 6;
             _missilePoolLeft = new GameObject[_misslePositionsLeft.Length];
         }
@@ -72,41 +67,47 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 
         IEnumerator FireRocketsRoutine()
         {
-            for (int i = 0; i < _misslePositionsLeft.Length; i++) //for loop to iterate through each missle position
             {
-                GameObject rocketLeft = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
-                GameObject rocketRight = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
+                _missilePosLeftCount = MissileLocationCycle(_missilePosLeftCount, _misslePositionsLeft);
+                _missilePosRightCount = MissileLocationCycle(_missilePosRightCount, _misslePositionsRight);
 
-                rocketLeft.transform.parent = _misslePositionsLeft[i].transform; //set the rockets parent to the missle launch position 
-                rocketRight.transform.parent = _misslePositionsRight[i].transform; //set the rockets parent to the missle launch position 
-
-                rocketLeft.transform.localPosition = Vector3.zero; //set the rocket position values to zero
-                rocketRight.transform.localPosition = Vector3.zero; //set the rocket position values to zero
-
-                rocketLeft.transform.localEulerAngles = new Vector3(0, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
-                rocketRight.transform.localEulerAngles = new Vector3(0, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
-
-                rocketLeft.transform.parent = null; //set the rocket parent to null
-                rocketRight.transform.parent = null; //set the rocket parent to null
-
-                rocketLeft.GetComponent<GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle.Missle>().AssignMissleRules(_launchSpeed, _power, _fuseDelay, _destroyTime); //assign missle properties 
-                rocketRight.GetComponent<GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle.Missle>().AssignMissleRules(_launchSpeed, _power, _fuseDelay, _destroyTime); //assign missle properties 
-
-                _misslePositionsLeft[i].SetActive(false); //turn off the rocket sitting in the turret to make it look like it fired
-                _misslePositionsRight[i].SetActive(false); //turn off the rocket sitting in the turret to make it look like it fired
-
+                LoadRocket(_missilePosLeftCount, _missilePoolLeft, _misslePositionsLeft);
+                LoadRocket(_missilePosRightCount, _missilePoolRight, _misslePositionsRight);
                 yield return new WaitForSeconds(_fireDelay); //wait for the firedelay
-            }
 
-            for (int i = 0; i < _misslePositionsLeft.Length; i++) //itterate through missle positions
+                _misslePositionsLeft[_missilePosLeftCount].SetActive(true);
+                _misslePositionsRight[_missilePosRightCount].SetActive(true);
+
+                _launched = false; //set launch bool to false
+            }
+        }
+
+        private int MissileLocationCycle(int missileCount, GameObject[] missilePositions)
+        {
+            missileCount++;
+            if (missileCount >= missilePositions.Length)
+                missileCount = 0;
+
+            return missileCount;
+        }
+
+        private void LoadRocket(int rocketLocation, GameObject[] missilePool, GameObject[] missilePositions)
+        {
+            if (missilePool[rocketLocation] == null)
             {
-                yield return new WaitForSeconds(_reloadTime); //wait for reload time
-                _misslePositionsLeft[i].SetActive(true); //enable fake rocket to show ready to fire
-                _misslePositionsRight[i].SetActive(true); //enable fake rocket to show ready to fire
+                missilePool[rocketLocation] = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
+                missilePool[rocketLocation].transform.parent = missilePositions[rocketLocation].transform; //set the rockets parent to the missle launch position
             }
+            else
+            {
+                missilePool[rocketLocation].transform.position = missilePool[rocketLocation].transform.position;
+                missilePool[rocketLocation].SetActive(true);
+            }
+            missilePool[rocketLocation].transform.localPosition = Vector3.zero; //set the rocket position values to zero
+            missilePool[rocketLocation].transform.localEulerAngles = new Vector3(0, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
+            missilePool[rocketLocation].GetComponent<Missle>().AssignMissleRules(_missileType, targets[0].gameObject.transform, _launchSpeed, _power, _fuseDelay, _missileDamage);
 
-            _launched = false; //set launch bool to false
+            //_misslePositions[rocketLocation].SetActive(false); //hide missile in place to look like it shoots;
         }
     }
 }
-
