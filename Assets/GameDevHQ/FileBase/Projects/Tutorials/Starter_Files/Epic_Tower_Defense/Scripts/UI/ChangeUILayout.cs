@@ -16,6 +16,9 @@ namespace GameDevHQ.UI
         Image _warFunds;
 
         [SerializeField]
+        Image _restart;
+
+        [SerializeField]
         Text _playerStatus;
 
         [SerializeField]
@@ -23,31 +26,31 @@ namespace GameDevHQ.UI
 
         public void UpdateUI (PlayerStatesUI.PlayerStateType playerStateType)
         {
-            
+            int PlayerStateID = 0;
+
+            //Check for player state and set ID
             switch(playerStateType)
             {
                 case PlayerStatesUI.PlayerStateType.Normal:
-                    _armory.sprite = _playerStatesUI[0].Armory;
-                    _livesWaves.sprite = _playerStatesUI[0].LivesWaves;
-                    _warFunds.sprite = _playerStatesUI[0].Warfunds;
-                    _playerStatus.text = "Good";
+                    PlayerStateID = 0;
                     break;
                 case PlayerStatesUI.PlayerStateType.Caution:
-                    _armory.sprite = _playerStatesUI[1].Armory;
-                    _livesWaves.sprite = _playerStatesUI[1].LivesWaves;
-                    _warFunds.sprite = _playerStatesUI[1].Warfunds;
-                    _playerStatus.text = "Average";
+                    PlayerStateID = 1;
                     break;
                 case PlayerStatesUI.PlayerStateType.Warning:
-                    _armory.sprite = _playerStatesUI[2].Armory;
-                    _livesWaves.sprite = _playerStatesUI[2].LivesWaves;
-                    _warFunds.sprite = _playerStatesUI[2].Warfunds;
-                    _playerStatus.text = "Bad";
+                    PlayerStateID = 2;
                     break;
                 default:
                     Debug.LogError("Invalid selection UpdateUI");
                     break;
-            }    
+            }
+
+            //update player state UI Images based on ID
+            _armory.sprite = _playerStatesUI[PlayerStateID].Armory;
+            _livesWaves.sprite = _playerStatesUI[PlayerStateID].LivesWaves;
+            _warFunds.sprite = _playerStatesUI[PlayerStateID].Warfunds;
+            _restart.sprite = _playerStatesUI[PlayerStateID].Restart;
+            _playerStatus.text = playerStateType.ToString();
         }
     }
 }

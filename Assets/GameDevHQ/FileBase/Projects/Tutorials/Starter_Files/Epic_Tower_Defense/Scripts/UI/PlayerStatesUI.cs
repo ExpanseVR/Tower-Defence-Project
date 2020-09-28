@@ -24,5 +24,8 @@ namespace GameDevHQ.UI
 
         [SerializeField]
         public Sprite Warfunds;
+
+        [SerializeField]
+        public Sprite Restart;
     }
 }
