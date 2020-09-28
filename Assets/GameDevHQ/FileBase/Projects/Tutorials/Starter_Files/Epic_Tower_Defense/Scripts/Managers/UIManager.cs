@@ -28,6 +28,7 @@ namespace GameDevHQ.Scripts.Managers
 
         private GameObject _towerInZone;
         private TowerPlacementZone _placementZone;
+        private ChangeUILayout _changeUILayout;
         private bool _popUpOpen = false;
 
         private void OnEnable()
@@ -42,6 +43,7 @@ namespace GameDevHQ.Scripts.Managers
 
         private void Start()
         {
+            _changeUILayout = GetComponent<ChangeUILayout>();
             _warFundsUI.text = GameManger.Instance.GetWarfunds().ToString();
         }
 
@@ -53,6 +55,20 @@ namespace GameDevHQ.Scripts.Managers
         private void UpdateLivesUI(int livesAdjustment)
         {
             _livesUI.text = livesAdjustment.ToString();
+
+            //check for lives and update UI state:
+            if (livesAdjustment > 60)
+            {
+                _changeUILayout.UpdateUI(PlayerStatesUI.PlayerStateType.Normal);
+                return;
+            }
+            else if (livesAdjustment > 20)
+            {
+                _changeUILayout.UpdateUI(PlayerStatesUI.PlayerStateType.Caution);
+                return;
+            }
+            _changeUILayout.UpdateUI(PlayerStatesUI.PlayerStateType.Warning);
+
         }
 
         private void UpdateWaveCounterUI()

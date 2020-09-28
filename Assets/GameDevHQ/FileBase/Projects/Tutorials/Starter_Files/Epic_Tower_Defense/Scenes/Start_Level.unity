@@ -4237,6 +4237,7 @@ GameObject:
   - component: {fileID: 592720670}
   - component: {fileID: 592720669}
   - component: {fileID: 592720673}
+  - component: {fileID: 592720674}
   m_Layer: 5
   m_Name: Canvas-UI
   m_TagString: Untagged
@@ -4351,11 +4352,52 @@ MonoBehaviour:
   _warFundsUI: {fileID: 2109062355}
   _livesUI: {fileID: 783571177}
   _waveCounterUI: {fileID: 640746102}
+  _playerStatesUI:
+  - PlayerState: 0
+    Armory: {fileID: 21300000, guid: 8e88bb7005d0db249ae958a0002f9615, type: 3}
+    LivesWaves: {fileID: 21300000, guid: 59e5b8e6a5f3e0e4cb8467b53e66f207, type: 3}
+    Warfunds: {fileID: 21300000, guid: c39c03b8dafaa194a90bf3e5c339a4dc, type: 3}
+  - PlayerState: 1
+    Armory: {fileID: 21300000, guid: 5a682affa8784ae4d97ce434668f8aeb, type: 3}
+    LivesWaves: {fileID: 21300000, guid: 431b0778025fafc4db252551561a1c45, type: 3}
+    Warfunds: {fileID: 21300000, guid: 874550c34bb8c1e429e79e810995bea9, type: 3}
+  - PlayerState: 2
+    Armory: {fileID: 21300000, guid: 5a682affa8784ae4d97ce434668f8aeb, type: 3}
+    LivesWaves: {fileID: 21300000, guid: 29c1c454430d5a143b3fef5ba932adaa, type: 3}
+    Warfunds: {fileID: 21300000, guid: 7c53fbffc7f4b014ea5abfe934f59ca8, type: 3}
   _armoryButtons:
   - {fileID: 150529100}
   - {fileID: 1416097950}
   _upgradeMenu: {fileID: 992508426}
   _refundMenu: {fileID: 892693652}
+--- !u!114 &592720674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592720668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01db4023c65cfdf4993baa152b90b586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _armory: {fileID: 1706649507}
+  _livesWaves: {fileID: 2105959597}
+  _warFunds: {fileID: 350660924}
+  _playerStatesUI:
+  - PlayerState: 0
+    Armory: {fileID: 21300000, guid: 8e88bb7005d0db249ae958a0002f9615, type: 3}
+    LivesWaves: {fileID: 21300000, guid: 59e5b8e6a5f3e0e4cb8467b53e66f207, type: 3}
+    Warfunds: {fileID: 21300000, guid: c39c03b8dafaa194a90bf3e5c339a4dc, type: 3}
+  - PlayerState: 1
+    Armory: {fileID: 21300000, guid: 5dd0117fa40a1414fb253a4a102560a0, type: 3}
+    LivesWaves: {fileID: 21300000, guid: 431b0778025fafc4db252551561a1c45, type: 3}
+    Warfunds: {fileID: 21300000, guid: 874550c34bb8c1e429e79e810995bea9, type: 3}
+  - PlayerState: 2
+    Armory: {fileID: 21300000, guid: 5a682affa8784ae4d97ce434668f8aeb, type: 3}
+    LivesWaves: {fileID: 21300000, guid: 29c1c454430d5a143b3fef5ba932adaa, type: 3}
+    Warfunds: {fileID: 21300000, guid: 7c53fbffc7f4b014ea5abfe934f59ca8, type: 3}
 --- !u!1001 &595690249
 PrefabInstance:
   m_ObjectHideFlags: 0
