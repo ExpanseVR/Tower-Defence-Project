@@ -13,7 +13,10 @@ namespace GameDevHQ.Scripts
         private float _speed;
 
         [SerializeField]
-        private int _warfund;
+        private int _warfundReward;
+
+        [SerializeField]
+        private int _playerDamage;
 
         [SerializeField]
         private int _health;
@@ -105,6 +108,11 @@ namespace GameDevHQ.Scripts
             }
         }
 
+        public int GetPlayerDamage()
+        {
+            return _playerDamage;
+        }
+
         IEnumerator Disabled()
         {
             yield return new WaitForSeconds(_cleanUpDelay);
@@ -129,6 +137,7 @@ namespace GameDevHQ.Scripts
                 _materialPropertyBlock.SetFloat("_Dissolve", 0);
                 renderer.SetPropertyBlock(_materialPropertyBlock);
             }
+            EventManager.Fire(EventManager.Events.EnemyCleanUp.ToString(), _warfundReward);
             this.gameObject.SetActive(false);
         }
 

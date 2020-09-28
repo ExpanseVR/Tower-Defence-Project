@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.Scripts.Utility;
+using System;
 
 namespace GameDevHQ.Scripts.Managers
 {
@@ -9,6 +10,9 @@ namespace GameDevHQ.Scripts.Managers
     {
         [SerializeField]
         int _warFunds;
+
+        [SerializeField]
+        int _playerLives;
 
         [SerializeField]
         Tower[] _towersInArmoury = new Tower[2];
@@ -23,9 +27,18 @@ namespace GameDevHQ.Scripts.Managers
         private List<Wave> _waves = new List<Wave>();
 
         private int _currentWave = 1;
+        private int _currentLives;
+
+        private void OnEnable()
+        {
+            EventManager.Listen(EventManager.Events.EnemyCleanUp.ToString(), (Action<int>)SetWarFunds);
+            EventManager.Listen(EventManager.Events.EnemyGoalReached.ToString(), (Action<int>)SetLives);
+        }
 
         private void Start()
         {
+            _currentLives = _playerLives;
+            EventManager.Fire(EventManager.Events.LivesChanged.ToString(), _currentLives);
             StartCoroutine(StartWaves());
         }
 
@@ -66,6 +79,12 @@ namespace GameDevHQ.Scripts.Managers
             EventManager.Fire(EventManager.Events.WarFundsChanged.ToString());
         }
 
+        public void SetLives (int adjustment)
+        {
+            _currentLives += adjustment;
+            EventManager.Fire(EventManager.Events.LivesChanged.ToString(), _currentLives);
+        }
+
         public int GetWaveCount()
         {
             return _waves.Count;
@@ -79,6 +98,12 @@ namespace GameDevHQ.Scripts.Managers
         public Tower GetTowerType (int buttonID)
         {
             return _towersInArmoury[buttonID];
+        }
+
+        private void OnDisable()
+        {
+            EventManager.StopListening(EventManager.Events.EnemyCleanUp.ToString(), (Action<int>)SetWarFunds);
+            EventManager.StopListening(EventManager.Events.EnemyGoalReached.ToString(), (Action<int>)SetLives);
         }
     }
 }

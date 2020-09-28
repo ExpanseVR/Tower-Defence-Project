@@ -12,6 +12,9 @@ namespace GameDevHQ.Scripts.Managers
         Text _warFundsUI;
 
         [SerializeField]
+        Text _livesUI;
+
+        [SerializeField]
         Text _waveCounterUI;
 
         [SerializeField]
@@ -31,6 +34,7 @@ namespace GameDevHQ.Scripts.Managers
         {
             //Subscribe to EventsManger for UI interaction
             EventManager.Listen(EventManager.Events.WarFundsChanged.ToString(), UpdateWarFundsUI);
+            EventManager.Listen(EventManager.Events.LivesChanged.ToString(), (Action<int>)UpdateLivesUI);
             EventManager.Listen(EventManager.Events.NewWaveStarted.ToString(), UpdateWaveCounterUI);
             EventManager.Listen(EventManager.Events.UIUpgradeMenu.ToString(), UpgradeMenuUI);
             EventManager.Listen(EventManager.Events.UIPopUpMenuClosed.ToString(), PopUpMenuClosed);
@@ -44,6 +48,11 @@ namespace GameDevHQ.Scripts.Managers
         private void UpdateWarFundsUI()
         {
             _warFundsUI.text = GameManger.Instance.GetWarfunds().ToString();
+        }
+
+        private void UpdateLivesUI(int livesAdjustment)
+        {
+            _livesUI.text = livesAdjustment.ToString();
         }
 
         private void UpdateWaveCounterUI()
@@ -97,8 +106,10 @@ namespace GameDevHQ.Scripts.Managers
         private void OnDisable()
         {
             EventManager.StopListening(EventManager.Events.WarFundsChanged.ToString(), UpdateWarFundsUI);
+            EventManager.StopListening(EventManager.Events.LivesChanged.ToString(), (Action<int>)UpdateLivesUI);
             EventManager.StopListening(EventManager.Events.NewWaveStarted.ToString(), UpdateWaveCounterUI);
             EventManager.StopListening(EventManager.Events.UIUpgradeMenu.ToString(), UpgradeMenuUI);
+            EventManager.StopListening(EventManager.Events.UIPopUpMenuClosed.ToString(), PopUpMenuClosed);
         }
     }
 }

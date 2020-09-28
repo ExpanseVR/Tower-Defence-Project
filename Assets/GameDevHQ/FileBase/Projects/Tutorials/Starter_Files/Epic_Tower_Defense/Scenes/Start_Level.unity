@@ -4349,6 +4349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _warFundsUI: {fileID: 2109062355}
+  _livesUI: {fileID: 783571177}
   _waveCounterUI: {fileID: 640746102}
   _armoryButtons:
   - {fileID: 150529100}
@@ -6630,6 +6631,7 @@ GameObject:
   - component: {fileID: 983644533}
   - component: {fileID: 983644534}
   - component: {fileID: 983644535}
+  - component: {fileID: 983644536}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: CameraRig
@@ -6683,6 +6685,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &983644536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983644532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a145bc0ab2ed92d49a8566eeb9231045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 2
+  _shakeMagnitude: 1
 --- !u!1 &992508424
 GameObject:
   m_ObjectHideFlags: 0
@@ -10786,6 +10802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _warFunds: 600
+  _playerLives: 100
   _towersInArmoury:
   - {fileID: 5012833960327620135, guid: fcbfc49cb18734e408795c764229068f, type: 3}
   - {fileID: 252237449608684574, guid: 24135638b14c6184196580737e0a9865, type: 3}
@@ -12205,7 +12222,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1641669043}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.73, y: 16.1, z: 4.8}
+  m_LocalPosition: {x: 6.82, y: 16.1, z: -8.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 246519963}

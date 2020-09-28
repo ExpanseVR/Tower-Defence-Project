@@ -10,6 +10,7 @@ namespace GameDevHQ.Scripts.Managers
         public enum Events
         {
             WarFundsChanged,
+            LivesChanged,
             NewWaveStarted,
             ActivateTowerZones,
             ResetTowerZones,
@@ -17,7 +18,9 @@ namespace GameDevHQ.Scripts.Managers
             UIArmorySelected,
             UIUpgradeMenu,
             UIPopUpMenuClosed,
-            MouseOverTowerZone
+            MouseOverTowerZone,
+            EnemyCleanUp,
+            EnemyGoalReached
         }
 
         private static Dictionary<string, dynamic> _eventDictionary = new Dictionary<string, dynamic>();

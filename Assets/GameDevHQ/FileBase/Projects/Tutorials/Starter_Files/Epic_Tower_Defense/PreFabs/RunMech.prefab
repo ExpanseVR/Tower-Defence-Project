@@ -949,7 +949,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1
-  _warfund: 100
+  _warfundReward: 20
+  _playerDamage: 10
   _health: 50
   _damageFX: {fileID: 0}
   _deathFX: {fileID: 6341650750516672748}
