@@ -26,6 +26,9 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         PopUpMenu _refundMenu;
 
+        [SerializeField]
+        CountDownTimerUI _countDownTimerUI;
+
         private GameObject _towerInZone;
         private TowerPlacementZone _placementZone;
         private ChangeUILayout _changeUILayout;
@@ -90,6 +93,11 @@ namespace GameDevHQ.Scripts.Managers
                 _popUpOpen = true;
                 _upgradeMenu.EnableMenu(_placementZone);
             }
+        }
+
+        public void StartCountDown (int CountStart)
+        {
+            StartCoroutine(_countDownTimerUI.CountDown(CountStart));
         }
 
         public void RefundMenuUI()

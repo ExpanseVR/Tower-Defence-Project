@@ -9,6 +9,7 @@ namespace GameDevHQ.Scripts.Managers
     {
         public enum Events
         {
+            GamePlaying,
             WarFundsChanged,
             LivesChanged,
             NewWaveStarted,

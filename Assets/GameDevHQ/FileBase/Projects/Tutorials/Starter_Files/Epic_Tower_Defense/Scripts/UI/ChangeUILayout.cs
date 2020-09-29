@@ -19,6 +19,9 @@ namespace GameDevHQ.UI
         Image _restart;
 
         [SerializeField]
+        Image _playBackSpeed;
+
+        [SerializeField]
         Text _playerStatus;
 
         [SerializeField]
@@ -50,6 +53,7 @@ namespace GameDevHQ.UI
             _livesWaves.sprite = _playerStatesUI[PlayerStateID].LivesWaves;
             _warFunds.sprite = _playerStatesUI[PlayerStateID].Warfunds;
             _restart.sprite = _playerStatesUI[PlayerStateID].Restart;
+            _playBackSpeed.sprite = _playerStatesUI[PlayerStateID].PlaybackSpeed;
             _playerStatus.text = playerStateType.ToString();
         }
     }

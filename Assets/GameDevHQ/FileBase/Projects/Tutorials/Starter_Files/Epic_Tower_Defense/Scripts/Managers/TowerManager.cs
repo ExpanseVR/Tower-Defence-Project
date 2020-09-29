@@ -1,7 +1,6 @@
 ﻿using GameDevHQ.Scripts.Utility;
 using UnityEngine;
 using System;
-using UnityEngine.UIElements;
 
 namespace GameDevHQ.Scripts.Managers
 {
@@ -11,6 +10,7 @@ namespace GameDevHQ.Scripts.Managers
         GameObject _towerSelected;
         TowerPlacementZone _towerPlacementZone;
 
+        bool _gamePlaying = true;
         bool _heldTowerIsActive = false;
         bool _overTowerPlacementZone = false;
         bool _canPlaceTower = true;
@@ -19,11 +19,16 @@ namespace GameDevHQ.Scripts.Managers
         {
             EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
+            EventManager.Listen(EventManager.Events.GamePlaying.ToString(), (Action<bool>)IsGamePlaying);
         }
 
         // Update is called once per frame
         void Update()
         {
+            //check if game is paused
+            if (!_gamePlaying)
+                return;
+
             HaveATowerToPlace();
             MouseInput();
             if (Input.GetKeyDown(KeyCode.D))
@@ -161,11 +166,17 @@ namespace GameDevHQ.Scripts.Managers
             towerToReset.gameObject.SetActive(false);
         }
 
+        public void IsGamePlaying (bool isPlaying)
+        {
+            _gamePlaying = isPlaying;
+        }
+
 
         private void OnDisable()
         {
             EventManager.Listen(EventManager.Events.MouseOverTowerZone.ToString(), (Action<bool>)OverTowerPlacementZone);
             EventManager.Listen(EventManager.Events.UIArmorySelected.ToString(), (Action<GameObject>)TowerSelected);
+            EventManager.Listen(EventManager.Events.GamePlaying.ToString(), (Action<bool>)IsGamePlaying);
         }
 
     }

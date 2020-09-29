@@ -1,5 +1,4 @@
-﻿using GameDevHQ.FileBase.Gatling_Gun;
-using GameDevHQ.Scripts.Managers;
+﻿using GameDevHQ.Scripts.Managers;
 using System;
 using UnityEngine;
 
@@ -12,6 +11,7 @@ namespace GameDevHQ.Scripts
 
         GameObject _currentTower;
 
+        private bool _isGamePlaying = true;
         private bool _isActivated = false;
         private bool _isTowerPlaced = false;
         private bool _isMouseOver = false;
@@ -21,11 +21,17 @@ namespace GameDevHQ.Scripts
             EventManager.Listen(EventManager.Events.PlaceTower.ToString(), PlaceTower);
             EventManager.Listen(EventManager.Events.ActivateTowerZones.ToString(), Activate);
             EventManager.Listen(EventManager.Events.ResetTowerZones.ToString(), DeActivate);
+            EventManager.Listen(EventManager.Events.GamePlaying.ToString(), (Action<bool>)IsGamePlaying);
         }
 
         void Start()
         {
             _particles.SetActive(false);
+        }
+
+        private void IsGamePlaying(bool isPlaying)
+        {
+            _isGamePlaying = isPlaying;
         }
 
         //available places start particle system
@@ -44,6 +50,10 @@ namespace GameDevHQ.Scripts
 
         private void OnMouseEnter()
         {
+            //check if game is playing
+            if (!_isGamePlaying)
+                return;
+
             _isMouseOver = true;
             if (_isTowerPlaced)
             {
@@ -70,6 +80,10 @@ namespace GameDevHQ.Scripts
 
         private void OnMouseExit()
         {
+            //check if game is playing
+            if (!_isGamePlaying)
+                return;
+
             _isMouseOver = false;
             if (_isTowerPlaced)
             {
@@ -119,6 +133,7 @@ namespace GameDevHQ.Scripts
             EventManager.StopListening(EventManager.Events.PlaceTower.ToString(), PlaceTower);
             EventManager.StopListening(EventManager.Events.ActivateTowerZones.ToString(), Activate);
             EventManager.StopListening(EventManager.Events.ResetTowerZones.ToString(), DeActivate);
+            EventManager.Listen(EventManager.Events.GamePlaying.ToString(), (Action<bool>)IsGamePlaying);
         }
     }
 }

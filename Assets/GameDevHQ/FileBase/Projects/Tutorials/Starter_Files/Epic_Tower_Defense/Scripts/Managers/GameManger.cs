@@ -8,6 +8,13 @@ namespace GameDevHQ.Scripts.Managers
 {
     public class GameManger : MonoSingleton<GameManger>
     {
+        public enum GameState
+        {
+            play,
+            pause,
+            fastforward
+        }
+
         [SerializeField]
         int _warFunds;
 
@@ -16,6 +23,9 @@ namespace GameDevHQ.Scripts.Managers
 
         [SerializeField]
         Tower[] _towersInArmoury = new Tower[2];
+
+        [SerializeField]
+        int _countDownLength = 5;
 
         [SerializeField]
         float _delayBetweenWaves = 5f;
@@ -39,11 +49,38 @@ namespace GameDevHQ.Scripts.Managers
         {
             _currentLives = _playerLives;
             EventManager.Fire(EventManager.Events.LivesChanged.ToString(), _currentLives);
+        }
+
+        public void SetGameState (GameState currentGameState)
+        {
+            switch (currentGameState)
+            {
+                case GameState.play:
+                    Time.timeScale = 1;
+                    EventManager.Fire(EventManager.Events.GamePlaying.ToString(), true);
+                    break;
+                case GameState.pause:
+                    EventManager.Fire(EventManager.Events.GamePlaying.ToString(), false);
+                    //TowerManager.Instance.IsGamePlaying(false);
+                    Time.timeScale = 0;
+                    break;
+                case GameState.fastforward:
+                    Time.timeScale = 2;
+                    EventManager.Fire(EventManager.Events.GamePlaying.ToString(), true);
+                    break;
+            }
+        }
+
+        public void StartLevel()
+        {
+            UIManager.Instance.StartCountDown(_countDownLength);
             StartCoroutine(StartWaves());
         }
 
         IEnumerator StartWaves()
         {
+            //wait for timer to finish
+            yield return new WaitForSeconds(_countDownLength);
             //read from the current wave data
             foreach (var wave in _waves)
             {

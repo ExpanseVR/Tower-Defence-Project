@@ -27,5 +27,8 @@ namespace GameDevHQ.UI
 
         [SerializeField]
         public Sprite Restart;
+
+        [SerializeField]
+        public Sprite PlaybackSpeed;
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using GameDevHQ.Scripts.Managers;
 using GameDevHQ.Scripts;
@@ -30,6 +29,13 @@ namespace GameDevHQ.UI
         
         Sprite _towerImage;
 
+        bool _gamePlaying = true;
+
+        private void OnEnable()
+        {
+            EventManager.Listen(EventManager.Events.GamePlaying.ToString(), (Action<bool>)IsGamePlaying);
+        }
+
         private void Start()
         {
             switch (_towerType)
@@ -54,9 +60,20 @@ namespace GameDevHQ.UI
             _towerButton.sprite = _towerImage;
         }
 
+        private void IsGamePlaying(bool isPlaying)
+        {
+            _gamePlaying = isPlaying;
+        }
+
         public void ButtonPressed ()
         {
-            UIManager.Instance.ArmorButton(_towerToSpawn.gameObject);
+            if (_gamePlaying)
+                UIManager.Instance.ArmorButton(_towerToSpawn.gameObject);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Listen(EventManager.Events.GamePlaying.ToString(), (Action<bool>)IsGamePlaying);
         }
     }
 }
