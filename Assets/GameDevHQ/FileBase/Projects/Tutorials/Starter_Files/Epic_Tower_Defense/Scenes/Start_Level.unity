@@ -4493,6 +4493,9 @@ MonoBehaviour:
   _upgradeMenu: {fileID: 992508426}
   _refundMenu: {fileID: 892693652}
   _countDownTimerUI: {fileID: 1072461149}
+  _levelStatus: {fileID: 909662579}
+  _warningStatus: {fileID: 21300000, guid: 7076b80cfc96dc34f850c690d772aed8, type: 3}
+  _levelStatusText: {fileID: 12562996}
 --- !u!114 &592720674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11644,6 +11647,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f2c38a696b76df3428b065a3d86545c3, type: 2}
   - {fileID: 11400000, guid: 4a717ac1ac435e9408f8785371a70f98, type: 2}
   - {fileID: 11400000, guid: 253d24e8be37cc14e8b8de310bf9f283, type: 2}
+  _enemyCount: 0
 --- !u!4 &1496009179
 Transform:
   m_ObjectHideFlags: 0

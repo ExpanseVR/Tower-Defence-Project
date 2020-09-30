@@ -36,12 +36,15 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         private List<Wave> _waves = new List<Wave>();
 
-        private int _currentWave = 1;
+        private int _currentWave = 0;
         private int _currentLives;
+        public int _enemyCount = 0;
+        private bool _finalWave = false;
 
         private void OnEnable()
         {
             EventManager.Listen(EventManager.Events.EnemyCleanUp.ToString(), (Action<int>)SetWarFunds);
+            EventManager.Listen(EventManager.Events.EnemyCleanUp.ToString(), (Action<int>)SetEnemyCount);
             EventManager.Listen(EventManager.Events.EnemyGoalReached.ToString(), (Action<int>)SetLives);
         }
 
@@ -85,11 +88,13 @@ namespace GameDevHQ.Scripts.Managers
             foreach (var wave in _waves)
             {
                 EventManager.Fire(EventManager.Events.NewWaveStarted.ToString());
+                
                 //instantiate the wave
                 foreach (var obj in wave.sequenceOfEnemies)
                     {
                         //instantiate them
                         SpawnManager.Instance.SpawnEnemy(obj);
+                        _enemyCount++;
                         //wait a set amount of time between spawns
                         yield return new WaitForSeconds(_waves[_currentWave].timeBetweenSpawns);
                     }
@@ -98,6 +103,7 @@ namespace GameDevHQ.Scripts.Managers
                 _currentWave++;
             }
 
+            _finalWave = true;
         }
 
         public Transform RequestTarget()
@@ -116,10 +122,25 @@ namespace GameDevHQ.Scripts.Managers
             EventManager.Fire(EventManager.Events.WarFundsChanged.ToString());
         }
 
+        public void SetEnemyCount (int i)
+        {
+            _enemyCount--;
+            if (_finalWave && _enemyCount == 0)
+            {
+                UIManager.Instance.LevelStatus("LEVEL\nCOMPLETE", false);
+                SetGameState(GameState.pause);
+            }
+        }
+
         public void SetLives (int adjustment)
         {
             _currentLives += adjustment;
             EventManager.Fire(EventManager.Events.LivesChanged.ToString(), _currentLives);
+            if (_currentLives <= 0)
+            {
+                UIManager.Instance.LevelStatus("CITY\nDESTROYED!!", true);
+                SetGameState(GameState.pause);
+            }
         }
 
         public int GetWaveCount()
@@ -129,7 +150,7 @@ namespace GameDevHQ.Scripts.Managers
 
         public int GetCurrentWave()
         {
-            return _currentWave;
+            return _currentWave + 1;
         }
 
         public Tower GetTowerType (int buttonID)

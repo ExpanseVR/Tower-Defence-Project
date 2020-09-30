@@ -29,6 +29,15 @@ namespace GameDevHQ.Scripts.Managers
         [SerializeField]
         CountDownTimerUI _countDownTimerUI;
 
+        [SerializeField]
+        GameObject _levelStatus;
+
+        [SerializeField]
+        Sprite _warningStatus;
+
+        [SerializeField]
+        Text _levelStatusText;
+
         private GameObject _towerInZone;
         private TowerPlacementZone _placementZone;
         private ChangeUILayout _changeUILayout;
@@ -125,6 +134,14 @@ namespace GameDevHQ.Scripts.Managers
         public void ArmorButton(GameObject armorSelected)
         {
             EventManager.Fire(EventManager.Events.UIArmorySelected.ToString(), armorSelected);
+        }
+
+        public void LevelStatus(string statusMessage, bool isWarning)
+        {
+            _levelStatus.SetActive(true);
+            if (isWarning)
+                _levelStatus.GetComponent<Image>().sprite = _warningStatus;
+            _levelStatusText.text = statusMessage;
         }
 
         private void OnDisable()
