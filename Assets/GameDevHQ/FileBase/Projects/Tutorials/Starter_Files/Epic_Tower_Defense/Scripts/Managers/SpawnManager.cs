@@ -1,4 +1,5 @@
 ﻿using GameDevHQ.Scripts.Utility;
+using GameDevHQ.UI;
 using UnityEngine;
 
 
@@ -8,6 +9,16 @@ namespace GameDevHQ.Scripts.Managers
     {
         [SerializeField]
         private Transform _spawnPoint;
+
+        [SerializeField]
+        private HealthBarUI _healthBar;
+
+        [SerializeField]
+        private RectTransform _healthBarsCanvasRectT;
+
+        [SerializeField]
+        private GameObject _healthBarsParent;
+
 
         int _poolReference;
         int _spawncount = 0;
@@ -26,6 +37,10 @@ namespace GameDevHQ.Scripts.Managers
             newEnemy.transform.position = _spawnPoint.position;
             newEnemy.transform.parent = this.transform;
             newEnemy.SetActive(true);
+
+            GameObject newEnemyHealthBar = Instantiate(_healthBar.gameObject);
+            newEnemyHealthBar.transform.SetParent(_healthBarsParent.transform, false);
+            newEnemyHealthBar.GetComponent<HealthBarUI>().SetEnemyTransform(newEnemy.GetComponent<Enemy>(), _healthBarsCanvasRectT);
         }
 
         public int GetNextID()

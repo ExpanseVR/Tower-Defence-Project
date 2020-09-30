@@ -257,6 +257,7 @@ MonoBehaviour:
   fireSound: {fileID: 8300000, guid: 08e0cb88300e54b09aa0deb684c3a3de, type: 3}
   _damageAmount: 5
   _damageDelay: 0.5
+  _rotateSpeed: 1.5
 --- !u!82 &4981065378588797719
 AudioSource:
   m_ObjectHideFlags: 0

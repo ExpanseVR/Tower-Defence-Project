@@ -2,6 +2,9 @@
 using UnityEngine.AI;
 using GameDevHQ.Scripts.Managers;
 using System.Collections;
+using GameDevHQ.UI;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace GameDevHQ.Scripts
 {
@@ -83,6 +86,7 @@ namespace GameDevHQ.Scripts
         {
             //take damage
             _currentHealth -= damage;
+            EventManager.Fire(EventManager.Events.EnemyDamaged.ToString(), this);
             //play damage FX
             if (_damageFX != null)
                 _damageFX.Play();
@@ -139,6 +143,11 @@ namespace GameDevHQ.Scripts
             }
             EventManager.Fire(EventManager.Events.EnemyCleanUp.ToString(), _warfundReward);
             this.gameObject.SetActive(false);
+        }
+
+        public int GetHealth()
+        {
+            return _currentHealth;
         }
 
         public int GetID ()

@@ -1,7 +1,5 @@
 ﻿using GameDevHQ.Scripts;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 
@@ -40,6 +38,10 @@ namespace GameDevHQ.FileBase.Gatling_Gun
 
         [SerializeField]
         float _damageDelay;
+
+        [SerializeField]
+        float _rotateSpeed;
+
         private bool _startWeaponNoise = true;
         private bool _canDamage = true;
 
@@ -53,15 +55,11 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.clip = fireSound; //assign the clip to play
         }
 
-        private void Update()
-        {
-            if (Input.GetKey(KeyCode.Space))
-                RotateBarrel();
-        }
-
         protected override void AttackTarget(Vector3 targetDirection)
         {
-            _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            var newRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            StartCoroutine(LerpRotation(_turret.transform.rotation, newRotation));
+
             //damage target at set times
             if (_canDamage == true)
                 StartCoroutine(DamageTarget());
@@ -74,6 +72,18 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             {
                 _audioSource.Play(); //play audio clip attached to audio source
                 _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+            }
+        }
+
+        IEnumerator LerpRotation(Quaternion startRotation, Quaternion finalRotation)
+        {
+            float progress = 0f;
+
+            while (progress < 1f)
+            {
+                _turret.transform.rotation = Quaternion.Slerp(startRotation, finalRotation, progress);
+                progress += Time.deltaTime * _rotateSpeed;
+                yield return null;
             }
         }
 

@@ -20,6 +20,7 @@ namespace GameDevHQ.Scripts.Managers
             UIUpgradeMenu,
             UIPopUpMenuClosed,
             MouseOverTowerZone,
+            EnemyDamaged,
             EnemyCleanUp,
             EnemyGoalReached
         }
