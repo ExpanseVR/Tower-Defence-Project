@@ -52,7 +52,9 @@ namespace GameDevHQ.Towers
         protected override void AttackTarget(Vector3 targetDirection)
         {
             targetDirection.y = 0;
-            _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            var newRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            _turret.transform.rotation = Quaternion.Slerp(_turret.transform.rotation, newRotation, Time.deltaTime * _rotateSpeed);
+
             if (_launched == false)
             {
                 _launched = true; //set the launch bool to true

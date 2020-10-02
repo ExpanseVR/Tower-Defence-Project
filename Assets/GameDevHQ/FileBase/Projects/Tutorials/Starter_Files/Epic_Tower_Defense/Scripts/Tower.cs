@@ -31,6 +31,9 @@ namespace GameDevHQ.Scripts
         [SerializeField]
         Tower _upgradeTowerLevelOne;
 
+        [SerializeField]
+        protected float _rotateSpeed;
+
         //protected List<GameObject> targets = new List<GameObject>();
         protected List<Enemy> targets = new List<Enemy>();
         protected SphereCollider targetCollider;

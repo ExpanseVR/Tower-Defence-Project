@@ -14693,6 +14693,7 @@ MonoBehaviour:
   _turret: {fileID: 5180550811681296346}
   _damageAmount: 5
   _damageDelay: 0.25
+  _rotateSpeed: 1.4
 --- !u!82 &7066638477159491087
 AudioSource:
   m_ObjectHideFlags: 0

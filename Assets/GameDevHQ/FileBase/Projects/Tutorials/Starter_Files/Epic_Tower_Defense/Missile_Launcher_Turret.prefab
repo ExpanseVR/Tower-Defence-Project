@@ -181,9 +181,9 @@ MonoBehaviour:
   _power: 20
   _fuseDelay: 1.5
   _reloadTime: 0
-  _destroyTime: 10
   _turret: {fileID: 149453069388701646}
   _missileDamage: 50
+  _rotateSpeed: 1.5
 --- !u!114 &-4561658967222704075
 MonoBehaviour:
   m_ObjectHideFlags: 0

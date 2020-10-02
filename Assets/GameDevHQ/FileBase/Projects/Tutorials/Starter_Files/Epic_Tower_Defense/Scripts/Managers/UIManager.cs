@@ -30,7 +30,7 @@ namespace GameDevHQ.Scripts.Managers
         CountDownTimerUI _countDownTimerUI;
 
         [SerializeField]
-        GameObject _levelStatus;
+        Image _levelStatus;
 
         [SerializeField]
         Sprite _warningStatus;
@@ -138,9 +138,9 @@ namespace GameDevHQ.Scripts.Managers
 
         public void LevelStatus(string statusMessage, bool isWarning)
         {
-            _levelStatus.SetActive(true);
+            _levelStatus.gameObject.SetActive(true);
             if (isWarning)
-                _levelStatus.GetComponent<Image>().sprite = _warningStatus;
+                _levelStatus.sprite = _warningStatus;
             _levelStatusText.text = statusMessage;
         }
 

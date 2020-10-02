@@ -42,6 +42,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
         [SerializeField]
         float _damageDelay;
+
         private bool _canDamage = true;
 
         // Use this for initialization
@@ -58,7 +59,9 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
  
         protected override void AttackTarget(Vector3 targetDirection)
         {
-            _turret.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            var newRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+            _turret.transform.rotation = Quaternion.Slerp(_turret.transform.rotation, newRotation, Time.deltaTime * _rotateSpeed);
+
             //damage target at set times
             if (_canDamage == true)
                 StartCoroutine(DamageTarget());

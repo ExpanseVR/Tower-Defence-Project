@@ -39,11 +39,10 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         [SerializeField]
         float _damageDelay;
 
-        [SerializeField]
-        float _rotateSpeed;
-
         private bool _startWeaponNoise = true;
         private bool _canDamage = true;
+
+        WaitForSeconds _waitForDamageDelay;
 
         // Use this for initialization
         void Start()
@@ -53,12 +52,14 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.playOnAwake = false; //disabling play on awake
             _audioSource.loop = true; //making sure our sound effect loops
             _audioSource.clip = fireSound; //assign the clip to play
+
+            _waitForDamageDelay = new WaitForSeconds(_damageDelay);
         }
 
         protected override void AttackTarget(Vector3 targetDirection)
         {
             var newRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-            StartCoroutine(LerpRotation(_turret.transform.rotation, newRotation));
+            _turret.transform.rotation = Quaternion.Slerp(_turret.transform.rotation, newRotation, Time.deltaTime * _rotateSpeed);
 
             //damage target at set times
             if (_canDamage == true)
@@ -75,24 +76,12 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             }
         }
 
-        IEnumerator LerpRotation(Quaternion startRotation, Quaternion finalRotation)
-        {
-            float progress = 0f;
-
-            while (progress < 1f)
-            {
-                _turret.transform.rotation = Quaternion.Slerp(startRotation, finalRotation, progress);
-                progress += Time.deltaTime * _rotateSpeed;
-                yield return null;
-            }
-        }
-
         IEnumerator DamageTarget ()
         {
             _canDamage = false;
             if (targets.Count > 0)
-                targets[0].GetComponent<Enemy>().TakeDamage(_damageAmount);
-            yield return new WaitForSeconds(_damageDelay);
+                targets[0].TakeDamage(_damageAmount);
+            yield return _waitForDamageDelay;
 
             _canDamage = true;
         }

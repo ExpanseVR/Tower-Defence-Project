@@ -29,11 +29,6 @@ namespace GameDevHQ.Scripts.Managers
         private Vector3 _lastFrameDir;
         private bool _cameraBounds = false;
 
-        private void OnEnable()
-        {
-            CameraBounds.onCameraBoundsHit += HitCameraBounds;
-        }
-
         private void Update()
         {
             //get player keyboard input WSAD
@@ -43,7 +38,7 @@ namespace GameDevHQ.Scripts.Managers
             MouseScrollInput();
 
             //detect if mouse moves to bounds of screen
-            //MousePositionInput(); //ACTIVATE TO SHOW JON BUT ANNOYING IN DEV MODE
+            MousePositionInput(); //ACTIVATE TO SHOW JON BUT ANNOYING IN DEV MODE
         }
 
         private void MousePositionInput()
@@ -87,19 +82,13 @@ namespace GameDevHQ.Scripts.Managers
 
         private void MoveCamera(Vector3 cameraDirection)
         {
-            //camera cannot move pass camera bounding box
-            if (_cameraBounds)
-            {
-                var thisFrameDir = cameraDirection;
-                // if in boundry check to see if input is in opposite direction of boundry;
-                if (Vector3.Dot(thisFrameDir, _lastFrameDir) > -.2f)
-                    return;
-                else
-                    _cameraBounds = false;
-            }
             transform.Translate(cameraDirection * _cameraPanSpeed * Time.deltaTime);
-            //store vector for boundary check
-            _lastFrameDir = cameraDirection.normalized;
+
+            //clamp x and z by level bounds
+            float clampX = Mathf.Clamp(transform.position.x, -47f, -30f);
+            float clampZ = Mathf.Clamp(transform.position.z, -11f, 3f);
+            Vector3 clampedPos = new Vector3(clampX, transform.position.y, clampZ);
+            transform.position = clampedPos;
         }
 
         private void MouseScrollInput()
@@ -114,19 +103,7 @@ namespace GameDevHQ.Scripts.Managers
                 Vector3 newCameraPos = transform.position + cameraZoom;
                 if (newCameraPos.y > _maxZoomIn && newCameraPos.y < _maxZoomOut)
                     transform.position = newCameraPos;
-                //newCameraPos.y = Mathf.Clamp(newCameraPos.y, _maxZoomIn, _maxZoomOut);
-                //transform.position = newCameraPos;
             }
-        }
-
-        private void HitCameraBounds ()
-        {
-            _cameraBounds = !_cameraBounds;
-        }
-
-        private void OnDisable()
-        {
-            CameraBounds.onCameraBoundsHit -= HitCameraBounds;
         }
     }
 }

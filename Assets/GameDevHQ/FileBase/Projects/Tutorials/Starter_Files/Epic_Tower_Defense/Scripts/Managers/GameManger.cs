@@ -41,6 +41,9 @@ namespace GameDevHQ.Scripts.Managers
         public int _enemyCount = 0;
         private bool _finalWave = false;
 
+        private String _levelComplete = "LEVEL\nCOMPLETE";
+        private String _levelFailed = "CITY\nDESTROYED!!";
+
         private void OnEnable()
         {
             EventManager.Listen(EventManager.Events.EnemyCleanUp.ToString(), (Action<int>)SetWarFunds);
@@ -127,7 +130,7 @@ namespace GameDevHQ.Scripts.Managers
             _enemyCount--;
             if (_finalWave && _enemyCount == 0)
             {
-                UIManager.Instance.LevelStatus("LEVEL\nCOMPLETE", false);
+                UIManager.Instance.LevelStatus(_levelComplete, false);
                 SetGameState(GameState.pause);
             }
         }
@@ -138,7 +141,7 @@ namespace GameDevHQ.Scripts.Managers
             EventManager.Fire(EventManager.Events.LivesChanged.ToString(), _currentLives);
             if (_currentLives <= 0)
             {
-                UIManager.Instance.LevelStatus("CITY\nDESTROYED!!", true);
+                UIManager.Instance.LevelStatus(_levelFailed, true);
                 SetGameState(GameState.pause);
             }
         }
