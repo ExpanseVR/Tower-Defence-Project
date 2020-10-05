@@ -38,7 +38,7 @@ namespace GameDevHQ.Scripts.Managers
             MouseScrollInput();
 
             //detect if mouse moves to bounds of screen
-            MousePositionInput(); //ACTIVATE TO SHOW JON BUT ANNOYING IN DEV MODE
+            //MousePositionInput(); //ACTIVATE TO SHOW JON BUT ANNOYING IN DEV MODE
         }
 
         private void MousePositionInput()

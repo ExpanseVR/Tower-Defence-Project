@@ -3,8 +3,6 @@ using UnityEngine.AI;
 using GameDevHQ.Scripts.Managers;
 using System.Collections;
 using GameDevHQ.UI;
-using System;
-using System.Runtime.CompilerServices;
 
 namespace GameDevHQ.Scripts
 {
@@ -23,6 +21,9 @@ namespace GameDevHQ.Scripts
 
         [SerializeField]
         private int _health;
+
+        [SerializeField]
+        private HealthBar _healthBar;
 
         public int Health { get => _health; set => _health = value; }
 
@@ -52,16 +53,17 @@ namespace GameDevHQ.Scripts
         private int _ID;
         private bool _isAlive = true;
         private int _currentHealth;
+        private bool _hasBeenSet = false;
 
         private void OnEnable()
         {
             //reset mech
             _isAlive = true;
             _currentHealth = Health;
-            /*foreach (Renderer renderer in _renderers)
-            {
-                renderer.material.SetFloat("_Dissolve", 0);
-            }*/
+            if (_hasBeenSet)
+                _healthBar.SetHealthBar(100);
+            else
+                _hasBeenSet = true;
 
             //get target
             _target = GameManger.Instance.RequestTarget();
@@ -86,7 +88,7 @@ namespace GameDevHQ.Scripts
         {
             //take damage
             _currentHealth -= damage;
-            EventManager.Fire(EventManager.Events.EnemyDamaged.ToString(), this);
+            _healthBar.SetHealthBar(100 / _health * _currentHealth);
             //play damage FX
             if (_damageFX != null)
                 _damageFX.Play();

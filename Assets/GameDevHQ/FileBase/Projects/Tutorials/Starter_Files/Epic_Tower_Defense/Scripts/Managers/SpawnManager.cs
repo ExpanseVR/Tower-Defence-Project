@@ -38,9 +38,9 @@ namespace GameDevHQ.Scripts.Managers
             newEnemy.transform.parent = this.transform;
             newEnemy.SetActive(true);
 
-            GameObject newEnemyHealthBar = Instantiate(_healthBar.gameObject);
+            /*GameObject newEnemyHealthBar = Instantiate(_healthBar.gameObject);
             newEnemyHealthBar.transform.SetParent(_healthBarsParent.transform, false);
-            newEnemyHealthBar.GetComponent<HealthBarUI>().SetEnemyTransform(newEnemy.GetComponent<Enemy>(), _healthBarsCanvasRectT);
+            newEnemyHealthBar.GetComponent<HealthBarUI>().SetEnemyTransform(newEnemy.GetComponent<Enemy>(), _healthBarsCanvasRectT);*/
         }
 
         public int GetNextID()

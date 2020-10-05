@@ -40,6 +40,8 @@ namespace GameDevHQ.Scripts
 
         protected Enemy _currentTarget;
 
+        int _frames = 0;
+
         public virtual void OnEnable()
         {
             targetCollider = transform.GetComponent<SphereCollider>();
@@ -54,7 +56,7 @@ namespace GameDevHQ.Scripts
 
         protected void OnTriggerEnter(Collider other)
         {
-            if (other.tag == "CrabMech" || other.CompareTag("RunMech")) //Ask Jon any difference?
+            if (other.CompareTag("CrabMech") || other.CompareTag("RunMech")) //Ask Jon any difference?
             {
                 targets.Add(other.GetComponent<Enemy>());
                 _currentTarget = other.GetComponent<Enemy>();
@@ -66,14 +68,19 @@ namespace GameDevHQ.Scripts
             //if enemy in range
             if (targets.Count > 0)
             {
-                //Attack enemy
-                AcquireTarget();
+                _frames++;
+                //every 10 frames;
+                if (_frames % 10 == 0)
+                {
+                    //Attack enemy
+                    AcquireTarget();
+                }
             }
         }
 
         protected void OnTriggerExit(Collider other)
         {
-            if (other.tag == "CrabMech" || other.CompareTag("RunMech"))
+            if (other.CompareTag("CrabMech") || other.CompareTag("RunMech"))
             {
                 targets.Remove(other.GetComponent<Enemy>());
                 if (targets.Count == 0)
